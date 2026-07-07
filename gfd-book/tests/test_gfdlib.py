@@ -38,9 +38,9 @@ def test_selective_decay():
     rng = np.random.default_rng(1)
     W = g.fft(rng.standard_normal((64, 64))) * np.exp(-g.k2 / (2 * 6.0 ** 2))
     W *= g.dealias
-    rhs = lambda t, W: -g.jacobian(g.invert_laplacian(-W), W)
-    ke0, ens0 = diagnostics.energy_enstrophy(g.invert_laplacian(-W), g)
+    rhs = lambda t, W: -g.jacobian(g.invert_laplacian(W), W)
+    ke0, ens0 = diagnostics.energy_enstrophy(g.invert_laplacian(W), g)
     for _ in range(1000):
         W = timestep.etdrk_diffusion_step(W, rhs, 1e-3, g.k2, 2e-3) * g.dealias
-    ke1, ens1 = diagnostics.energy_enstrophy(g.invert_laplacian(-W), g)
+    ke1, ens1 = diagnostics.energy_enstrophy(g.invert_laplacian(W), g)
     assert (ens1 / ens0) < (ke1 / ke0)

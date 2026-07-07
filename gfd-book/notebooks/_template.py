@@ -26,7 +26,7 @@ def _(mo):
         vorticity equation:
 
         $$\frac{\partial \zeta}{\partial t} + J(\psi,\zeta) = \nu\nabla^2\zeta,
-          \qquad \nabla^2\psi = -\zeta.$$
+          \qquad \nabla^2\psi = \zeta.$$
         """
     )
     return
