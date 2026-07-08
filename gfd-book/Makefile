@@ -3,9 +3,17 @@ NB_DIR   := notebooks
 OUT_DIR  := site/static/nb
 SITE_DIR := site
 NOTEBOOKS := $(wildcard $(NB_DIR)/ch*.py)
+# gfdlib wheel, shipped in notebooks/public/ so every WASM export carries it
+# (notebooks micropip-install it when running under Pyodide).
+WHEEL    := $(NB_DIR)/public/gfdlib-0.1.0-py3-none-any.whl
 
-.PHONY: notebooks serve test clean
-notebooks: $(NOTEBOOKS)
+.PHONY: notebooks wheel serve test clean
+
+wheel: $(WHEEL)
+$(WHEEL): gfdlib/*.py pyproject.toml
+	pip wheel --no-deps -q -w $(NB_DIR)/public .
+
+notebooks: $(WHEEL) $(NOTEBOOKS)
 	@for nb in $(NOTEBOOKS); do \
 		name=$$(basename $$nb .py); \
 		echo "exporting $$name"; \

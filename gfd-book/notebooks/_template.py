@@ -33,11 +33,21 @@ def _(mo):
 
 
 @app.cell
-def _():
+async def _(mo):
     # --- numerical scheme: import vetted primitives, don't re-implement ---
+    import sys
+
+    if sys.platform == "emscripten":
+        # browser (Pyodide/WASM): install the gfdlib wheel that `make notebooks`
+        # ships in the exported bundle's public/ folder
+        import micropip
+        await micropip.install(
+            str(mo.notebook_location() / "public" / "gfdlib-0.1.0-py3-none-any.whl")
+        )
+    else:
+        sys.path.insert(0, str(mo.notebook_dir().parent))  # repo root
+
     import numpy as np
-    import sys, os
-    sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))  # repo root
     from gfdlib import spectral, timestep, diagnostics, plotting
     grid = spectral.Grid(128)          # build ONCE, reuse every step
     return np, spectral, timestep, diagnostics, plotting, grid

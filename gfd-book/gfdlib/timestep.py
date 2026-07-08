@@ -11,15 +11,21 @@ def rk4(rhs, y, dt, t=0.0):
     return y + (dt / 6.0) * (k1 + 2 * k2 + 2 * k3 + k4)
 
 
-def etdrk_diffusion_step(F, rhs_nl, dt, k2, nu, t=0.0):
-    """IMEX: exact linear diffusion factor + explicit RK2 for the nonlinear part.
+def ifrk4_step(F, rhs_nl, dt, L, t=0.0):
+    """Integrating-factor RK4: exact diagonal linear propagator + RK4 nonlinear.
 
-    Solves dF/dt = -nu*k2*F + rhs_nl(t,F) in spectral space. The diffusion is
-    handled with an integrating factor (unconditionally stable for that term),
-    which lets the notebook use a comfortable dt at 128^2-class resolution.
+    Solves dF/dt = L*F + rhs_nl(t,F) in spectral space, where L is any diagonal
+    (possibly complex) linear operator — e.g. L = -nu*k2**n_nu + 1j*beta*kx/k2
+    for hyperviscous dissipation plus exact Rossby-wave propagation. The linear
+    term is unconditionally stable (integrating factor); the nonlinear term gets
+    classical RK4, whose stability region covers the imaginary axis, so pure
+    advection at nu=0 is stable at CFL-limited dt (an RK2 IMEX is not: it slowly
+    amplifies oscillatory modes and blows up over thousands of steps).
     """
-    E = np.exp(-nu * k2 * dt)
-    N1 = rhs_nl(t, F)
-    F1 = E * (F + dt * N1)
-    N2 = rhs_nl(t + dt, F1)
-    return E * F + dt * 0.5 * (E * N1 + N2)
+    E = np.exp(L * (0.5 * dt))
+    E2 = E * E
+    k1 = rhs_nl(t, F)
+    k2 = rhs_nl(t + 0.5 * dt, E * (F + 0.5 * dt * k1))
+    k3 = rhs_nl(t + 0.5 * dt, E * F + 0.5 * dt * k2)
+    k4 = rhs_nl(t + dt, E2 * F + dt * E * k3)
+    return E2 * F + (dt / 6.0) * (E2 * k1 + 2.0 * E * (k2 + k3) + k4)

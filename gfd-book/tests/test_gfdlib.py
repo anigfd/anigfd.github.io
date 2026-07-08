@@ -32,6 +32,28 @@ def test_spectrum_parseval():
     assert abs(E.sum() - (f ** 2).mean()) < 1e-6
 
 
+def test_ifrk4_exact_linear_rotation():
+    """With no nonlinear term, the integrating factor is the exact propagator."""
+    F = np.array(1.0 + 0j)
+    L = 1j * 2.0
+    for _ in range(100):
+        F = timestep.ifrk4_step(F, lambda t, F: 0 * F, 0.01, L)
+    assert abs(F - np.exp(1j * 2.0)) < 1e-12
+
+
+def test_rossby_phase_speed():
+    """Linear beta term: a k=(1,0) mode moves westward at c = -beta/k^2."""
+    g = spectral.Grid(64)
+    beta = 5.0
+    zh = g.fft(np.cos(g.x))
+    L = 1j * beta * g.kx * g.k2_inv          # -beta*v with psi = invert_laplacian(zeta)
+    dt, nsteps = 0.01, 100
+    for _ in range(nsteps):
+        zh = timestep.ifrk4_step(zh, lambda t, F: 0 * F, dt, L)
+    expected = np.cos(g.x + beta * dt * nsteps)   # cos(x - c*t), c = -beta
+    assert np.max(np.abs(g.ifft(zh) - expected)) < 1e-8
+
+
 def test_selective_decay():
     """2D turbulence: enstrophy must decay faster than energy."""
     g = spectral.Grid(64)
@@ -41,6 +63,6 @@ def test_selective_decay():
     rhs = lambda t, W: -g.jacobian(g.invert_laplacian(W), W)
     ke0, ens0 = diagnostics.energy_enstrophy(g.invert_laplacian(W), g)
     for _ in range(1000):
-        W = timestep.etdrk_diffusion_step(W, rhs, 1e-3, g.k2, 2e-3) * g.dealias
+        W = timestep.ifrk4_step(W, rhs, 1e-3, -2e-3 * g.k2) * g.dealias
     ke1, ens1 = diagnostics.energy_enstrophy(g.invert_laplacian(W), g)
     assert (ens1 / ens0) < (ke1 / ke0)

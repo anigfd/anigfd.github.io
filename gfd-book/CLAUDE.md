@@ -33,6 +33,9 @@ NOTATION.md        # symbol table + sign conventions (linked from every chapter)
 
 ## Build / preview / test commands
 - Export all notebooks to WASM:  `make notebooks`
+  (first builds the gfdlib wheel into `notebooks/public/`; marimo copies that
+  folder into every export, and notebooks micropip-install the wheel when
+  running under Pyodide — see the import cell in `notebooks/_template.py`)
 - Export one:  `marimo export html-wasm notebooks/ch06_geostrophic_adjustment.py -o site/static/nb/ch06 --mode run`
   (use `--mode edit` for chapters where the reader should edit code live)
 - Preview site:  `make serve`  (runs `hugo server -D` from `site/`)
