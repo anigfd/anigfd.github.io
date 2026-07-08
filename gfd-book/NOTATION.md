@@ -34,6 +34,28 @@ code is wrong. Fix conventions here first.*
 > and $\zeta=\nabla^2\psi$. In vorticity-form notebooks solve $\nabla^2\psi=\zeta$
 > (so `psi_hat = grid.invert_laplacian(zeta_hat)`). Keep this consistent across all notebooks.
 
+## Shallow water (linearized, beta-plane)
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $H$ | mean layer depth | |
+| $\eta$ | free-surface height anomaly | positive = raised surface |
+| $c=\sqrt{gH}$ | gravity-wave speed | |
+| $L_R=c/f_0$ | Rossby deformation radius | length scale |
+
+Nondimensionalized by $L_R$ (length), $f_0^{-1}$ (time), $H$ (height, so
+$\hat\eta=\eta/H$, $\hat c=1$), with $\hat f = 1+\hat\beta(y-y_0)$,
+$\hat\beta=\beta L_R/f_0$:
+
+$$\hat\eta_t+\hat u_x+\hat v_y=0,\qquad
+\hat u_t-\hat f\hat v=-\hat\eta_x,\qquad
+\hat v_t+\hat f\hat u=-\hat\eta_y.$$
+
+**Linear PV anomaly** $q=\zeta-\hat\eta$ (with $\zeta=v_x-u_y$ from the same
+$\hat u,\hat v$) obeys $q_t=-\hat\beta\hat v$: exactly conserved pointwise on
+the $f$-plane ($\hat\beta=0$). `gfdlib.shallowwater.potential_vorticity`
+computes it; `gfdlib.shallowwater.invert_pv` inverts $(\nabla^2-1)\eta_{bal}=q$
+for the geostrophically balanced height field carrying that PV.
+
 ## Dimensionless numbers
 | Number | Definition | Regime |
 |---|---|---|
