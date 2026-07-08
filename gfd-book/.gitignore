@@ -1,0 +1,9 @@
+site/static/nb/
+site/public/
+notebooks/public/*.whl
+*.egg-info/
+__pycache__/
+*.pyc
+.DS_Store
+.venv/
+build/
