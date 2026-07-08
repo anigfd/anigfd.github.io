@@ -4,25 +4,62 @@ weight: 618
 part: 6
 ---
 
-**Status:** existing notebook — integrate onto template + gfdlib.
-
 ## Overview
-_One-paragraph setup: the physical question this chapter answers._
+
+Rotation and stratification make large-scale atmospheric and oceanic flow
+approximately two-dimensional — and 2D turbulence is a *different animal* from
+the 3D turbulence of engineering. Because vortex stretching is absent, the flow
+conserves enstrophy $Z=\tfrac12\langle\zeta^2\rangle$ alongside energy
+$E=\tfrac12\langle|\nabla\psi|^2\rangle$, and that second invariant forces
+energy **upscale**: small vortices merge into ever-larger ones (the *inverse
+cascade*), while enstrophy drains to small scales through filaments. On a
+rotating planet the upscale march does not continue forever — when eddies grow
+big enough to feel $\beta$, Rossby-wave dynamics arrest the cascade near the
+Rhines scale $k_\beta\simeq\sqrt{\beta/2U}$ and reorganize the flow into
+**zonal jets**. This chapter's notebook lets you watch both acts: the dual
+cascade, and its arrest.
 
 ## The model
+
 Notebook: `notebooks/ch18_geostrophic-turbulence.py` → exported to `/nb/ch18_geostrophic-turbulence/`.
-Governing equations use the symbols in [NOTATION](/notation).
+Governing equations use the symbols in [notation]({{< relref "notation.md" >}}):
+
+$$\frac{\partial \zeta}{\partial t} + J(\psi,\zeta) + \beta v
+  = -\nu(-\nabla^2)^{n_\nu}\zeta, \qquad \nabla^2\psi = \zeta .$$
+
+Pseudo-spectral, 2/3-rule dealiased, with an integrating factor that treats
+dissipation *and* the Rossby-wave propagator exactly
+(`gfdlib.timestep.ifrk4_step`). Presets: decaying McWilliams (1984)
+turbulence, a hyperviscous variant, and a $\beta$-plane jet run.
 
 {{< marimo src="/nb/ch18_geostrophic-turbulence/" >}}
 
 ## Both fluids
-- **Atmosphere:** _instance of this mechanism in the atmosphere._
-- **Ocean:** _instance of this mechanism in the ocean._
+
+- **Atmosphere:** the banded winds of Jupiter and Saturn are the textbook
+  Rhines-arrested inverse cascade; on Earth, the eddy-driven midlatitude jet is
+  maintained by exactly this upscale momentum transfer from baroclinic eddies
+  (Ch. 16 supplies the eddies).
+- **Ocean:** the Southern Ocean and the subtropical gyres carry multiple
+  quasi-zonal jets ("striations") with spacing near the local Rhines scale, and
+  the mesoscale eddy field ($L\sim100$ km) inverse-cascades energy toward the
+  basin scale until $\beta$ — and bottom drag — intervene.
 
 ## Exercises
-1. *(analytic)* …
-2. *(computational)* modify `ch18_geostrophic-turbulence.py` to …
-3. *(exploratory)* find the parameter value at which …
+
+1. *(analytic)* From conservation of $E$ and $Z$, prove Fjørtoft's theorem: if
+   spectral energy spreads from a middle wavenumber $k_1$ to $k_0<k_1<k_2$ with
+   $k_2/k_1 = k_1/k_0 = 2$, more energy must go to $k_0$ than to $k_2$. Where
+   does the enstrophy go?
+2. *(computational)* Modify `ch18_geostrophic-turbulence.py` to add linear
+   (Ekman) drag $-r\zeta$ to the linear operator. How does the final vortex
+   size — and the jet amplitude in the $\beta$ preset — depend on $r$?
+3. *(exploratory)* Sweep $\beta$ at fixed energy: find the smallest $\beta$ at
+   which the Hovmöller diagram of $\bar u(y,t)$ shows persistent stripes, and
+   check the jet spacing against $\pi/k_\beta$ with $U=\sqrt{2E}$.
 
 ## Further reading
-Vallis, §…; Salmon, §…; Pedlosky, §….
+
+Vallis, *AOFD* 2nd ed., §§11.1–11.4 (two-dimensional turbulence) and ch. 12
+(geostrophic turbulence and jets); Salmon, *Lectures on GFD*, ch. 4;
+Kraichnan (1967); Rhines (1975); McWilliams (1984).

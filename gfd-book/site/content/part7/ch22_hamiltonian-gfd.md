@@ -11,7 +11,7 @@ _One-paragraph setup: the physical question this chapter answers._
 
 ## The model
 Notebook: `notebooks/ch22_hamiltonian-gfd.py` → exported to `/nb/ch22_hamiltonian-gfd/`.
-Governing equations use the symbols in [NOTATION](/notation).
+Governing equations use the symbols in [notation]({{< relref "notation.md" >}}).
 
 {{< marimo src="/nb/ch22_hamiltonian-gfd/" >}}
 

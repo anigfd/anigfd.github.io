@@ -1,0 +1,21 @@
+baseURL = "https://www.aneeshcs.com/gfd/"
+title = "Interactive Geophysical Fluid Dynamics"
+disableKinds = ["taxonomy", "term", "rss", "sitemap"]
+
+# LaTeX rendered server-side (transform.ToMath via the passthrough render hook)
+[markup.goldmark.extensions.passthrough]
+enable = true
+[markup.goldmark.extensions.passthrough.delimiters]
+block = [["$$", "$$"], ["\\[", "\\]"]]
+inline = [["$", "$"], ["\\(", "\\)"]]
+
+# The canonical notation page is the repo-root NOTATION.md, mounted into content
+[[module.mounts]]
+source = "content"
+target = "content"
+[[module.mounts]]
+source = "../NOTATION.md"
+target = "content/notation.md"
+[[module.mounts]]
+source = "static"
+target = "static"

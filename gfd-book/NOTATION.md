@@ -1,3 +1,7 @@
+---
+title: "Notation — symbols & sign conventions"
+---
+
 # NOTATION — symbols & sign conventions
 
 *Linked from every chapter. If the printed equation and the code disagree, the
