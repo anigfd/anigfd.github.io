@@ -1,6 +1,7 @@
 site/static/nb/
 site/public/
 notebooks/public/*.whl
+notebooks/__marimo__/
 *.egg-info/
 __pycache__/
 *.pyc
