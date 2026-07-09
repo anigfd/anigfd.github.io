@@ -73,6 +73,23 @@ the $f$-plane ($\hat\beta=0$). `gfdlib.shallowwater.potential_vorticity`
 computes it; `gfdlib.shallowwater.invert_pv` inverts $(\nabla^2-1)\eta_{bal}=q$
 for the geostrophically balanced height field carrying that PV.
 
+## Single-layer QG (barotropic PV + deformation-radius stretching)
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $q=\nabla^2\psi-\psi+\beta y$ | quasi-geostrophic PV ($L_R$ nondim to 1) | material conservation: $q_t+J(\psi,q)=0$ |
+
+> **QGPV inversion reuses the shallow-water Helmholtz solve.** With
+> $L_R$ nondimensionalized to 1, $(\nabla^2-1)\psi=q-\beta y$ is *the same
+> operator* as the shallow-water PV inversion above — `gfdlib.shallowwater.
+> invert_pv` computes $\psi$ from the QGPV anomaly directly; no separate QG
+> inversion primitive exists or is needed. The linear Rossby-wave part of
+> the evolution operator changes accordingly: `gfdlib.qg.dispersion_omega`
+> gives $\omega=-\beta k_x/(k_x^2+k_y^2+1)$, bounded by $|\omega|\le\beta/2$
+> (attained at $|\mathbf k|=1$) — unlike the unbounded barotropic relation
+> in ch18, the deformation radius screens the lowest wavenumbers. An
+> isolated vortex (`gfdlib.pv.gaussian_blob`) on this operator sheds a
+> trailing Rossby-wave wake and drifts westward — verified numerically.
+
 ## Rayleigh-Benard convection (vertical $x$–$z$ channel)
 | Symbol | Meaning | Convention |
 |---|---|---|

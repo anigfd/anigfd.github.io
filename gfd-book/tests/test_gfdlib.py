@@ -1,6 +1,6 @@
 """Numeric correctness of gfdlib primitives. `make test` must pass before commit."""
 import numpy as np
-from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv
+from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, qg
 
 
 def test_poisson_roundtrip():
@@ -260,3 +260,56 @@ def test_vortex_dipole_propagates():
     zeta_final = g.ifft(zeta_hat)
     x1 = g.x[np.unravel_index(np.argmax(np.abs(zeta_final)), zeta_final.shape)]
     assert abs(((x1 - x0 + g.L / 2) % g.L) - g.L / 2) > 0.3   # net translation
+
+
+def test_qg_dispersion_bounded_by_beta_over_2():
+    """QG Rossby-wave frequency is capped at beta/2, attained at |k|=1 --
+    unlike the barotropic relation, which is unbounded as k->0."""
+    beta = 3.0
+    rng = np.random.default_rng(0)
+    kx, ky = rng.uniform(-5, 5, 2000), rng.uniform(-5, 5, 2000)
+    omega = qg.dispersion_omega(kx, ky, beta)
+    assert np.all(np.abs(omega) <= beta / 2 + 1e-10)
+
+    k1 = np.linspace(0.01, 5, 5000)
+    omega_k1 = qg.dispersion_omega(k1, 0.0, beta)
+    assert abs(k1[np.argmax(np.abs(omega_k1))] - 1.0) < 1e-2
+    assert abs(np.max(np.abs(omega_k1)) - beta / 2) < 1e-3
+
+
+def test_qg_helmholtz_inversion_matches_shallowwater():
+    """The QGPV Helmholtz operator (L_R_hat=1) is literally
+    shallowwater.invert_pv -- verify it actually inverts (nabla^2-1)psi=q."""
+    g = spectral.Grid(32, L=20.0)
+    psi_true = np.sin(2 * np.pi * g.x / g.L) * np.cos(4 * np.pi * g.y / g.L)
+    q = g.ifft(g.laplacian(g.fft(psi_true))) - psi_true
+    psi_rec = shallowwater.invert_pv(q, g)
+    assert np.max(np.abs(psi_rec - psi_true)) < 1e-10
+
+
+def test_qg_vortex_drifts_west_on_beta_plane():
+    """An isolated QG vortex on a beta-plane sheds a Rossby wake and drifts
+    westward (a beta-gyre), just as in the barotropic case but screened by
+    the deformation radius via the QGPV Helmholtz inversion."""
+    n, L = 96, 20.0
+    g = spectral.Grid(n, L=L)
+    xc = yc = 0.5 * L
+    q0 = pv.gaussian_blob(g, xc, yc, 1.0, 1.0)
+
+    beta, nu, nnu = 0.3, 1e-4, 2
+    q_hat = g.fft(q0)
+    L_op = -nu * g.k2 ** nnu + 1j * beta * g.kx / (g.k2 + 1.0)
+
+    def rhs_nl(t, qh):
+        psi_h = -qh / (g.k2 + 1.0)
+        return -g.jacobian(psi_h, qh)
+
+    dt = 0.01
+    for _ in range(2000):
+        q_hat = timestep.ifrk4_step(q_hat, rhs_nl, dt, L_op) * g.dealias
+
+    q_final = g.ifft(q_hat)
+    w = np.clip(q_final, 0, None)
+    cx_final = (g.x * w).sum() / w.sum()
+    drift = ((cx_final - xc + L / 2) % L) - L / 2
+    assert drift < -0.5   # net westward drift
