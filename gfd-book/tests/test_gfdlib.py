@@ -1,6 +1,6 @@
 """Numeric correctness of gfdlib primitives. `make test` must pass before commit."""
 import numpy as np
-from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves
+from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection
 
 
 def test_poisson_roundtrip():
@@ -118,6 +118,53 @@ def test_sw_beta_sources_pv_at_expected_rate():
     dqdt_numeric = (q1 - q0) / dt
     v0 = state0[2]
     assert np.max(np.abs(dqdt_numeric - (-beta * v0))) < 1e-2
+
+
+def test_channel_poisson_matches_laplacian():
+    """ChannelGrid.poisson_solve(rhs) inverts laplacian() to within FD/spectral error."""
+    g = convection.ChannelGrid(nx=16, nz=12, Lx=2 * np.sqrt(2))
+    rng = np.random.default_rng(0)
+    rhs = rng.standard_normal((16, 12))
+    f = g.poisson_solve(rhs)
+    assert np.max(np.abs(g.laplacian(f) - rhs)) < 1e-8
+
+
+def test_neutral_curve_minimum_is_critical_ra():
+    """neutral_ra(k) is minimized at K_C with value RA_C."""
+    k = np.linspace(0.5, 5, 2000)
+    assert abs(k[np.argmin(convection.neutral_ra(k))] - convection.K_C) < 1e-2
+    assert abs(convection.neutral_ra(convection.K_C) - convection.RA_C) < 1e-8
+
+
+def test_convection_subcritical_decays_supercritical_grows():
+    """Below Ra_c, a noise perturbation decays; well above it, it grows."""
+    nx, nz, Lx, Pr = 32, 16, 2 * np.sqrt(2), 1.0
+    g = convection.ChannelGrid(nx, nz, Lx)
+    rng = np.random.default_rng(7)
+    theta0 = 1e-3 * rng.standard_normal((nx, nz))
+    dt = 0.2 * min(g.dx, g.dz) ** 2
+
+    def run(Ra, nsteps):
+        state = np.stack([np.zeros((nx, nz)), theta0.copy()])
+        rhs = lambda t, s: convection.rhs_boussinesq(s, g, Ra, Pr)
+        amp0 = np.abs(state[1]).max()
+        for _ in range(nsteps):
+            state = timestep.rk4(rhs, state, dt)
+        return amp0, np.abs(state[1]).max()
+
+    amp0, amp1 = run(Ra=500.0, nsteps=800)     # below RA_C ~= 657.5
+    assert amp1 < 0.5 * amp0
+
+    amp0, amp1 = run(Ra=5000.0, nsteps=800)    # well above RA_C
+    assert amp1 > 5.0 * amp0
+
+
+def test_lorenz_convective_fixed_point():
+    """(sqrt(b(r-1)), sqrt(b(r-1)), r-1) is a fixed point of lorenz_rhs for r>1."""
+    sigma, b, r = 10.0, 8.0 / 3.0, 28.0
+    c = np.sqrt(b * (r - 1))
+    state = np.array([c, c, r - 1])
+    assert np.max(np.abs(convection.lorenz_rhs(state, sigma, r, b))) < 1e-10
 
 
 def test_iw_dispersion_bounded_by_f_and_N():
