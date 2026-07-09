@@ -1,6 +1,6 @@
 """Numeric correctness of gfdlib primitives. `make test` must pass before commit."""
 import numpy as np
-from gfdlib import spectral, timestep, diagnostics, convection
+from gfdlib import spectral, timestep, diagnostics, shallowwater, convection
 
 
 def test_poisson_roundtrip():
@@ -66,6 +66,58 @@ def test_selective_decay():
         W = timestep.ifrk4_step(W, rhs, 1e-3, -2e-3 * g.k2) * g.dealias
     ke1, ens1 = diagnostics.energy_enstrophy(g.invert_laplacian(W), g)
     assert (ens1 / ens0) < (ke1 / ke0)
+
+
+def test_sw_geostrophic_mode_is_steady():
+    """The exact geostrophic mode u=-eta_y, v=eta_x is a fixed point of rhs."""
+    g = spectral.Grid(32, L=20.0)
+    eta = np.sin(2 * np.pi * g.x / g.L) * np.cos(2 * np.pi * g.y / g.L)
+    eta_hat = g.fft(eta)
+    u = g.ifft(-g.ddy(eta_hat))
+    v = g.ifft(g.ddx(eta_hat))
+    f = shallowwater.coriolis(g, beta=0.0)
+    d = shallowwater.rhs(np.stack([eta, u, v]), g, f)
+    assert np.max(np.abs(d)) < 1e-9
+
+
+def test_sw_invert_pv_roundtrip():
+    """invert_pv is the exact inverse of forming q from a geostrophic eta."""
+    g = spectral.Grid(32, L=20.0)
+    eta_true = np.sin(2 * np.pi * g.x / g.L) * np.cos(4 * np.pi * g.y / g.L)
+    zeta_g = g.ifft(g.laplacian(g.fft(eta_true)))   # geostrophic vorticity
+    q = zeta_g - eta_true
+    eta_rec = shallowwater.invert_pv(q, g)
+    assert np.max(np.abs(eta_rec - eta_true)) < 1e-10
+
+
+def test_sw_pv_conserved_on_f_plane():
+    """Released from rest, q is pointwise conserved when beta=0."""
+    g = spectral.Grid(32, L=20.0)
+    eta0 = 0.5 * np.exp(-((g.x - g.L / 2) ** 2 + (g.y - g.L / 2) ** 2) / (2 * 2.0 ** 2))
+    state = np.stack([eta0, np.zeros_like(eta0), np.zeros_like(eta0)])
+    f = shallowwater.coriolis(g, beta=0.0)
+    q0 = shallowwater.potential_vorticity(state, g)
+    dt = 0.4 * g.dx
+    for _ in range(50):
+        state = timestep.rk4(lambda t, s: shallowwater.rhs(s, g, f), state, dt)
+    q1 = shallowwater.potential_vorticity(state, g)
+    assert np.max(np.abs(q1 - q0)) < 1e-3
+
+
+def test_sw_beta_sources_pv_at_expected_rate():
+    """On a beta-plane, dq/dt = -beta*v at t=0 for a field released from rest."""
+    g = spectral.Grid(32, L=20.0)
+    eta0 = 0.5 * np.exp(-((g.x - g.L / 2) ** 2 + (g.y - g.L / 2) ** 2) / (2 * 2.0 ** 2))
+    state0 = np.stack([eta0, np.zeros_like(eta0), np.zeros_like(eta0)])
+    beta = 0.1
+    f = shallowwater.coriolis(g, beta=beta)
+    dt = 1e-4
+    q0 = shallowwater.potential_vorticity(state0, g)
+    state1 = timestep.rk4(lambda t, s: shallowwater.rhs(s, g, f), state0, dt)
+    q1 = shallowwater.potential_vorticity(state1, g)
+    dqdt_numeric = (q1 - q0) / dt
+    v0 = state0[2]
+    assert np.max(np.abs(dqdt_numeric - (-beta * v0))) < 1e-2
 
 
 def test_channel_poisson_matches_laplacian():
