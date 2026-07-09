@@ -1,6 +1,6 @@
 """Numeric correctness of gfdlib primitives. `make test` must pass before commit."""
 import numpy as np
-from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection
+from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv
 
 
 def test_poisson_roundtrip():
@@ -199,3 +199,64 @@ def test_iw_leapfrog_matches_dispersion():
         q, q_prev = internalwaves.step_leapfrog(q, q_prev, g, N2, f, 0.0, dt), q
     expected = np.cos(phase) * np.cos(omega * nsteps * dt)
     assert np.max(np.abs(q - expected)) < 1e-3
+
+
+def test_gaussian_blob_periodic_at_edge():
+    """A blob placed at the domain edge wraps continuously, no clipping."""
+    g = spectral.Grid(64, L=10.0)
+    b1 = pv.gaussian_blob(g, x0=0.0, y0=5.0, amp=1.0, sigma=1.0)
+    b2 = pv.gaussian_blob(g, x0=10.0, y0=5.0, amp=1.0, sigma=1.0)
+    assert np.max(np.abs(b1 - b2)) < 1e-10
+    assert b1.max() > 0.99   # peak amplitude is reached somewhere (not clipped)
+
+
+def test_gaussian_blob_peak_at_center():
+    g = spectral.Grid(64, L=10.0)
+    x0, y0 = 20 * g.dx, 30 * g.dx   # grid-aligned, so the peak is exact
+    b = pv.gaussian_blob(g, x0=x0, y0=y0, amp=2.0, sigma=0.8)
+    iy, ix = np.unravel_index(np.argmax(b), b.shape)
+    assert abs(g.x[iy, ix] - x0) < 1e-10 and abs(g.y[iy, ix] - y0) < 1e-10
+    assert abs(b.max() - 2.0) < 1e-10
+
+
+def test_staircase_jets_align_with_pv_risers():
+    """Inverting a PV staircase: u extrema sit at PV-gradient maxima, not
+    within the well-mixed plateaus (the point of a PV staircase)."""
+    g = spectral.Grid(256)
+    n_steps = 3
+    q = pv.staircase_pv(g, n_steps=n_steps, amp=1.0)
+    psi_hat = g.invert_laplacian(g.fft(q))
+    u = g.ifft(-g.ddy(psi_hat))
+
+    q_prof, u_prof, y = q[0, :], u.mean(axis=0), g.y[0, :]
+    dqdy = np.gradient(q_prof, y)
+
+    n = len(u_prof)
+    extrema = [i for i in range(n)
+               if (u_prof[i] > u_prof[i - 1] and u_prof[i] > u_prof[(i + 1) % n])
+               or (u_prof[i] < u_prof[i - 1] and u_prof[i] < u_prof[(i + 1) % n])]
+    assert len(extrema) == 2 * n_steps   # one jet per riser, alternating sign
+
+    mean_absdqdy = np.mean(np.abs(dqdy))
+    for i in extrema:
+        assert abs(dqdy[i]) > 10 * mean_absdqdy
+
+
+def test_vortex_dipole_propagates():
+    """An opposite-signed vortex pair self-advects (translates), unlike a
+    single vortex or a like-signed pair (which merely co-rotate in place)."""
+    g = spectral.Grid(64)
+    xc = yc = 0.5 * g.L
+    q = (pv.gaussian_blob(g, xc, yc - 0.5, 1.0, 0.35)
+         + pv.gaussian_blob(g, xc, yc + 0.5, -1.0, 0.35))
+    zeta_hat = g.fft(q) * g.dealias
+    L_op = -1e-4 * g.k2 ** 2
+    rhs = lambda t, zh: -g.jacobian(g.invert_laplacian(zh), zh)
+
+    x0 = g.x[np.unravel_index(np.argmax(np.abs(q)), q.shape)]
+    dt = 0.01
+    for _ in range(400):
+        zeta_hat = timestep.ifrk4_step(zeta_hat, rhs, dt, L_op) * g.dealias
+    zeta_final = g.ifft(zeta_hat)
+    x1 = g.x[np.unravel_index(np.argmax(np.abs(zeta_final)), zeta_final.shape)]
+    assert abs(((x1 - x0 + g.L / 2) % g.L) - g.L / 2) > 0.3   # net translation
