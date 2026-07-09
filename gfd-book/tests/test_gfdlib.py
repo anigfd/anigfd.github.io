@@ -1,6 +1,6 @@
 """Numeric correctness of gfdlib primitives. `make test` must pass before commit."""
 import numpy as np
-from gfdlib import spectral, timestep, diagnostics, shallowwater
+from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves
 
 
 def test_poisson_roundtrip():
@@ -118,3 +118,37 @@ def test_sw_beta_sources_pv_at_expected_rate():
     dqdt_numeric = (q1 - q0) / dt
     v0 = state0[2]
     assert np.max(np.abs(dqdt_numeric - (-beta * v0))) < 1e-2
+
+
+def test_iw_dispersion_bounded_by_f_and_N():
+    """omega(k,m) is a convex combination of N^2 and f^2 -- always in [f,N]."""
+    N, f = 1.0, 0.2
+    rng = np.random.default_rng(0)
+    kx, kz = rng.uniform(0.1, 5, 200), rng.uniform(0.1, 5, 200)
+    omega = internalwaves.dispersion_omega(kx, kz, N, f)
+    assert np.all(omega >= f - 1e-12) and np.all(omega <= N + 1e-12)
+
+
+def test_iw_beam_angle_roundtrip():
+    """beam_angle inverts the omega(theta) relation it's derived from."""
+    N, f = 1.0, 0.15
+    theta = np.linspace(0.05, np.pi / 2 - 0.05, 20)
+    omega = np.sqrt(N ** 2 * np.cos(theta) ** 2 + f ** 2 * np.sin(theta) ** 2)
+    assert np.max(np.abs(internalwaves.beam_angle(omega, N, f) - theta)) < 1e-10
+
+
+def test_iw_leapfrog_matches_dispersion():
+    """Constant N,f: a single Fourier mode oscillates at exactly omega(k,m)."""
+    g = spectral.Grid(64)   # default L=2*pi
+    N, f = 1.0, 0.1
+    kx, kz = 3.0, 2.0
+    omega = internalwaves.dispersion_omega(kx, kz, N, f)
+    N2 = np.full_like(g.x, N ** 2)
+    phase = kx * g.x + kz * g.y
+    dt = (2 * np.pi / omega) / 400   # 400 steps/period for leapfrog accuracy
+    q, q_prev = np.cos(phase), np.cos(phase) * np.cos(omega * dt)
+    nsteps = 200
+    for _ in range(nsteps):
+        q, q_prev = internalwaves.step_leapfrog(q, q_prev, g, N2, f, 0.0, dt), q
+    expected = np.cos(phase) * np.cos(omega * nsteps * dt)
+    assert np.max(np.abs(q - expected)) < 1e-3

@@ -56,6 +56,23 @@ the $f$-plane ($\hat\beta=0$). `gfdlib.shallowwater.potential_vorticity`
 computes it; `gfdlib.shallowwater.invert_pv` inverts $(\nabla^2-1)\eta_{bal}=q$
 for the geostrophically balanced height field carrying that PV.
 
+## Internal gravity waves (vertical $x$–$z$ plane)
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $\psi(x,z)$ | vertical-plane streamfunction | $u=\psi_z,\ w=-\psi_x$ |
+| $q=\nabla^2\psi$ | as above, but in the $(x,z)$ plane | $\partial_t^2q=-(N^2(z)\psi_{xx}+f^2\psi_{zz})+S$ |
+| $\theta$ | wavevector angle from vertical | $\cos\theta=\sqrt{(\omega^2-f^2)/(N^2-f^2)}$; equals the energy beam's angle from horizontal |
+
+> **A different $\psi$ than the horizontal chapters.** This $(u,w)=(\psi_z,-\psi_x)$
+> sign convention is for a *vertical* plane and is unrelated to the horizontal
+> $(x,y)$ streamfunction above — the two never appear in the same notebook.
+> `gfdlib.internalwaves` reuses `spectral.Grid` with its $y$-axis standing in
+> for $z$; `dispersion_omega`/`beam_angle` give $\omega(k,m)$ and $\theta$;
+> `step_leapfrog` integrates the $q$ equation and accepts a $z$-dependent
+> $N^2$ directly (no assumption of constant stratification). Nondimensionalized
+> by a reference buoyancy frequency $N_0$ (time) and the domain width (length):
+> $\hat N=N/N_0,\ \hat f=f/N_0,\ \hat\omega=\omega/N_0$.
+
 ## Dimensionless numbers
 | Number | Definition | Regime |
 |---|---|---|
