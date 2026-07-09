@@ -34,6 +34,42 @@ code is wrong. Fix conventions here first.*
 > and $\zeta=\nabla^2\psi$. In vorticity-form notebooks solve $\nabla^2\psi=\zeta$
 > (so `psi_hat = grid.invert_laplacian(zeta_hat)`). Keep this consistent across all notebooks.
 
+## Geostrophic, hydrostatic & thermal-wind balance
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $\phi$ | kinematic pressure, $p/\rho_0$ | |
+| $\mathbf u_g=(u_g,v_g)$ | geostrophic velocity | $u_g=-\phi_y/f,\ v_g=\phi_x/f$ |
+| hydrostatic balance | $\phi_z=b$ | |
+| thermal wind | $fu_{g,z}=-b_y,\quad fv_{g,z}=b_x$ | vertical shear from the horizontal buoyancy gradient |
+
+> **Geostrophic balance is $\psi=\phi/f$.** $u_g=-\phi_y/f,\ v_g=\phi_x/f$ has
+> exactly the streamfunction form above with $\psi=\phi/f$ — geostrophic flow
+> always has a streamfunction, and $\phi/f$ is it. `gfdlib.balance` works in a
+> single $(y,z)$ cross-section with a closed-form frontal buoyancy field (no
+> discretization): `buoyancy_field` and its exact $y$-derivative
+> `dbdy_frontal`, and `thermal_wind_u`, the exact vertical integral of the
+> thermal-wind relation. The buoyancy front's sign reverses at $z=H_{trop}$
+> (an idealized tropopause), so $u_g(y,z)$ has an extremum there at every
+> $y$ — the geostrophic jet core sits where the meridional buoyancy gradient
+> changes sign.
+
+## PV inversion & staircases (barotropic, $f$- or $\beta$-plane)
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $q=\zeta+\beta y$ | (absolute) potential vorticity | material conservation: $q_t+J(\psi,q)=0$ |
+
+> **The invertibility principle.** Given $q(x,y)$ everywhere, a balance
+> condition ($\zeta=\nabla^2\psi$, i.e. nondivergent flow), and boundary
+> conditions (here: periodic), $\psi$ — and hence $\mathbf u$ — is uniquely
+> determined: `psi_hat = grid.invert_laplacian(zeta_hat)` with
+> $\zeta=q-\beta y$. `gfdlib.pv.gaussian_blob` places a periodic-safe PV
+> anomaly at a point; `gfdlib.pv.staircase_pv` builds an idealized
+> alternating-band PV staircase (a smoothed square wave in $y$). Inverting a
+> staircase shows the jet cores ($u$ extrema) sit exactly at the sharp PV
+> risers between bands, not within the well-mixed plateaus — verified
+> numerically (local $|q_y|$ at each jet core is $\sim$20$\times$ the
+> domain-mean $|q_y|$).
+
 ## Shallow water (linearized, beta-plane)
 | Symbol | Meaning | Convention |
 |---|---|---|
