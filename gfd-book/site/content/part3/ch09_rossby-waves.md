@@ -4,25 +4,68 @@ weight: 309
 part: 3
 ---
 
-**Status:** to be written.
-
 ## Overview
-_One-paragraph setup: the physical question this chapter answers._
+
+A Rossby wave's group velocity depends on its own wavenumber, so a wave
+packet moving through a slowly varying background doesn't travel in a
+straight line — its wavenumber refracts as it goes, and it follows a curved
+*ray*, exactly as light refracts through a lens. This chapter builds that
+ray theory from the dispersion relation and group velocity you've already
+used (ch. 18, ch. 8), then takes it somewhere the rest of this book hasn't
+gone: onto the sphere itself. With the right background flow, the rays this
+notebook traces are **exact great circles** — a genuine theorem (Hoskins &
+Karoly 1981), not a plotting trick, and the mechanism behind how real
+atmospheric teleconnections (like the Pacific–North America pattern excited
+by El Niño) arc across the globe.
 
 ## The model
+
 Notebook: `notebooks/ch09_rossby-waves.py` → exported to `/nb/ch09_rossby-waves/`.
-Governing equations use the symbols in [notation]({{< relref "notation.md" >}}).
+Governing equations use the symbols in [notation]({{< relref "notation.md" >}}):
+
+$$\frac{d\mathbf x}{dt}=\frac{\partial\omega}{\partial\mathbf k},\qquad
+  \frac{d\mathbf k}{dt}=-\frac{\partial\omega}{\partial\mathbf x}.$$
+
+`gfdlib.rossby` deliberately avoids a hand-derived symbolic ray equation:
+`ray_rhs` differentiates the single scalar `dispersion_omega` by central
+differences, so correctness rests on one formula rather than a chain of
+algebra, and `great_circle_deviation` checks the result against an
+independent, coordinate-free geometric criterion — no PDE, no time-stepping
+in the usual sense, just `gfdlib.timestep.rk4` on a 3-variable ray. Cheap
+enough that the whole notebook is reactive, with no Run button.
 
 {{< marimo src="/nb/ch09_rossby-waves/" >}}
 
 ## Both fluids
-- **Atmosphere:** _instance of this mechanism in the atmosphere._
-- **Ocean:** _instance of this mechanism in the ocean._
+
+- **Atmosphere:** stationary Rossby wave trains excited by tropical
+  convection anomalies propagate poleward along great-circle-like arcs
+  before curving back equatorward — the observed teleconnection patterns
+  linking ENSO to midlatitude weather are, to good approximation, segments
+  of exactly the rays this notebook traces.
+- **Ocean:** oceanic Rossby waves (much slower, non-dispersive westward
+  phase propagation dominates over the ray-refraction effects shown here)
+  carry the memory of wind-stress anomalies across entire ocean basins,
+  setting the timescale for basin-scale adjustment.
 
 ## Exercises
-1. *(analytic)* …
-2. *(computational)* modify `ch09_rossby-waves.py` to …
-3. *(exploratory)* find the parameter value at which …
+
+1. *(analytic)* From $\omega=-\beta k/(k^2+l^2)$, derive
+   $\mathbf c_g=\beta(k^2-l^2,2kl)/(k^2+l^2)^2$ and show
+   $\mathbf c_g\cdot\mathbf k>0$ always — group velocity always has an
+   eastward component relative to the phase, even though phase itself
+   always moves westward.
+2. *(computational)* Modify `ch09_rossby-waves.py` to use
+   $U(\phi)=U_0\cos^2\phi$ instead of solid-body rotation. Confirm with the
+   great-circle deviation diagnostic that the rays are no longer exact great
+   circles, and describe qualitatively how they differ.
+3. *(exploratory)* Find the launch angle (at fixed $\phi_0,\Omega_s$) that
+   sends a ray closest to the pole without crossing it. How does that
+   critical angle change as you increase $\Omega_s$?
 
 ## Further reading
-Vallis, §…; Salmon, §…; Pedlosky, §….
+
+Hoskins, B. J. & Karoly, D. J. (1981), *J. Atmos. Sci.* **38**, 1179–1196
+("The steady linear response of a spherical atmosphere to thermal and
+orographic forcing"); Vallis, *AOFD* 2nd ed., §7.1–7.4 (Rossby waves) and
+§13.4 (ray tracing); Karoly, D. J. (1983), *Tellus* **35A**, 190–200.
