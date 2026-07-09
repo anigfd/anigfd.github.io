@@ -1,6 +1,6 @@
 """Numeric correctness of gfdlib primitives. `make test` must pass before commit."""
 import numpy as np
-from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection
+from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, balance
 
 
 def test_poisson_roundtrip():
@@ -199,3 +199,34 @@ def test_iw_leapfrog_matches_dispersion():
         q, q_prev = internalwaves.step_leapfrog(q, q_prev, g, N2, f, 0.0, dt), q
     expected = np.cos(phase) * np.cos(omega * nsteps * dt)
     assert np.max(np.abs(q - expected)) < 1e-3
+
+
+def test_dbdy_matches_finite_difference():
+    """dbdy_frontal is the exact y-derivative of buoyancy_field's frontal part."""
+    db, Ly, Htrop = 1.0, 1.0, 1.0
+    y0, z0, dy = 1.3, 0.6, 1e-6
+    fd = (balance.buoyancy_field(y0 + dy, z0, db, Ly, Htrop)
+          - balance.buoyancy_field(y0 - dy, z0, db, Ly, Htrop)) / (2 * dy)
+    exact = balance.dbdy_frontal(y0, z0, db, Ly, Htrop)
+    assert abs(fd - exact) < 1e-6
+
+
+def test_thermal_wind_relation_satisfied():
+    """f*du_g/dz == -dbdy_frontal, the thermal-wind relation thermal_wind_u integrates."""
+    db, Ly, Htrop, f = 1.0, 1.0, 1.0, 0.5
+    y0, z0, dz = 1.3, 0.9, 1e-6
+    dudz_fd = (balance.thermal_wind_u(y0, z0 + dz, db, Ly, Htrop, f)
+               - balance.thermal_wind_u(y0, z0 - dz, db, Ly, Htrop, f)) / (2 * dz)
+    lhs = f * dudz_fd
+    rhs = -balance.dbdy_frontal(y0, z0, db, Ly, Htrop)
+    assert abs(lhs - rhs) < 1e-5
+
+
+def test_jet_core_at_tropopause():
+    """u_g(y,z) has an extremum in z exactly at z=Htrop, for any fixed y."""
+    db, Ly, Htrop, f = 1.0, 1.0, 1.0, 0.5
+    y0 = 0.7
+    z = np.linspace(0.01, 2 * Htrop - 0.01, 4001)
+    u = balance.thermal_wind_u(y0, z, db, Ly, Htrop, f)
+    z_at_extremum = z[np.argmax(np.abs(u))]
+    assert abs(z_at_extremum - Htrop) < 1e-3
