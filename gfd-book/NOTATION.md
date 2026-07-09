@@ -92,6 +92,25 @@ the $f$-plane ($\hat\beta=0$). `gfdlib.shallowwater.potential_vorticity`
 computes it; `gfdlib.shallowwater.invert_pv` inverts $(\nabla^2-1)\eta_{bal}=q$
 for the geostrophically balanced height field carrying that PV.
 
+## Rossby-wave ray tracing (sphere, WKB)
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $\lambda,\phi$ | longitude, latitude | |
+| $n,m$ | zonal/meridional wavenumber indices, conjugate to $\lambda,\phi$ | physical wavenumbers $k_x=n/(a\cos\phi),\ k_y=m/a$ |
+| $\Omega_s$ | background solid-body rotation rate (added to $\Omega$) | $U(\phi)=\Omega_s a\cos\phi$ |
+
+> **Great circles are a theorem here, not a plotting choice.** For a
+> background flow $U=\Omega_s a\cos\phi$, both $U$ and the meridional
+> gradient of absolute vorticity scale by $(\Omega+\Omega_s)$ — the same
+> factor — so the stationary wavenumber $K_s^2=2(\Omega+\Omega_s)/(\Omega_s
+> a^2)$ is **independent of latitude**, and Hamilton's ray equations
+> (`gfdlib.rossby.ray_rhs`, via central differences of `dispersion_omega` —
+> deliberately not hand-derived symbolically) integrate to exact great
+> circles: `great_circle_deviation` checks this directly (fit the plane
+> through the ray's first two sampled points on the unit sphere, then check
+> every later point lies in it) and finds deviations at the $10^{-9}$
+> level, i.e. floating-point roundoff, not approximation error.
+
 ## Rayleigh-Benard convection (vertical $x$–$z$ channel)
 | Symbol | Meaning | Convention |
 |---|---|---|
