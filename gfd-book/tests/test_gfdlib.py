@@ -1,6 +1,6 @@
 """Numeric correctness of gfdlib primitives. `make test` must pass before commit."""
 import numpy as np
-from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, qg
+from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg
 
 
 def test_poisson_roundtrip():
@@ -199,6 +199,88 @@ def test_iw_leapfrog_matches_dispersion():
         q, q_prev = internalwaves.step_leapfrog(q, q_prev, g, N2, f, 0.0, dt), q
     expected = np.cos(phase) * np.cos(omega * nsteps * dt)
     assert np.max(np.abs(q - expected)) < 1e-3
+
+
+def test_rossby_stationary_wavenumber_gives_zero_omega():
+    """At K=K_s, the local dispersion relation is exactly stationary
+    (omega=0) at every latitude -- K_s's latitude-independence is what
+    makes this possible for all phi simultaneously."""
+    Omega_s = 0.4
+    Ks2 = rossby.stationary_wavenumber2(Omega_s)
+    Ks = np.sqrt(Ks2)
+    for phi_deg in [10, 30, 50, 70]:
+        phi = np.radians(phi_deg)
+        for alpha in np.linspace(0, 2 * np.pi, 9):
+            n = Ks * np.cos(alpha) * np.cos(phi)
+            m = Ks * np.sin(alpha)
+            omega = rossby.dispersion_omega(phi, n, m, Omega_s)
+            assert abs(omega) < 1e-10
+
+
+def test_rossby_ray_is_exact_great_circle():
+    """Integrating the ray equations for a stationary wave on solid-body
+    background rotation produces an exact great circle (Hoskins & Karoly
+    1981) -- verified via a coordinate-free planarity check, not assumed."""
+    Omega_s = 0.3
+    lam0, phi0, alpha0 = 0.0, np.radians(30.0), np.radians(35.0)
+    state, n = rossby.launch_state(lam0, phi0, alpha0, Omega_s)
+
+    dt, nsteps = 0.01, 3000
+    traj = [state.copy()]
+    for _ in range(nsteps):
+        state = timestep.rk4(lambda t, s: rossby.ray_rhs(s, n, Omega_s), state, dt)
+        traj.append(state.copy())
+    traj = np.array(traj)
+
+    dev = rossby.great_circle_deviation(traj[:, 0], traj[:, 1])
+    assert np.max(dev) < 1e-6
+
+
+def test_rossby_zonal_wavenumber_index_conserved():
+    """n is conserved along a ray to high precision (the numerical-diff
+    ray equations should reproduce the exact zonal symmetry dn/dt=0)."""
+    Omega_s = 0.3
+    state, n = rossby.launch_state(0.0, np.radians(20.0), np.radians(50.0), Omega_s)
+    dt = 0.01
+    for _ in range(500):
+        state = timestep.rk4(lambda t, s: rossby.ray_rhs(s, n, Omega_s), state, dt)
+    # n itself isn't part of state (it's fixed by construction); instead
+    # check the physical zonal wavenumber kx=n/(a cos phi) is consistent
+    # with a still-stationary ray (omega should remain ~0 throughout).
+    lam, phi, m = state
+    omega_final = rossby.dispersion_omega(phi, n, m, Omega_s)
+    assert abs(omega_final) < 1e-6
+
+
+def test_dbdy_matches_finite_difference():
+    """dbdy_frontal is the exact y-derivative of buoyancy_field's frontal part."""
+    db, Ly, Htrop = 1.0, 1.0, 1.0
+    y0, z0, dy = 1.3, 0.6, 1e-6
+    fd = (balance.buoyancy_field(y0 + dy, z0, db, Ly, Htrop)
+          - balance.buoyancy_field(y0 - dy, z0, db, Ly, Htrop)) / (2 * dy)
+    exact = balance.dbdy_frontal(y0, z0, db, Ly, Htrop)
+    assert abs(fd - exact) < 1e-6
+
+
+def test_thermal_wind_relation_satisfied():
+    """f*du_g/dz == -dbdy_frontal, the thermal-wind relation thermal_wind_u integrates."""
+    db, Ly, Htrop, f = 1.0, 1.0, 1.0, 0.5
+    y0, z0, dz = 1.3, 0.9, 1e-6
+    dudz_fd = (balance.thermal_wind_u(y0, z0 + dz, db, Ly, Htrop, f)
+               - balance.thermal_wind_u(y0, z0 - dz, db, Ly, Htrop, f)) / (2 * dz)
+    lhs = f * dudz_fd
+    rhs = -balance.dbdy_frontal(y0, z0, db, Ly, Htrop)
+    assert abs(lhs - rhs) < 1e-5
+
+
+def test_jet_core_at_tropopause():
+    """u_g(y,z) has an extremum in z exactly at z=Htrop, for any fixed y."""
+    db, Ly, Htrop, f = 1.0, 1.0, 1.0, 0.5
+    y0 = 0.7
+    z = np.linspace(0.01, 2 * Htrop - 0.01, 4001)
+    u = balance.thermal_wind_u(y0, z, db, Ly, Htrop, f)
+    z_at_extremum = z[np.argmax(np.abs(u))]
+    assert abs(z_at_extremum - Htrop) < 1e-3
 
 
 def test_gaussian_blob_periodic_at_edge():

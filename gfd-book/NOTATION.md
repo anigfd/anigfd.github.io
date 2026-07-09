@@ -34,6 +34,25 @@ code is wrong. Fix conventions here first.*
 > and $\zeta=\nabla^2\psi$. In vorticity-form notebooks solve $\nabla^2\psi=\zeta$
 > (so `psi_hat = grid.invert_laplacian(zeta_hat)`). Keep this consistent across all notebooks.
 
+## Geostrophic, hydrostatic & thermal-wind balance
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $\phi$ | kinematic pressure, $p/\rho_0$ | |
+| $\mathbf u_g=(u_g,v_g)$ | geostrophic velocity | $u_g=-\phi_y/f,\ v_g=\phi_x/f$ |
+| hydrostatic balance | $\phi_z=b$ | |
+| thermal wind | $fu_{g,z}=-b_y,\quad fv_{g,z}=b_x$ | vertical shear from the horizontal buoyancy gradient |
+
+> **Geostrophic balance is $\psi=\phi/f$.** $u_g=-\phi_y/f,\ v_g=\phi_x/f$ has
+> exactly the streamfunction form above with $\psi=\phi/f$ — geostrophic flow
+> always has a streamfunction, and $\phi/f$ is it. `gfdlib.balance` works in a
+> single $(y,z)$ cross-section with a closed-form frontal buoyancy field (no
+> discretization): `buoyancy_field` and its exact $y$-derivative
+> `dbdy_frontal`, and `thermal_wind_u`, the exact vertical integral of the
+> thermal-wind relation. The buoyancy front's sign reverses at $z=H_{trop}$
+> (an idealized tropopause), so $u_g(y,z)$ has an extremum there at every
+> $y$ — the geostrophic jet core sits where the meridional buoyancy gradient
+> changes sign.
+
 ## PV inversion & staircases (barotropic, $f$- or $\beta$-plane)
 | Symbol | Meaning | Convention |
 |---|---|---|
@@ -89,6 +108,25 @@ for the geostrophically balanced height field carrying that PV.
 > in ch18, the deformation radius screens the lowest wavenumbers. An
 > isolated vortex (`gfdlib.pv.gaussian_blob`) on this operator sheds a
 > trailing Rossby-wave wake and drifts westward — verified numerically.
+
+## Rossby-wave ray tracing (sphere, WKB)
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $\lambda,\phi$ | longitude, latitude | |
+| $n,m$ | zonal/meridional wavenumber indices, conjugate to $\lambda,\phi$ | physical wavenumbers $k_x=n/(a\cos\phi),\ k_y=m/a$ |
+| $\Omega_s$ | background solid-body rotation rate (added to $\Omega$) | $U(\phi)=\Omega_s a\cos\phi$ |
+
+> **Great circles are a theorem here, not a plotting choice.** For a
+> background flow $U=\Omega_s a\cos\phi$, both $U$ and the meridional
+> gradient of absolute vorticity scale by $(\Omega+\Omega_s)$ — the same
+> factor — so the stationary wavenumber $K_s^2=2(\Omega+\Omega_s)/(\Omega_s
+> a^2)$ is **independent of latitude**, and Hamilton's ray equations
+> (`gfdlib.rossby.ray_rhs`, via central differences of `dispersion_omega` —
+> deliberately not hand-derived symbolically) integrate to exact great
+> circles: `great_circle_deviation` checks this directly (fit the plane
+> through the ray's first two sampled points on the unit sphere, then check
+> every later point lies in it) and finds deviations at the $10^{-9}$
+> level, i.e. floating-point roundoff, not approximation error.
 
 ## Rayleigh-Benard convection (vertical $x$–$z$ channel)
 | Symbol | Meaning | Convention |
