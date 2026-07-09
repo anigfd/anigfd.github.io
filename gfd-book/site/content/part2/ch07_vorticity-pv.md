@@ -4,25 +4,67 @@ weight: 207
 part: 2
 ---
 
-**Status:** to be written.
-
 ## Overview
-_One-paragraph setup: the physical question this chapter answers._
+
+Potential vorticity is the single most useful diagnostic quantity in this
+subject because of one property: **invertibility**. Knowing $q(x,y)$
+everywhere — plus a balance condition and boundary conditions — fixes the
+entire velocity field, uniquely, with no other information needed. And
+because $q$ is also materially conserved, that same fact tells you how the
+flow evolves: invert for the velocity, advect $q$ with it, invert again. This
+chapter builds that two-step algorithm from the vorticity equation and uses
+it to explain two classic results: why two vortices merge or orbit forever
+depending on their separation, and why regions where eddies have mixed PV
+into a **staircase** of flat, well-mixed bands develop sharp **jets** exactly
+at the risers between bands — not within the quiet plateaus.
 
 ## The model
+
 Notebook: `notebooks/ch07_vorticity-pv.py` → exported to `/nb/ch07_vorticity-pv/`.
-Governing equations use the symbols in [notation]({{< relref "notation.md" >}}).
+Governing equations use the symbols in [notation]({{< relref "notation.md" >}}):
+
+$$q_t+J(\psi,q)=0,\qquad \zeta=\nabla^2\psi=q-\beta y.$$
+
+Reuses the exact pseudo-spectral machinery from Ch. 18
+(`gfdlib.spectral.Grid`, `gfdlib.timestep.ifrk4_step`) — this chapter's new
+contribution is `gfdlib.pv`, which builds initial PV fields: a periodic-safe
+Gaussian blob for placing vortices, and an idealized alternating-band
+staircase. A fully reactive "invert, don't integrate" panel shows the balance
+step alone (no time-stepping); a second, Run-gated panel evolves the same
+field forward to show the resulting dynamics.
 
 {{< marimo src="/nb/ch07_vorticity-pv/" >}}
 
 ## Both fluids
-- **Atmosphere:** _instance of this mechanism in the atmosphere._
-- **Ocean:** _instance of this mechanism in the ocean._
+
+- **Atmosphere:** the tropopause's PV field is routinely mapped and
+  inverted operationally — "PV thinking" lets forecasters read cyclogenesis
+  directly off a PV map, and jet streams are themselves regions of sharp PV
+  gradient exactly as in this chapter's staircase.
+- **Ocean:** mesoscale eddies are, to a good approximation, isolated PV
+  anomalies that interact by mutual advection just like this notebook's
+  vortex pairs; multiple oceanic jets (e.g. in the Antarctic Circumpolar
+  Current) are believed to be maintained by the same PV-staircase mechanism
+  demonstrated here.
 
 ## Exercises
-1. *(analytic)* …
-2. *(computational)* modify `ch07_vorticity-pv.py` to …
-3. *(exploratory)* find the parameter value at which …
+
+1. *(analytic)* Show that $Dq/Dt=0$ combined with $\zeta=\nabla^2\psi$ is a
+   *closed* system — that is, that no other equation or unknown is needed to
+   advance $q$ forward in time. This closure is what "invertibility" buys
+   you.
+2. *(computational)* Modify `ch07_vorticity-pv.py`'s merger preset to use
+   three like-signed vortices arranged in a triangle instead of two. Do they
+   merge pairwise, or all at once?
+3. *(exploratory)* In the staircase preset, use the "invert, don't
+   integrate" panel (no need to press Run) to find how the jet strength
+   scales with the number of bands at fixed amplitude — does adding more,
+   narrower bands make each jet stronger or weaker?
 
 ## Further reading
-Vallis, §…; Salmon, §…; Pedlosky, §….
+
+Vallis, *AOFD* 2nd ed., §4.1–4.6 (vorticity and PV) and §4.8 (invertibility);
+Hoskins, McIntyre & Robertson (1985), *Quart. J. Roy. Meteor. Soc.* **111**,
+877–946 ("On the use and significance of isentropic potential vorticity
+maps"); Dritschel & McIntyre (2008), *J. Atmos. Sci.* **65**, 855–874
+(PV staircases and multiple jets).
