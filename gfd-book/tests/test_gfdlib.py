@@ -1,6 +1,6 @@
 """Numeric correctness of gfdlib primitives. `make test` must pass before commit."""
 import numpy as np
-from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg, instability, baroclinic, overturning
+from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg, instability, baroclinic, symmetric, overturning
 
 
 def test_poisson_roundtrip():
@@ -565,3 +565,78 @@ def test_overturning_rises_at_heated_column_sinks_at_cooled():
     i_cool = np.argmin(np.abs(grid.x - Lx / 2))        # cos(2pi x/Lx)=-1 there
     assert w[i_warm, nz // 2] > 0    # rising over the heated column
     assert w[i_cool, nz // 2] < 0    # sinking over the cooled column
+
+
+def test_symmetric_ro0_critical_ri_is_one():
+    """At Ro=0 (no relative vorticity) the symmetric-instability marginal
+    curve reduces to the textbook value Ri_c=1 -- an independent check on
+    the sign convention, not a fitted number."""
+    assert abs(symmetric.critical_ri(0.0) - 1.0) < 1e-12
+    assert symmetric.ertel_pv_ratio(0.0, 0.9) < 0    # below critical -> unstable
+    assert symmetric.ertel_pv_ratio(0.0, 1.1) > 0    # above critical -> stable
+
+
+def test_symmetric_inertial_unconditional_for_ro_below_minus1():
+    """(1+Ro)<0 means the absolute vertical vorticity has already changed
+    sign: the front must be unstable at EVERY Ri>0, independent of
+    stratification strength."""
+    for Ri in [0.01, 1.0, 1e6]:
+        assert symmetric.ertel_pv_ratio(-1.5, Ri) < 0
+
+
+def test_symmetric_classify_regions():
+    """classify labels each of the four regimes correctly at representative
+    points, including the Ri<=0 gravitational branch and vectorized input."""
+    Ro = np.array([0.0, 0.0, -1.5, 1.0])
+    Ri = np.array([0.5, 2.0, 1.0, -0.1])
+    labels = symmetric.classify(Ro, Ri)
+    expected = [symmetric.SYMMETRIC, symmetric.STABLE,
+                symmetric.INERTIAL, symmetric.GRAVITATIONAL]
+    assert list(labels) == expected
+
+
+def test_taylor_goldstein_matches_rayleigh_at_zero_stratification():
+    """N^2=0 must reduce the Taylor-Goldstein solver exactly to the
+    independent barotropic Rayleigh solver (growth_rate) -- the strongest
+    available cross-check, since both are derived and implemented
+    separately."""
+    n = 400
+    z = np.linspace(-10, 10, n + 2)[1:-1]
+    U = np.tanh(z)
+    k_values = np.linspace(0.05, 1.0, 30)
+    g_tg = instability.taylor_goldstein_growth_rate_curve(z, U, np.zeros(n), k_values)
+    g_ray = instability.growth_rate_curve(z, U, k_values, beta=0.0)
+    assert np.max(np.abs(g_tg - g_ray)) < 1e-6
+
+
+def test_taylor_goldstein_miles_howard_cutoff():
+    """The rigorous Miles-Howard theorem (Ri>=1/4 everywhere => stable) is a
+    hard mathematical guarantee, not a fitted benchmark: for the Hazel
+    (1972) profile the minimum local Ri equals J, so J>=0.25 must give zero
+    growth at every tested k, while J<0.25 must be genuinely unstable."""
+    n = 400
+    z = np.linspace(-10, 10, n + 2)[1:-1]
+    k_values = np.linspace(0.05, 1.0, 30)
+
+    for J in [0.0, 0.1, 0.2]:
+        U, N2 = instability.hazel_profile(z, J)
+        growth = instability.taylor_goldstein_growth_rate_curve(z, U, N2, k_values)
+        assert growth.max() > 0.03, f"expected clear instability at J={J}"
+
+    for J in [0.5, 1.0, 2.0]:
+        U, N2 = instability.hazel_profile(z, J)
+        growth = instability.taylor_goldstein_growth_rate_curve(z, U, N2, k_values)
+        assert growth.max() == 0.0, f"Miles-Howard requires zero growth at J={J}"
+
+
+def test_taylor_goldstein_j0_peak_matches_michalke():
+    """At J=0 (no stratification) the Hazel profile IS the plain tanh shear
+    layer, so the peak should match the same Michalke (1964) benchmark
+    k*delta~=0.4446 used for the barotropic Rayleigh solver."""
+    n = 400
+    z = np.linspace(-10, 10, n + 2)[1:-1]
+    U, N2 = instability.hazel_profile(z, 0.0)
+    k_values = np.linspace(0.05, 1.0, 60)
+    growth = instability.taylor_goldstein_growth_rate_curve(z, U, N2, k_values)
+    k_peak = k_values[np.argmax(growth)]
+    assert abs(k_peak - 0.4446) < 0.03
