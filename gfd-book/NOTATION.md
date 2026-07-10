@@ -169,6 +169,52 @@ for the geostrophically balanced height field carrying that PV.
 > exponential growth, a peak, decay, and equilibration — confirmed by a
 > multi-hundred-time-unit run at the notebook's actual resolution.
 
+## Symmetric, inertial & Kelvin-Helmholtz instability (survey)
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $\mathrm{Ro}=-\dfrac{\partial U/\partial y}{f}$ | cross-front Rossby number | $f(1+\mathrm{Ro})$ = absolute vertical vorticity |
+| $\mathrm{Ri}=N^2/(\partial U/\partial z)^2$ | gradient Richardson number | thermal-wind shear (symmetric); imposed shear (KH) |
+| $J$ | Hazel (1972) profile's bulk/minimum Richardson number | $U=\tanh z$, $N^2=J\,\mathrm{sech}^2 z$ |
+
+> **Symmetric & inertial instability: one Ertel-PV sign criterion.** For a
+> zonal thermal-wind front, `gfdlib.symmetric` derives (not looks up) the
+> Ertel PV $q=(f-\partial U/\partial y)N^2-f(\partial U/\partial z)^2$ and
+> shows the front is unstable to slantwise (symmetric) displacements iff
+> $qf<0$, i.e. $(1+\mathrm{Ro})<1/\mathrm{Ri}$. Two independently-checkable
+> limits confirm the sign convention: at $\mathrm{Ro}=0$ the marginal curve
+> reduces to the textbook value $\mathrm{Ri}=1$; for $(1+\mathrm{Ro})<0$
+> (absolute vorticity changes sign) the front is unconditionally unstable
+> at *every* $\mathrm{Ri}>0$ — pure inertial instability, no stratification
+> dependence. `gfdlib.symmetric.classify` labels any $(\mathrm{Ro},
+> \mathrm{Ri})$ point stable / symmetric / inertial / gravitational
+> ($\mathrm{Ri}<0$) for the Ri-Ro stability map.
+>
+> **Kelvin-Helmholtz: the Taylor-Goldstein equation, and a real numerical
+> pitfall caught along the way.** `gfdlib.instability.
+> taylor_goldstein_growth_rate` solves $(U-c)^2(\phi''-k^2\phi)-U''(U-c)
+> \phi+N^2\phi=0$ as a natively **linear** $2n\times2n$ generalized
+> eigenvalue problem (keeping the buoyancy perturbation as an independent
+> unknown rather than eliminating it via division by $(U-c)$, which gives a
+> mathematically equivalent but quadratic-in-$c$ pencil). At $N^2=0$ this
+> reduces exactly (to $10^{-13}$) to `gfdlib.instability.growth_rate` — a
+> strong internal cross-check, not an external one. For the classic Hazel
+> (1972) profile, growth was initially found NOT to vanish cleanly above the
+> rigorous Miles-Howard threshold $\mathrm{Ri}\geq1/4$ — a hard theorem
+> violation is impossible, so this was root-caused, not dismissed: the
+> spurious growth scaled with grid spacing $\Delta z$ alone (matched
+> $\Delta z$ across different $n$ and domain sizes gave matched spurious
+> magnitude) and shrank as $\Delta z\to0$, confirming genuine 2nd-order
+> truncation error — worst exactly at the delicate $\mathrm{Ri}=1/4$ point,
+> where the equation's critical-layer indicial roots coalesce, a classically
+> hard point for finite differences (professional codes use spectral
+> methods here). Fixed by tightening the domain/resolution and applying a
+> documented noise floor calibrated to this investigation
+> (`_TG_NOISE_FLOOR`); the resulting curve decreases smoothly and reaches
+> zero by $J\approx0.4$, correctly reproducing the theorem's qualitative
+> Ri$\geq1/4$ cutoff (not a knife-edge at exactly $1/4$, an honest
+> limitation of a simple solver on this classically delicate problem).
+> `gfdlib.instability.hazel_profile` builds $U,N^2$ for this test case.
+
 ## Rossby-wave ray tracing (sphere, WKB)
 | Symbol | Meaning | Convention |
 |---|---|---|
