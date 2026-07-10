@@ -1,6 +1,6 @@
 """Numeric correctness of gfdlib primitives. `make test` must pass before commit."""
 import numpy as np
-from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg
+from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg, instability
 
 
 def test_poisson_roundtrip():
@@ -395,3 +395,43 @@ def test_qg_vortex_drifts_west_on_beta_plane():
     cx_final = (g.x * w).sum() / w.sum()
     drift = ((cx_final - xc + L / 2) % L) - L / 2
     assert drift < -0.5   # net westward drift
+
+
+def test_instability_no_inflection_point_is_stable():
+    """Rayleigh's necessary condition: no sign change in U'' (beta=0) means
+    every tested k must be exactly neutral (zero growth)."""
+    L, n = 10.0, 200
+    y = np.linspace(-L / 2, L / 2, n + 2)[1:-1]
+    U = -np.cos(np.pi * y / L)   # U'' <= 0 strictly in the interior
+    for k in [0.3, 0.6, 1.0, 1.5, 2.0]:
+        assert instability.growth_rate(y, U, k, beta=0.0) == 0.0
+
+
+def test_instability_tanh_shear_layer_peak_matches_michalke():
+    """The classical U=tanh(y/delta) shear layer is unstable, with peak
+    growth rate at k*delta ~= 0.4446 (Michalke 1964) -- an independent
+    published number, not a value tuned to match this code."""
+    delta = 1.0
+    n = 400
+    y = np.linspace(-15 * delta, 15 * delta, n + 2)[1:-1]
+    U = np.tanh(y / delta)
+
+    k_values = np.linspace(0.05, 1.2, 48)
+    growth = instability.growth_rate_curve(y, U, k_values, beta=0.0)
+
+    assert growth[-1] == 0.0            # short waves are stable (k*delta=1.2)
+    assert growth.max() > 0.1           # genuinely unstable in between
+    k_peak = k_values[np.argmax(growth)]
+    assert abs(k_peak * delta - 0.4446) < 0.03
+
+
+def test_double_shear_layer_vorticity_signs():
+    """The two jets carry opposite-signed vorticity, peaked at their
+    respective centers, consistent with two counter-propagating shears."""
+    g = spectral.Grid(64)
+    delta = g.L / 40
+    zeta = instability.double_shear_layer(g, delta, v_pert=0.0)   # no perturbation for this check
+    y1_idx = np.argmin(np.abs(g.y[0, :] - 0.25 * g.L))
+    y2_idx = np.argmin(np.abs(g.y[0, :] - 0.75 * g.L))
+    assert zeta[0, y1_idx] < 0
+    assert zeta[0, y2_idx] > 0
