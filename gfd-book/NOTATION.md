@@ -70,6 +70,28 @@ code is wrong. Fix conventions here first.*
 > numerically (local $|q_y|$ at each jet core is $\sim$20$\times$ the
 > domain-mean $|q_y|$).
 
+## Barotropic instability (Rayleigh-Kuo)
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $U(y)$ | basic-state zonal flow | channel, rigid walls $\phi=0$ |
+| $c=c_r+ic_i$ | complex phase speed of a normal mode $\phi(y)e^{ik(x-ct)}$ | unstable iff $c_i>0$ |
+
+> **Rayleigh-Kuo equation:** $(U-c)(\phi''-k^2\phi)+(\beta-U'')\phi=0$ —
+> derived independently in this repo (not copied from a text) and checked
+> against the classical form at $\beta=0$ (Drazin & Reid). A **necessary**
+> condition for instability is that $\beta-U''$ changes sign somewhere in
+> the domain (Rayleigh's inflection-point criterion, generalized to a
+> $\beta$-plane by Kuo). `gfdlib.instability.growth_rate` solves this as a
+> generalized eigenvalue problem $A\phi=cB\phi$, rewritten $B^{-1}A$ (no
+> SciPy needed) and diagonalized with plain `numpy.linalg.eigvals`.
+> Verified: a profile with no inflection point gives exactly zero growth at
+> every $k$ tested; the classical $\tanh(y/\delta)$ shear layer's growth
+> rate peaks at $k\delta\approx0.445$, matching the published value
+> (Michalke 1964, $k\delta\approx0.4446$) to within grid resolution.
+> `gfdlib.instability.double_shear_layer` builds the periodic nonlinear
+> initial condition; its evolution reuses `spectral.Grid` and
+> `timestep.ifrk4_step` unchanged from ch18.
+
 ## Shallow water (linearized, beta-plane)
 | Symbol | Meaning | Convention |
 |---|---|---|
