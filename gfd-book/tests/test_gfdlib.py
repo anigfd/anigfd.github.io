@@ -1,6 +1,6 @@
 """Numeric correctness of gfdlib primitives. `make test` must pass before commit."""
 import numpy as np
-from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg, instability, baroclinic
+from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg, instability, baroclinic, overturning
 
 
 def test_poisson_roundtrip():
@@ -505,3 +505,63 @@ def test_double_shear_layer_vorticity_signs():
     y2_idx = np.argmin(np.abs(g.y[0, :] - 0.75 * g.L))
     assert zeta[0, y1_idx] < 0
     assert zeta[0, y2_idx] > 0
+
+
+def test_abyssal_profile_bcs_and_limits():
+    """Munk's abyssal-recipe profile satisfies its two BCs exactly, reduces
+    to the linear pure-diffusion profile as w->0, and (for strong upward
+    w) keeps the interior close to the BOTTOM value with the transition to
+    the top value compressed into a thin layer near z=H."""
+    w, kappa, H, T0, T1 = 1.0, 0.3, 1.0, 0.0, 1.0
+    vals = overturning.abyssal_profile(np.array([0.0, H]), w, kappa, H, T0, T1)
+    assert np.max(np.abs(vals - np.array([T0, T1]))) < 1e-10
+
+    T_diffusive = overturning.abyssal_profile(np.array([0.5]), 1e-8, kappa, H, T0, T1)
+    assert abs(T_diffusive[0] - 0.5) < 1e-3
+
+    T_strong = overturning.abyssal_profile(np.array([0.3, 0.5, 0.7]), 20.0, kappa, H, T0, T1)
+    assert np.all(T_strong < 0.01)
+
+
+def test_abyssal_profile_satisfies_ode():
+    """Independent finite-difference check: w*T'-kappa*T'' must vanish in
+    the interior."""
+    w, kappa, H = 1.0, 0.3, 1.0
+    z = np.linspace(0, H, 2001)
+    dz = z[1] - z[0]
+    T = overturning.abyssal_profile(z, w, kappa, H, 0.0, 1.0)
+    Tp = np.gradient(T, dz)
+    Tpp = np.zeros_like(T)
+    Tpp[1:-1] = (T[2:] - 2 * T[1:-1] + T[:-2]) / dz ** 2
+    resid = w * Tp[1:-1] - kappa * Tpp[1:-1]
+    assert np.max(np.abs(resid)) < 1e-3
+
+
+def test_overturning_rises_at_heated_column_sinks_at_cooled():
+    """The differential-heating-driven overturning cell must rise over the
+    heated column and sink over the cooled one -- the defining physical
+    signature of the Hadley-cell/MOC mechanism, not just numerical
+    stability."""
+    nx, nz, Lx = 32, 16, 2.0
+    grid = convection.ChannelGrid(nx, nz, Lx)
+    Ra, Pr, Q0 = 2e5, 1.0, 5.0
+    Q = overturning.surface_heating(grid, Q0)
+
+    rng = np.random.default_rng(0)
+    zeta0 = np.zeros((nx, nz))
+    theta0 = 1e-3 * rng.standard_normal((nx, nz))
+    state = np.stack([zeta0, theta0])
+    dt = 0.15 * min(grid.dx, grid.dz) ** 2
+    rhs = lambda t, s: overturning.rhs_overturning(s, grid, Ra, Pr, Q)
+    for _ in range(1500):
+        state = timestep.rk4(rhs, state, dt)
+
+    assert np.all(np.isfinite(state))
+    zeta, theta = state
+    psi = grid.poisson_solve(zeta)
+    w = grid.ddx(psi)   # (u,w)=(-psi_z,psi_x), per convection.py's convention
+
+    i_warm = 0                                        # grid.x[0] = 0
+    i_cool = np.argmin(np.abs(grid.x - Lx / 2))        # cos(2pi x/Lx)=-1 there
+    assert w[i_warm, nz // 2] > 0    # rising over the heated column
+    assert w[i_cool, nz // 2] < 0    # sinking over the cooled column
