@@ -131,6 +131,44 @@ for the geostrophically balanced height field carrying that PV.
 > isolated vortex (`gfdlib.pv.gaussian_blob`) on this operator sheds a
 > trailing Rossby-wave wake and drifts westward — verified numerically.
 
+## Baroclinic instability (Eady; 2-layer/Phillips)
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $\mu=kNH/f_0$ | Eady nondimensional horizontal wavenumber | growth rate $\sigma=\mu c_i$ |
+| $F=f_0^2/(g'H)$ | layer coupling ("stretching") parameter, 2-layer model | |
+| $U_1,U_2$ | upper/lower layer mean flow | $\Delta U=U_1-U_2$ drives the instability |
+| $r$ | bottom Ekman drag coefficient | acts on layer 2's relative vorticity only |
+
+> **Both growth-rate problems are solved as small eigenvalue problems
+> derived here, not copied from a closed-form formula.** `gfdlib.
+> baroclinic.eady_growth_rate` matches the boundary-value problem's
+> interior solution to the linearized thermal boundary condition at
+> $z=0,H$; verified against the published benchmark
+> ($\mu_{max}\approx1.61$, $\sigma_{max}\approx0.31$,
+> cutoff $\mu_c\approx2.399$; Vallis/Pedlosky) to within grid resolution.
+> `gfdlib.baroclinic.invert_2layer` is the 2-layer QGPV Helmholtz solve
+> (closed-form $2\times2$ inverse); `rhs_2layer` is spectral-space, for use
+> as the nonlinear RHS in `gfdlib.timestep.ifrk4_step` with hyperviscosity
+> as the (scalar, both-layers-identical) linear operator — the mean-flow
+> and $\beta$ terms stay in the nonlinear part since they couple the two
+> layers ($2\times2$ per wavenumber, not a scalar). Cross-checked against
+> an independently-derived linear eigenvalue: a small-amplitude
+> single-wavenumber perturbation's measured growth rate converges to the
+> predicted value to $<0.1\%$ once the mode purifies (a coincidental choice
+> of parameters that placed an integer wavenumber exactly at the
+> marginal-stability cutoff was caught and avoided during this check).
+>
+> **A fixed mean shear with no drag is an unlimited energy source.**
+> Nonlinearly, `rhs_2layer` without Ekman drag ($r=0$) was found to grow
+> without bound regardless of how much hyperviscosity was added — energy
+> conservation was verified exact for the pure nonlinear (Jacobian) terms
+> in isolation, so the runaway traced to the mean-flow/$\beta$ terms having
+> no saturating mechanism, not a sign error. Adding bottom drag on the
+> lower layer's relative vorticity (`r>0`, the standard ingredient in
+> Phillips' original 1954 model) produces the expected life cycle —
+> exponential growth, a peak, decay, and equilibration — confirmed by a
+> multi-hundred-time-unit run at the notebook's actual resolution.
+
 ## Rossby-wave ray tracing (sphere, WKB)
 | Symbol | Meaning | Convention |
 |---|---|---|

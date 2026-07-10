@@ -1,6 +1,6 @@
 """Numeric correctness of gfdlib primitives. `make test` must pass before commit."""
 import numpy as np
-from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg, instability
+from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg, instability, baroclinic
 
 
 def test_poisson_roundtrip():
@@ -395,6 +395,76 @@ def test_qg_vortex_drifts_west_on_beta_plane():
     cx_final = (g.x * w).sum() / w.sum()
     drift = ((cx_final - xc + L / 2) % L) - L / 2
     assert drift < -0.5   # net westward drift
+
+
+def test_eady_growth_rate_matches_published_benchmark():
+    """The Eady growth-rate curve's peak location, peak value, and cutoff
+    match the published benchmark (Vallis/Pedlosky): mu_max~1.61,
+    sigma_max~0.31, cutoff mu_c~2.399 -- independent numbers this code was
+    not tuned to reproduce."""
+    mu_values = np.linspace(0.05, 3.0, 300)
+    growth = baroclinic.eady_growth_rate_curve(mu_values)
+    mu_max = mu_values[np.argmax(growth)]
+    assert abs(mu_max - 1.61) < 0.05
+    assert abs(growth.max() - 0.31) < 0.02
+    unstable = mu_values[growth > 1e-6]
+    assert abs(unstable.max() - 2.399) < 0.05
+
+
+def test_2layer_inversion_roundtrip():
+    """invert_2layer exactly inverts the forward 2-layer Helmholtz operator."""
+    g = spectral.Grid(32)
+    rng = np.random.default_rng(0)
+    psi1 = rng.standard_normal((32, 32)); psi1 -= psi1.mean()
+    psi2 = rng.standard_normal((32, 32)); psi2 -= psi2.mean()
+    F = 2.0
+    psi1_hat, psi2_hat = g.fft(psi1), g.fft(psi2)
+    q1_hat = (-g.k2 - F) * psi1_hat + F * psi2_hat
+    q2_hat = F * psi1_hat + (-g.k2 - F) * psi2_hat
+    psi1_rec_hat, psi2_rec_hat = baroclinic.invert_2layer(q1_hat, q2_hat, g, F)
+    assert np.max(np.abs(g.ifft(psi1_rec_hat) - psi1)) < 1e-10
+    assert np.max(np.abs(g.ifft(psi2_rec_hat) - psi2)) < 1e-10
+
+
+def test_2layer_nonlinear_growth_matches_linear_theory():
+    """A small-amplitude single-wavenumber perturbation's time-stepped
+    growth rate (rhs_2layer, spectral, via ifrk4_step with zero
+    hyperviscosity) converges to an independently derived linear
+    eigenvalue, once the initial condition purifies onto the dominant
+    eigenmode."""
+    F, U1, U2, beta = 1.3, 0.6, -0.6, 0.3
+
+    def linear_growth_rate(k):
+        beta1, beta2 = beta + F * (U1 - U2), beta - F * (U1 - U2)
+        a, b = -(k ** 2 + F), F
+        C0 = np.array([[U1 * a + beta1, U1 * b], [U2 * b, U2 * a + beta2]])
+        C1 = np.array([[-a, -b], [-b, -a]])
+        c = np.linalg.eigvals(-np.linalg.solve(C1, C0))
+        return k * max(float(np.max(c.imag)), 0.0)
+
+    k_int = 1
+    sigma_pred = linear_growth_rate(float(k_int))
+    assert sigma_pred > 0.1   # confirm this wavenumber is genuinely unstable
+
+    g = spectral.Grid(48)
+    eps = 1e-6
+    state = np.stack([eps * np.cos(k_int * g.x), -eps * np.cos(k_int * g.x)])
+    state_hat = g.fft(state)
+    L_op = np.zeros_like(g.k2)   # no dissipation needed for this short, small-amplitude run
+    dt = 0.005
+    nsteps = int(16 / dt)
+    amps, ts = [], []
+    t = 0.0
+    for s in range(nsteps + 1):
+        if s % max(1, nsteps // 80) == 0:
+            amps.append(np.abs(g.ifft(state_hat[0])).max()); ts.append(t)
+        state_hat = timestep.ifrk4_step(
+            state_hat, lambda tt, sh: baroclinic.rhs_2layer(sh, g, F, U1, U2, beta), dt, L_op)
+        t += dt
+    amps, ts = np.array(amps), np.array(ts)
+    mask = (ts > 12) & (ts < 16)   # late window: mode has purified by then
+    sigma_measured = np.polyfit(ts[mask], np.log(amps[mask]), 1)[0]
+    assert abs(sigma_measured - sigma_pred) / sigma_pred < 0.01
 
 
 def test_instability_no_inflection_point_is_stable():
