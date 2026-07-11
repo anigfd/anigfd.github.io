@@ -29,35 +29,73 @@ def _(mo):
         r"""
         ## Governing equations
 
-        On a Cartesian $\beta$-plane, linearizing the barotropic vorticity
-        equation about rest gives plane-wave solutions
-        $\psi\sim e^{i(kx+ly-\omega t)}$ with dispersion relation and group
-        velocity (ch. 18's $q=\zeta+\beta y$, symbols as in
-        [NOTATION](../notation)):
+        ### The restoring mechanism, then the algebra
+
+        Rossby waves need no surface and no stratification — their spring is
+        the planetary vorticity gradient itself. Displace a line of parcels
+        northward: by Ch. 7's $D(\zeta+\beta y)/Dt=0$ they acquire
+        $\zeta<0$ (clockwise spin), and that spin advects their neighbors —
+        the western neighbor northward, the eastern one southward. The
+        displacement pattern therefore slides **westward**. That one
+        geometric argument fixes the sign of everything below.
+
+        Now the algebra. Linearize the barotropic vorticity equation about
+        rest: with $q'=\nabla^2\psi'$, the equation
+        $q'_t+\beta\psi'_x=0$ admits plane waves
+        $\psi'\sim e^{i(kx+ly-\omega t)}$ ($\nabla^2\to-K^2$,
+        $K^2=k^2+l^2$), giving (symbols as in [NOTATION](../notation)):
 
         $$\omega=\frac{-\beta k}{k^2+l^2},\qquad
           \mathbf c_g=\Big(\frac{\partial\omega}{\partial k},\frac{\partial\omega}{\partial l}\Big)
           =\frac{\beta}{(k^2+l^2)^2}\big(k^2-l^2,\ 2kl\big).$$
 
+        Read the asymmetry carefully: **phase** always moves westward
+        ($\omega/k<0$ whenever $k\neq0$), but the **group velocity** — the
+        velocity of energy, and the velocity that matters for this chapter —
+        can point *east* (short zonal waves, $k^2>l^2$) or *west* (long
+        waves). Crests and energy routinely travel in opposite directions;
+        watching crests will actively mislead you about where the energy is
+        going.
+
+        ### Rays: waves in a slowly varying medium
+
         A slowly-varying background — a jet, or (as here) planetary
         curvature itself — makes $\omega$ a function of position as well as
-        wavenumber, $\omega(\mathbf x,\mathbf k)$. **WKB ray theory** treats
-        $(\mathbf x,\mathbf k)$ as canonically conjugate, exactly like
-        position and momentum in classical mechanics, and a wave packet's
-        trajectory follows Hamilton's equations:
+        wavenumber, $\omega(\mathbf x,\mathbf k)$. Provided the background
+        varies on scales much larger than a wavelength (**the WKB
+        condition**), the packet keeps a well-defined local $\mathbf k$, and
+        $(\mathbf x,\mathbf k)$ evolve as canonically conjugate variables —
+        exactly position and momentum in classical mechanics, with $\omega$
+        as the Hamiltonian:
 
         $$\frac{d\mathbf x}{dt}=\frac{\partial\omega}{\partial\mathbf k},
           \qquad\frac{d\mathbf k}{dt}=-\frac{\partial\omega}{\partial\mathbf x}.$$
 
-        **On a sphere**, with a background solid-body rotation
-        $U(\phi)=\Omega_s a\cos\phi$ added to the planet's own rotation
-        $\Omega$: both $U$ and the meridional gradient of absolute vorticity
-        scale by the same factor $(\Omega+\Omega_s)$, so the **stationary**
-        wavenumber $K_s^2=2(\Omega+\Omega_s)/(\Omega_s a^2)$ — the one that
-        makes $\omega=0$ — is the *same at every latitude*. That
-        latitude-independence is exactly the condition under which Hamilton's
-        ray equations integrate to **exact great circles** (Hoskins & Karoly
-        1981) — not approximately, as the diagnostic below verifies directly.
+        Two conservation laws come free, and both get used below: $\omega$
+        is constant along a ray (time-independent medium), and any
+        wavenumber component conjugate to a symmetry of the background is
+        conserved (here: zonal symmetry $\Rightarrow$ fixed zonal
+        wavenumber index $n$).
+
+        ### On the sphere: why great circles
+
+        Take a background solid-body super-rotation
+        $U(\phi)=\Omega_s a\cos\phi$ on a planet rotating at $\Omega$. A
+        **stationary** wave ($\omega=0$, the kind a mountain range or a
+        persistent tropical heat source forces) must satisfy
+        $K^2=K_s^2$ with
+
+        $$K_s^2=\frac{2(\Omega+\Omega_s)}{\Omega_s a^2}
+          \quad\text{— the same at every latitude,}$$
+
+        because both the advecting flow $U$ and the meridional gradient of
+        absolute vorticity scale by the *same* factor $(\Omega+\Omega_s)$
+        for solid-body flow. A latitude-independent $|\mathbf k|$ is
+        precisely the condition under which Hamilton's equations integrate
+        to **exact great circles** (Hoskins & Karoly 1981) — the ray bends
+        neither toward nor away from the equator, just as a geodesic on a
+        homogeneous sphere. The diagnostic below verifies "exact" directly,
+        with no wiggle room.
         """
     )
     return
@@ -223,14 +261,25 @@ def _(mo):
           is *not* solid-body (e.g. edit the notebook to use
           $U=U_0\cos^2\phi$ instead of $\cos\phi$) — the stationary
           wavenumber $K_s(\phi)$ will no longer be latitude-independent.
-          Does the great-circle deviation diagnostic stay near zero, or grow?
+          Does the great-circle deviation diagnostic stay near zero, or
+          grow? *This is the point of the exercise:* on the real Earth,
+          $K_s(\phi)$ varies, rays refract toward latitudes of larger
+          $K_s$, and regions where $K_s^2<0$ (easterlies!) are forbidden —
+          which is why observed wave trains are *bent* great circles, and
+          why stationary Rossby waves cannot propagate through the tropical
+          easterlies.
         - **Turning latitudes.** Launch a ray nearly due north/south (large
           $\alpha_0$ near $90°$) and watch its latitude in the map view: it
           should reach a maximum, turn around, and head back — the ray's
-          own version of a great circle's inclination-limited latitude range.
+          own version of a great circle's inclination-limited latitude
+          range. In the refraction language: at the turning latitude the
+          meridional wavenumber $m$ passes through zero, all of $K_s$ is in
+          the zonal component, and the ray reflects.
         - **Vary $\Omega_s$.** At fixed launch angle, how does increasing
-          $\Omega_s$ change $K_s$ (read the formula) and, visually, how
-          "tightly wound" the great circle looks on the map?
+          $\Omega_s$ change $K_s$ (read the formula: $K_s^2\propto
+          1+\Omega/\Omega_s$, so *stronger* westerlies mean *smaller*
+          $K_s$ — longer stationary waves) and, visually, how "tightly
+          wound" the great circle looks on the map?
 
         ### What you should have seen
 
@@ -243,6 +292,17 @@ def _(mo):
         poleward-then-equatorward across the globe — real atmospheric
         teleconnection patterns are, to good approximation, segments of
         exactly this kind of great-circle ray.
+
+        **Where this goes next.** This closes the book's linear-wave
+        thread for balanced flow: Ch. 6 met these waves as the slow mode of
+        adjustment, Ch. 8 gave them their finite-$L_R$ dispersion, and here
+        they carry energy along rays. Part IV plays the same
+        game — dispersion relation, group velocity, rays — for *internal
+        gravity* waves in a stratified fluid (Ch. 12), where the geometry
+        gets stranger: energy propagates *along* wave crests, not across
+        them. And when Rossby waves grow too big to stay linear, they break
+        and mix PV — which is where Ch. 18's turbulence and Ch. 7's
+        staircases come from.
         """
     )
     return

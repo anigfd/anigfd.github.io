@@ -28,29 +28,102 @@ def _(mo):
         r"""
         ## Governing equations
 
-        Linearized shallow water about rest ($\mathbf u=0,\ \eta=0$) on a
-        $\beta$-plane, nondimensionalized by the deformation radius
-        $L_R=c/f_0$, time $f_0^{-1}$, and depth $H$ (symbols as in
-        [NOTATION](../notation)):
+        ### From shallow water to the linear system
+
+        The rotating shallow-water (RSW) equations govern a thin layer of
+        constant-density fluid with a free surface at $H+\eta$ (symbols as
+        in [NOTATION](../notation)):
+
+        $$\frac{D\mathbf u}{Dt}+f\hat{\mathbf z}\times\mathbf u=-g\nabla\eta,
+          \qquad \eta_t+\nabla\cdot\big[(H+\eta)\mathbf u\big]=0.$$
+
+        For small disturbances about rest ($|\mathbf u|$ small,
+        $|\eta|\ll H$) drop every product of two small quantities: the
+        advection $(\mathbf u\cdot\nabla)\mathbf u$ and the $\eta\mathbf u$
+        flux both go, leaving a *linear* system. Now nondimensionalize —
+        time by $f_0^{-1}$ (the rotation period is the clock), height by
+        $H$, velocity by the gravity-wave speed $c=\sqrt{gH}$, and length by
+        the one scale the system builds from its own constants:
+
+        > **Rossby deformation radius**
+        > $\;L_R=\dfrac{c}{f_0}=\dfrac{\sqrt{gH}}{f_0}$ — *the distance a
+        > gravity wave travels in one rotation period; the scale at which
+        > rotation and buoyancy contest control of the flow.* Atmosphere:
+        > $L_R\sim1000\,$km. Ocean (first baroclinic mode): $L_R\sim
+        > 30$–$50\,$km — which is why ocean "weather" (eddies) is 20× smaller
+        > than atmospheric weather. Disturbances **wider** than $L_R$ feel
+        > rotation before they can disperse; **narrower** ones disperse
+        > before rotation matters. That single sentence is this whole
+        > chapter.
+
+        The nondimensional system (hats), on a $\beta$-plane:
 
         $$\hat\eta_t+\hat u_x+\hat v_y=0,\qquad
           \hat u_t-\hat f\hat v=-\hat\eta_x,\qquad
           \hat v_t+\hat f\hat u=-\hat\eta_y,
           \qquad \hat f=1+\hat\beta\,(y-y_0).$$
 
-        Three wave families solve this system: a **geostrophic mode**
-        ($\omega=0$ on the $f$-plane; a slow westward **Rossby wave**
-        $\omega_R=-\hat\beta k/(k^2+1)$ once $\hat\beta\neq0$), and fast
-        **inertia-gravity waves** $\omega_{IG}=\pm\sqrt{1+k^2+l^2}$ that carry
-        energy away from the perturbation. What survives once the gravity
-        waves have radiated out is fixed by the **linear potential vorticity**
-        $q=\zeta-\hat\eta$ (with $\zeta=\hat v_x-\hat u_y$), which obeys
-        $q_t=-\hat\beta\hat v$ — exactly conserved, pointwise, on the
-        $f$-plane. The balanced state carrying a given $q$ solves
-        $(\nabla^2-1)\eta_{bal}=q$. Since $\mathbf u=0$ initially,
-        $q(t{=}0)=-\hat\eta_0$ — so the *final* balanced state is fixed
-        **before a single gravity wave has moved**: adjustment redistributes
-        energy around a PV field it cannot change.
+        ### The wave families (substitute and see)
+
+        Try $e^{i(kx+ly-\omega t)}$ on the $f$-plane ($\hat\beta=0$). The
+        $3\times3$ linear system has solutions only when its determinant
+        vanishes, which factors into $\omega\big(\omega^2-(1+k^2+l^2)\big)=0$:
+
+        - $\omega=0$: a **steady geostrophic mode** — balance is an *exact
+          solution* of the linear equations, at every wavenumber. It doesn't
+          oscillate; it just sits there.
+        - $\omega=\pm\sqrt{1+k^2+l^2}$: fast **inertia–gravity waves**
+          (dimensionally $\omega^2=f_0^2+c^2K^2$ — pure inertial
+          oscillations at large scale, pure gravity waves at small scale).
+          These are the radiators: they carry energy away.
+
+        With $\hat\beta\neq0$ the $\omega=0$ mode is promoted to a slow,
+        westward-propagating **Rossby wave**,
+        $\omega_R=-\hat\beta k/(k^2+1)$ — the balanced remnant stops being
+        exactly steady (Chs. 8–9 take that thread up properly).
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        r"""
+        ### Potential vorticity: the conserved skeleton
+
+        Which combination of fields *doesn't* radiate away? Cross-differentiate
+        the two momentum equations to get the vorticity equation, and combine
+        it with the height equation ($\zeta=\hat v_x-\hat u_y$, $f$-plane):
+
+        $$\zeta_t+(\hat u_x+\hat v_y)=0
+          \quad\text{and}\quad
+          \hat\eta_t+(\hat u_x+\hat v_y)=0
+          \;\;\Longrightarrow\;\;
+          \partial_t\underbrace{(\zeta-\hat\eta)}_{q}=0.$$
+
+        The divergence — the one thing gravity waves are made of — cancels
+        *identically*, so the **linear potential vorticity** $q=\zeta-\hat\eta$
+        is conserved pointwise at every location, for all time, no matter how
+        violent the wave transients. (On the $\beta$-plane it instead obeys
+        $q_t=-\hat\beta\hat v$: meridional motion across the planetary
+        vorticity gradient is the *only* thing that can change it.)
+
+        This turns adjustment into a prediction machine. The end state is
+        steady and geostrophic ($\hat u_{bal}=-\eta_{bal,y}$,
+        $\hat v_{bal}=\eta_{bal,x}$, so $\zeta_{bal}=\nabla^2\eta_{bal}$),
+        and it must carry the same $q$ the fluid started with:
+
+        $$(\nabla^2-1)\,\eta_{bal}=q(t{=}0)=-\hat\eta_0
+          \qquad\text{(since }\mathbf u=0\text{ initially).}$$
+
+        The final balanced state is therefore fixed **before a single
+        gravity wave has moved** — adjustment merely redistributes energy
+        around a PV field it cannot touch. In Fourier space the inversion
+        reads $\eta_{bal}=\hat\eta_0/(k^2+l^2+1)$: a **low-pass filter with
+        cutoff at the deformation radius**. Scales $\gg L_R$ ($k\ll1$) pass
+        through untouched; scales $\ll L_R$ are annihilated. Keep that
+        filter in mind when you compare the presets below.
         """
     )
     return
@@ -264,6 +337,17 @@ def _(mo):
         Gravity-wave radiation converts it toward kinetic energy as the waves
         propagate outward; the balanced remnant left behind settles into a
         roughly fixed $KE$/$PE$ split.
+
+        **A classical, slightly scandalous fact** (Rossby 1938; Gill §7.2):
+        adjustment is energetically *wasteful*. For the textbook step-profile
+        case, of the potential energy released by flattening the interface,
+        only **one third** ends up as kinetic energy of the balanced state —
+        the other two thirds is radiated away by gravity waves, gone for
+        good. Balance is not an energy-conserving rearrangement; it is what
+        remains after the fluid has paid a large wave tax. Watch for it
+        below: the total-energy curve (dashed) stays flat because the
+        *domain* is closed, but the energy near the disturbance drops as the
+        wave front carries its share outward.
         """
     )
     return
@@ -339,18 +423,29 @@ def _(mo):
 
         - **Vary $\sigma/L_R$.** Compare the "small" and "large" presets: how
           much of $\eta_0$'s amplitude survives in $\eta_{bal}$ in each case?
-          Relate this to the low-pass filter $1/(k^2+1)$ in `invert_pv`.
+          *Do the estimate first:* a Gaussian of width $\sigma$ projects onto
+          wavenumbers $k\sim1/\sigma$, and the inversion multiplies each by
+          $1/(k^2+1)$. For $\sigma=0.5$ that factor is $\sim1/5$; for
+          $\sigma=3$ it is $\sim0.9$. Check the slice panel against these
+          numbers.
         - **Let the waves finish radiating.** Increase $T$ in the small- or
           large-scale preset: does the residual between the predicted
           $\eta_{bal}$ and the simulated $\eta$ at the domain center shrink?
+          It should — the prediction is only "wrong" by whatever wave energy
+          hasn't left yet. (But don't push $T$ past $\sim20$: the domain is
+          periodic, and the waves you radiated will wrap around and come
+          back. That's an artifact of the box, not physics.)
         - **Break exact PV conservation.** Switch to the $\beta$-plane preset:
           $q$ at $t=0$ and at the final time are no longer identical. Where in
-          the domain is $|q(t_f)-q(0)|$ largest, and does that location
-          correspond to where the velocity field is strongest?
+          the domain is $|q(t_f)-q(0)|$ largest? The $\beta$-plane source is
+          $q_t=-\hat\beta\hat v$, so the change should concentrate where the
+          *meridional velocity* has been strongest, not where $\eta$ is
+          largest — check against the velocity arrows.
         - **Find the drift.** On the $\beta$-plane preset, track the location
           of the $\eta$ extremum on the snapshot browser as $t$ increases —
           confirm it moves westward (decreasing $x$), consistent with
-          $\omega_R=-\hat\beta k/(k^2+1)$.
+          $\omega_R=-\hat\beta k/(k^2+1)$. Estimate its speed from the frames
+          and compare with $\hat\beta/(k^2+1)$ using $k\sim1/\sigma$.
 
         ### What you should have seen
 
@@ -364,6 +459,15 @@ def _(mo):
         on $\hat\beta$ breaks pointwise PV conservation and sends the balanced
         remnant drifting slowly westward: geostrophic adjustment on a
         $\beta$-plane never truly comes to rest.
+
+        **Where this goes next.** This chapter is the book's hinge. The
+        "PV is conserved, PV is invertible, the rest is waves" logic you
+        just watched is *the* organizing idea of large-scale GFD: Ch. 7
+        makes invertibility the star, Ch. 8 derives the equation the
+        balanced remnant obeys once it's free to evolve (quasi-geostrophy),
+        and Ch. 9 follows the Rossby waves. When observational
+        oceanographers see a mesoscale eddy that has survived for months,
+        they are looking at the $\sigma\gtrsim L_R$ preset's endgame.
         """
     )
     return
