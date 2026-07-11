@@ -30,26 +30,72 @@ def _(mo):
         r"""
         ## Governing equations
 
-        **The Eady problem.** QG flow between rigid lids at $z=0,H$ with
-        uniform vertical shear $U=\Lambda z$ and *zero* interior PV gradient
-        (all the instability lives in the boundary temperature equations).
-        Normal modes $\psi'=\phi(z)e^{ik(x-ct)}$ satisfy $\phi''-k^2\phi=0$
-        in the interior, matched to $(U-c)\phi_z-\Lambda\phi=0$ at $z=0,H$ —
-        a boundary-value eigenvalue problem for $c$, with growth rate
-        $\sigma=\mu c_i$ where $\mu=kNH/f_0$ (symbols as in
-        [NOTATION](../notation)).
+        ### The energy source: available potential energy
 
-        **The 2-layer (Phillips) model.** The nonlinear, finite-amplitude
-        analog: two QG layers with mean flow $U_1,U_2$ and PV
+        Ch. 5 showed that a meridional temperature gradient in thermal-wind
+        balance means *sloping* buoyancy surfaces. Sloping surfaces store
+        potential energy that flat ones don't:
+
+        > **Available potential energy (APE)** — the fraction of a fluid's
+        > potential energy that could be released by adiabatically
+        > flattening its buoyancy surfaces. For the midlatitude atmosphere
+        > it exceeds the kinetic energy of the winds by an order of
+        > magnitude. Baroclinic instability is the mechanism that taps it.
+
+        The release path is geometric — the **wedge of instability**: a
+        parcel exchanged along a path *shallower than the buoyancy slope but
+        steeper than horizontal* moves cold fluid down and warm fluid up,
+        lowering the center of mass and freeing energy, all while staying
+        (quasi-)balanced. Trajectories inside the wedge tilt against the
+        shear — which is why growing baroclinic waves lean westward with
+        height, and why that tilt is the observable signature of a storm
+        still deepening.
+
+        ### The Eady problem
+
+        The cleanest quantitative model (Eady 1949): QG flow between rigid
+        lids at $z=0,H$, uniform shear $U=\Lambda z$, constant $N$, no
+        $\beta$ — chosen so the *interior* PV gradient is exactly **zero**.
+        All the dynamics then lives on the two boundaries, where the
+        advected temperature acts as a PV sheet: a warm anomaly on the
+        ground behaves like a Rossby wave running one way, a temperature
+        anomaly on the lid like one running the other way. Ch. 15's
+        two-counter-propagating-waves resonance again — with the two waves
+        now stacked *vertically* and coupled across the depth $H$.
+
+        Normal modes $\psi'=\phi(z)e^{ik(x-ct)}$ satisfy
+        $\phi''-k^2\phi=0$ in the interior (zero PV there!), matched to the
+        boundary temperature equations $(U-c)\phi_z-\Lambda\phi=0$ at
+        $z=0,H$ — a $2\times2$ eigenvalue problem for $c$, with growth rate
+        $\sigma=\mu c_i$, $\mu=kNH/f_0$ (symbols as in
+        [NOTATION](../notation)). Two robust predictions fall out:
+
+        - a **short-wave cutoff** at $\mu\approx2.4$: waves much narrower
+          than the deformation radius can't couple the two boundaries, so
+          the resonance dies — precisely why the deformation radius
+          $L_d=NH/f_0$ sets the size of storms and eddies;
+        - a most-unstable scale $\mu\approx1.6$ with growth rate
+          $\sigma\approx0.31\,\Lambda f_0/N$ — the "Eady timescale" used to
+          map storm-track and eddy activity to this day.
+
+        ### The 2-layer (Phillips) model
+
+        The nonlinear, finite-amplitude analog: two QG layers with mean
+        flows $U_1,U_2$ and PV
 
         $$q_1=\nabla^2\psi_1+F(\psi_2-\psi_1)+\beta y,\qquad
           q_2=\nabla^2\psi_2+F(\psi_1-\psi_2)+\beta y,$$
 
-        with $F=f_0^2/(g'H)$. Substituting gives each layer an *effective*
-        $\beta$: $\beta_1=\beta+F\Delta U$, $\beta_2=\beta-F\Delta U$
-        ($\Delta U=U_1-U_2$) — the Phillips necessary condition for
-        instability is that $\beta_2$ can change sign (a direct two-layer
-        analog of Ch. 15's Rayleigh-Kuo criterion).
+        with $F=f_0^2/(g'H)$ (the inverse deformation radius squared — the
+        vertical coupling constant). The mean state hands each layer an
+        *effective* PV gradient: $\beta_1=\beta+F\Delta U$,
+        $\beta_2=\beta-F\Delta U$ ($\Delta U=U_1-U_2$). The **Phillips
+        necessary condition** is that these can have opposite signs —
+        i.e. $F\Delta U>\beta$ — a direct vertical analog of Ch. 15's
+        Rayleigh–Kuo sign-change criterion, with the shear now supplying
+        the negative gradient in the lower layer. Note what $\beta$ does
+        here: it is purely *stabilizing*, setting a minimum shear below
+        which no instability exists at all.
         """
     )
     return
@@ -245,6 +291,18 @@ def _(mo):
         Eddy kinetic energy (barotropic-like) and eddy potential energy
         (proportional to layer-interface displacement squared) both grow
         exponentially, peak, and decay toward a statistical equilibrium.
+
+        **How to read it:** during the linear phase both curves rise on
+        parallel straight lines (log scale: same exponential rate — the
+        growing normal mode has a fixed EPE/EKE partition). The energy
+        *pathway* is mean APE $\to$ eddy PE $\to$ eddy KE: the wave first
+        distorts the interface (extracting potential energy from the mean
+        slope), then converts that displacement into swirling motion. The
+        peak and decay is the wave breaking and the drag draining what the
+        instability delivered; the mean shear — held fixed here — keeps
+        feeding it, which is why the end state is a statistical equilibrium
+        rather than rest. In the real atmosphere the same arc, growth to
+        breaking, takes about a week and is called a *storm*.
         """
     )
     return
@@ -395,14 +453,28 @@ def _(mo):
           but nothing will ever cap it — B1's precomputed run shows what
           happens if you let that continue: without drag, energy grows past
           any physically reasonable amplitude, regardless of hyperviscosity.
+          The general lesson: *what limits an instability is almost never
+          what starts it.*
         - **Match Part A.** Using $F$ and $\Delta U$, estimate an
           Eady-equivalent $\Lambda\sim\Delta U/H$ and $N^2\sim f_0^2/F$,
           then check whether the seeded wavenumber ($k=1$) is close to
           Part A's $\mu_{max}$ for those parameters.
         - **Push $\beta$.** Increase $\beta$ in B2 until the flow no longer
-          goes unstable (Phillips' necessary condition, $\beta_2=\beta-F
-          \Delta U$ must be able to change sign) — find the threshold by
-          watching EKE stay flat instead of growing.
+          goes unstable (Phillips' necessary condition:
+          $\beta_2=\beta-F\Delta U$ must be able to change sign, so the
+          threshold is at $\beta=F\Delta U$ — compute it from your slider
+          values *before* running) — find it experimentally by watching EKE
+          stay flat instead of growing. This threshold is real physics:
+          it's why the ocean's weakly-sheared interior is only marginally
+          baroclinically unstable, while strongly-sheared western boundary
+          current extensions are eddy factories.
+        - **Watch the tilt.** In B1, pick a frame during the growth phase
+          and compare the $q_1'$ and $q_2'$ patterns: the upper-layer wave
+          should sit shifted *westward* (leftward) of the lower-layer wave.
+          That phase tilt against the shear is the wedge-of-instability
+          geometry made visible — and when the tilt vanishes near the
+          energy peak, growth stops. Forecasters look for exactly this tilt
+          in real soundings.
 
         ### What you should have seen
 
@@ -416,6 +488,14 @@ def _(mo):
         into a statistically steady turbulent equilibrium. This is the
         mechanism that generates essentially every mid-latitude storm and
         every ocean mesoscale eddy.
+
+        **Where this goes next.** The equilibrated end state of this
+        notebook — a soup of eddies stirred by an inexhaustible mean
+        gradient — is the *starting point* of Part VI: Ch. 18 studies the
+        eddy soup's own dynamics (cascades, jets), Ch. 19 asks what the
+        eddies *transport*, and Chs. 20–21 build the mean circulations they
+        feed on. Ch. 17 first finishes the instability survey with the
+        cases this chapter's balanced framework can't see.
         """
     )
     return
