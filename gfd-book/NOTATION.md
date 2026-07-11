@@ -254,6 +254,39 @@ for the geostrophically balanced height field carrying that PV.
 > `rhs_boussinesq` implement the corrected convention; `lorenz_rhs` is the
 > $(X,Y,Z)$ truncation, sharing `gfdlib.timestep.rk4` with every other chapter.
 
+## Buoyancy-driven overturning (abyssal recipes; horizontal convection)
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $w$ | upwelling velocity (Munk's abyssal-recipe balance) | positive = upward |
+| $\kappa$ | diapycnal diffusivity | boundary-layer thickness $\sim\kappa/w$ |
+| $Q(x,z)$ | differential surface heating | $\propto\cos(2\pi x/L_x)$, warm at $x=0$, cool at $x=L_x/2$ |
+
+> **Munk's (1966) abyssal recipe** $w\,\partial T/\partial z=\kappa\,
+> \partial^2T/\partial z^2$ is solved exactly (`gfdlib.overturning.
+> abyssal_profile`): a linear 2nd-order ODE with constant coefficients,
+> general solution $T=A+Be^{wz/\kappa}$, with $A,B$ fixed by the two BCs
+> via a $2\times2$ `numpy.linalg.solve`. Large $w/\kappa$ sweeps the
+> bottom value through most of the water column, compressing the
+> transition to the surface value into a thin layer near $z=H$ — the real
+> ocean's near-uniform abyssal temperature capped by a thin thermocline;
+> verified numerically, not just plotted, against both this limit and the
+> $w\to0$ pure-diffusion (linear) profile.
+>
+> **The overturning cell reuses ch14's Boussinesq machinery unchanged.**
+> `gfdlib.overturning.rhs_overturning` has the exact same structure as
+> `convection.rhs_boussinesq`, but replaces the fixed background-
+> stratification advection term ($+\psi_x$, uniform bottom heating) with
+> an explicit, horizontally-varying heating field $Q(x,z)$
+> (`gfdlib.overturning.surface_heating`) — warm at one end of the
+> (periodic) domain, cool at the other, concentrated near the surface.
+> This is Rossby's (1965) "horizontal convection" mechanism: differential
+> heating along a boundary organizes into a single overturning cell
+> (rising at the heated column, sinking at the cooled one) rather than
+> the many small convective rolls of uniform bottom heating — verified
+> directly, not just asserted: the vertical velocity $w=\psi_x$ comes out
+> positive under the heated column and negative under the cooled one in
+> every run tested.
+
 ## Internal gravity waves (vertical $x$–$z$ plane)
 | Symbol | Meaning | Convention |
 |---|---|---|
