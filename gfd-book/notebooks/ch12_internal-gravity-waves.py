@@ -28,31 +28,79 @@ def _(mo):
         r"""
         ## Governing equations
 
+        ### The spring: buoyancy
+
+        Displace a parcel upward by $\delta z$ in a stratified fluid and it
+        finds itself denser than its new surroundings; the restoring
+        acceleration is $\ddot{\delta z}=-N^2\,\delta z$ with
+
+        > **buoyancy frequency** $\;N^2=-\dfrac{g}{\rho_0}\dfrac{d\rho}
+        > {dz}=\dfrac{db}{dz}$ — *the frequency at which a vertically
+        > displaced parcel oscillates about its rest level.* Ocean
+        > thermocline: $N\sim10^{-2}\,$s$^{-1}$ (10-minute period);
+        > atmosphere: $N\sim10^{-2}\,$s$^{-1}$ too. Compare
+        > $f\sim10^{-4}\,$s$^{-1}$: buoyancy is a stiff spring, rotation a
+        > soft one, and the two-decade gap between them is where internal
+        > waves live.
+
+        A parcel displaced *along a slope* at angle $\theta$ from vertical
+        feels only the component of gravity along its path, and oscillates
+        at $N\cos\theta$ — slower for steeper-from-vertical paths. Hold that
+        thought: it *is* the dispersion relation.
+
+        ### The wave equation
+
         Linear, incompressible motion in a vertical $(x,z)$ plane, uniform
         rotation $f$, buoyancy frequency $N(z)$ possibly varying with depth.
         Using the streamfunction $u=\psi_z,\ w=-\psi_x$ (symbols as in
         [NOTATION](../notation) — note this sign convention is specific to
-        the vertical plane) and eliminating pressure and buoyancy gives a
-        single evolution equation for $q=\nabla^2\psi$:
+        the vertical plane), take the curl of the momentum equations to get
+        an equation for $q=\nabla^2\psi$, then eliminate the buoyancy (via
+        $b_t=-N^2w$) and the rotation-coupled along-front velocity (via
+        $v_t=-fu$) by taking one more time derivative:
 
         $$\frac{\partial^2 q}{\partial t^2} = -\Big(N^2(z)\,\psi_{xx} +
           f^2\,\psi_{zz}\Big) + S(x,z,t).$$
 
-        For **constant** $N$, a plane wave $\sim e^{i(kx+mz-\omega t)}$ gives
-        the internal-wave dispersion relation and the beam/wavevector angle
-        $\theta$ from vertical:
+        Read the right side as two springs: buoyancy $N^2$ acts on
+        *horizontal* wiggles ($\psi_{xx}$: tilted columns), rotation $f^2$
+        on *vertical* wiggles ($\psi_{zz}$: sheared layers).
+
+        ### Dispersion: frequency depends on angle, not size
+
+        For **constant** $N$, substitute a plane wave
+        $\sim e^{i(kx+mz-\omega t)}$ (so $\nabla^2\to-(k^2+m^2)$):
 
         $$\omega^2=\frac{N^2k^2+f^2m^2}{k^2+m^2}=N^2\cos^2\theta+f^2\sin^2\theta,
-          \qquad \cos\theta=\sqrt{\frac{\omega^2-f^2}{N^2-f^2}}.$$
+          \qquad \cos\theta=\sqrt{\frac{\omega^2-f^2}{N^2-f^2}},$$
 
-        Two properties make internal waves distinctive: $\omega$ depends only
-        on the **angle** of $\mathbf k=(k,m)$, not its magnitude, so energy
-        from a point source radiates along beams at a fixed angle rather than
-        dispersing isotropically; and the group velocity is **perpendicular**
-        to the phase velocity, so phase propagating downward carries energy
-        **upward** (and vice versa). Waves exist only where $f\le|\omega|\le
-        N(z)$ — where $N(z)$ drops below $\omega$, the wave cannot propagate
-        and **reflects** at that turning level.
+        where $\theta$ is the angle of $\mathbf k=(k,m)$ from *vertical* —
+        i.e. the angle of the wave **crests** (and the parcel motion, which
+        is along crests for an incompressible transverse wave) from
+        *horizontal*. This is the parcel-on-a-slope frequency from above,
+        now with rotation stiffening the near-horizontal paths.
+
+        Two consequences make internal waves genuinely strange:
+
+        - $\omega$ depends **only on the angle** of $\mathbf k$, never its
+          magnitude. Force at one frequency and you select a *direction*,
+          not a wavelength — energy from a point source radiates along four
+          **beams** at the fixed angle $\theta$, instead of spreading in
+          rings the way every intuition from surface waves says it should.
+        - Because $\omega$ is constant along any ray through $\mathbf k$-space
+          origin, $\mathbf c_g=\nabla_{\mathbf k}\omega$ must be
+          **perpendicular to $\mathbf k$**: group velocity is *along the
+          crests*, phase velocity *across* them. In particular,
+          downward-marching phase means **upward**-traveling energy — so
+          when a mooring record shows phase lines descending, the energy
+          source is *below*, not above. Every observational oceanographer
+          learns to make this sign flip; in the snapshot browser you can
+          watch it happen.
+
+        Waves exist only where $f\le|\omega|\le N(z)$. Where $N(z)$ drops
+        below $\omega$, the wave cannot propagate and **reflects** at that
+        turning level — no boundary condition is imposed there; the wave
+        equation does it on its own.
         """
     )
     return
@@ -316,13 +364,26 @@ def _(mo):
         - **Read off the angle.** In the uniform preset, use a ruler (or the
           pixel grid) on the final frame to estimate the beam angle from
           horizontal, and compare it to $\theta$ printed above the plots.
+          Then move $\hat\omega$ and predict *before re-running*: higher
+          frequency $\to$ steeper or shallower beams? (From
+          $\cos\theta\propto\sqrt{\omega^2-f^2}$: higher $\omega$ means
+          crests closer to vertical, i.e. beams closer to vertical too.)
+        - **Watch phase vs. group.** Step through consecutive frames along
+          one beam of the X: the *crests inside the beam* march across it
+          (perpendicular to the beam) while the *beam envelope* extends
+          along itself. You are watching $\mathbf c_g\perp\mathbf c_p$
+          directly — the single weirdest verified prediction of this
+          dispersion relation.
         - **Turn off rotation.** Set $\hat f=0$: the beams should sharpen
           slightly (check the theory curve — how much does $\theta$ actually
-          change between $\hat f=0$ and $\hat f=0.3$ at fixed $\hat\omega$?).
+          change between $\hat f=0$ and $\hat f=0.3$ at fixed $\hat\omega$?
+          Rotation only matters to near-inertial waves, $\omega\to f$).
         - **Find the duct.** In the "Thermocline duct" preset, read the two
           turning-level depths off the left panel (where $\hat N(z)=\hat
           \omega$) and confirm the wave field on the right stays confined
-          between them.
+          between them. This is a waveguide: the real ocean's main
+          thermocline ducts internal-tide energy across whole basins this
+          way.
         - **Break the duct.** Increase $\hat\omega$ toward $\hat N_{mean}+
           \hat N_{amp}$: the turning levels should move apart until they
           leave the domain, and the beams should reach the periodic boundary
@@ -340,6 +401,17 @@ def _(mo):
         depth. This is the same mechanism (a frequency-dependent turning
         point) that governs internal-tide generation at ocean ridges and
         mountain-wave reflection in the stratified atmosphere.
+
+        **Where this goes next.** Internal waves are the fast, unbalanced
+        motion that Part II's QG world filtered out — the two chapters are
+        complementary halves of the same fluid. When these waves reach
+        amplitudes where they overturn, or meet a **critical layer** where
+        the background flow speed matches their phase speed, they break and
+        deposit their momentum into the mean flow (Ch. 13) — the mechanism
+        that drives the stratospheric QBO and much of the deep ocean's
+        mixing (Ch. 21's $\kappa$ is largely *made* of broken internal
+        waves). And the stability of stratified shear flow against
+        overturning is exactly Ch. 17's Richardson-number story.
         """
     )
     return
