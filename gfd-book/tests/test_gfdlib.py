@@ -1,6 +1,6 @@
 """Numeric correctness of gfdlib primitives. `make test` must pass before commit."""
 import numpy as np
-from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg, instability, baroclinic, symmetric
+from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg, instability, baroclinic, symmetric, mixing
 
 
 def test_poisson_roundtrip():
@@ -505,6 +505,68 @@ def test_double_shear_layer_vorticity_signs():
     y2_idx = np.argmin(np.abs(g.y[0, :] - 0.75 * g.L))
     assert zeta[0, y1_idx] < 0
     assert zeta[0, y2_idx] > 0
+
+
+def _run_mixing(Gamma, nu=1e-6, nnu=2, kappa=1e-6, kappa_nnu=2, n=64,
+                 nsteps=600, dt=0.01, k0=8, seed=1234):
+    """Shared driver: decaying 2D turbulence (ch18's exact McWilliams IC)
+    stirring a passive tracer perturbation against mean gradient Gamma."""
+    grid = spectral.Grid(n)
+    rng = np.random.default_rng(seed)
+    K = np.where(grid.kmag == 0, 1e-10, grid.kmag)
+    amp = K * np.sqrt(1.0 / (1.0 + (K / k0) ** 4))
+    zeta_hat = grid.dealias * amp * np.exp(2j * np.pi * rng.random(K.shape))
+    ke, _ = diagnostics.energy_enstrophy(grid.invert_laplacian(zeta_hat), grid)
+    zeta_hat = zeta_hat * np.sqrt(0.5 / ke)
+
+    state_hat = np.stack([zeta_hat, np.zeros_like(zeta_hat)])
+    L_op = np.stack([-nu * grid.k2 ** nnu, -kappa * grid.k2 ** kappa_nnu])
+    for _ in range(nsteps):
+        state_hat = timestep.ifrk4_step(
+            state_hat, lambda tt, sh: mixing.rhs_coupled(sh, grid, Gamma), dt, L_op
+        ) * grid.dealias
+
+    zh, ch = state_hat
+    psi_hat = grid.invert_laplacian(zh)
+    v = grid.ifft(grid.ddx(psi_hat))
+    cprime = grid.ifft(ch)
+    return mixing.effective_diffusivity(v, cprime, Gamma)
+
+
+def test_mixing_keff_independent_of_gamma():
+    """The tracer perturbation equation is LINEAR in c', so K_eff must be
+    exactly independent of the imposed mean gradient Gamma for the same
+    underlying flow -- a strong, non-phenomenological check."""
+    K1 = _run_mixing(Gamma=1.0)
+    K2 = _run_mixing(Gamma=2.0)
+    assert abs(K1 - K2) / abs(K1) < 1e-8
+
+
+def test_mixing_keff_zero_without_velocity():
+    """With the velocity field identically zero, no v'c' correlation can
+    develop: K_eff must be exactly zero."""
+    n = 48
+    grid = spectral.Grid(n)
+    zeta_hat = np.zeros((n, n // 2 + 1), dtype=complex)
+    state_hat = np.stack([zeta_hat, np.zeros_like(zeta_hat)])
+    L_op = np.stack([np.zeros_like(grid.k2), -1e-3 * grid.k2])
+    for _ in range(200):
+        state_hat = timestep.ifrk4_step(
+            state_hat, lambda tt, sh: mixing.rhs_coupled(sh, grid, 1.0), 0.01, L_op
+        ) * grid.dealias
+    zh, ch = state_hat
+    psi_hat = grid.invert_laplacian(zh)
+    v = grid.ifft(grid.ddx(psi_hat))
+    cprime = grid.ifft(ch)
+    assert abs(mixing.effective_diffusivity(v, cprime, 1.0)) < 1e-12
+
+
+def test_mixing_keff_positive_for_decaying_turbulence():
+    """Freely-decaying 2D turbulence stirring a mean gradient should
+    produce down-gradient (K_eff>0) transport -- the generic expected
+    result, checked here rather than assumed."""
+    Keff = _run_mixing(Gamma=1.0, nsteps=900)
+    assert Keff > 0.0
 
 
 def test_symmetric_ro0_critical_ri_is_one():
