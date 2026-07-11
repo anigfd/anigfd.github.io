@@ -27,19 +27,55 @@ def _(mo):
         r"""
         ## Governing equations
 
-        Linearizing the barotropic vorticity equation about a parallel flow
-        $U(y)$ and seeking normal modes $\psi'=\phi(y)e^{ik(x-ct)}$ gives the
-        **Rayleigh-Kuo equation** (symbols as in [NOTATION](../notation)):
+        ### From the vorticity equation to an eigenvalue problem
+
+        Linearize Ch. 7's $Dq/Dt=0$ about a parallel flow $U(y)$: write
+        $\psi=-\!\int U\,dy+\psi'$, keep terms linear in primes, and note
+        the background carries the vorticity gradient
+        $\partial_yq_0=\beta-U''$:
+
+        $$\Big(\partial_t+U\partial_x\Big)\nabla^2\psi'
+          +(\beta-U'')\,\psi'_x=0.$$
+
+        The coefficients depend on $y$ only, so Fourier in $x$ and $t$ but
+        not $y$: substituting a normal mode $\psi'=\phi(y)\,e^{ik(x-ct)}$
+        (each factor $\partial_t\to-ikc$, $\partial_x\to ik$; divide through
+        by $ik$) gives the **Rayleigh–Kuo equation** (symbols as in
+        [NOTATION](../notation)):
 
         $$(U-c)(\phi''-k^2\phi)+(\beta-U'')\phi=0.$$
 
-        A mode is unstable iff $c=c_r+ic_i$ has $c_i>0$. A classical integral
-        theorem gives a **necessary** condition: $\beta-U''$ — the meridional
-        gradient of the basic state's absolute vorticity — must **change
-        sign** somewhere in the domain (Rayleigh's inflection-point
-        criterion at $\beta=0$; Kuo's extension for $\beta\neq0$). This is
-        necessary, not sufficient: plenty of profiles with an inflection
-        point are still stable at a given $k$.
+        For each wavenumber $k$ this is an eigenvalue problem for the
+        complex phase speed $c=c_r+ic_i$; since
+        $\psi'\propto e^{ikc_it}\,e^{ik(x-c_rt)}$, a mode is unstable iff
+        $c_i>0$, with growth rate $kc_i$.
+
+        ### Rayleigh's theorem: instability needs a sign change
+
+        Multiply the equation by $\phi^*/(U-c)$, integrate across the
+        channel, and take the imaginary part. The $|\phi'|^2+k^2|\phi|^2$
+        term is real and drops out, leaving
+
+        $$c_i\int\frac{(\beta-U'')\,|\phi|^2}{|U-c|^2}\,dy=0.$$
+
+        If $c_i\neq0$ the integral itself must vanish — and since
+        $|\phi|^2/|U-c|^2>0$, that is only possible if $\beta-U''$
+        **changes sign** somewhere in the domain. That is Rayleigh's
+        inflection-point criterion ($\beta=0$) and Kuo's extension
+        ($\beta\neq0$): a *necessary* condition delivered by three lines of
+        integration, with no eigenfunction ever computed. It is necessary,
+        not sufficient — plenty of profiles with an inflection point are
+        still stable at any given $k$, which is what Part A's solver is for.
+
+        **The mechanism behind the criterion:** a sign change in
+        $\beta-U''$ means the flow supports Rossby-type waves (Ch. 9) riding
+        on *oppositely-signed* PV gradients on either flank. Each wave
+        propagates counter to the local flow, so the pair can become
+        stationary relative to each other, **phase-lock**, and mutually
+        amplify — each wave's induced velocity field pushes the other's PV
+        contour further from equilibrium. Every shear instability in
+        Part V is a version of this two-wave resonance; Ch. 16 replays it
+        with the two waves stacked vertically instead of side by side.
         """
     )
     return
@@ -169,6 +205,16 @@ def _(mo):
         the profile closes up on a doubly-periodic domain), seeded with a
         small perturbation at zonal wavenumber $n$. Use Part A's growth-rate
         curve to pick a wavenumber near the peak before running.
+
+        Linear theory (Part A) can only tell you *what grows and how fast
+        while it is small*. What it cannot tell you is what the flow becomes:
+        exponential growth ends when the perturbation velocity is comparable
+        to the shear itself, and then the vorticity of the shear layer
+        wraps up into discrete vortices — the nonlinear saturation. Watch
+        for three stages in the snapshot browser: exponential amplification
+        of the seeded wiggle (invisible at first), roll-up into cat's-eye
+        vortices, then vortex merging and filamentation (Ch. 18's
+        turbulence, arriving on schedule).
         """
     )
     return
@@ -288,16 +334,26 @@ def _(mo):
         - **Confirm the criterion.** In Part A, switch to the "stable"
           profile: the growth-rate curve should be exactly zero everywhere,
           for any $\delta$ or $\beta$. Rayleigh's criterion isn't just
-          necessary here — it's decisive.
+          necessary here — it's decisive: with $U''$ one-signed in the
+          interior, there are no counter-propagating waves to lock together.
         - **Miss the peak.** In Part B, set the seeded wavenumber $n$ well
           away from the peak $k$ you found in Part A (converting via
           $k=2\pi n/L$): does the roll-up still happen, and does it take
-          longer?
+          longer? Watch *which* wavenumber actually wins — the seeded mode
+          grows first, but background noise at the fastest-growing
+          wavenumber is also being amplified the whole time, and given a
+          long enough run it takes over. Nature seeds all wavenumbers at
+          once; the growth-rate curve is a *selection* principle.
         - **Stabilize with $\beta$.** In Part A, increase $\beta$ for the
           jet profile: does the growth-rate curve's peak shrink, grow, or
-          shift? Relate this to $\beta-U''$ needing to change sign.
+          shift? $\beta>0$ everywhere pushes $\beta-U''$ toward one sign —
+          for a strong enough $\beta$ the sign change (and with it the
+          instability) disappears entirely. This is why planetary rotation
+          gradients *stabilize* jets, and part of why zonal jets are the
+          natural end state on a $\beta$-plane (Ch. 18).
         - **Count the vortices.** In Part B's final frame, count the
-          vortex cores in one shear layer — it should match your chosen $n$.
+          vortex cores in one shear layer — it should match your chosen $n$
+          (unless mergers have already begun; then count the earlier frames).
 
         ### What you should have seen
 
@@ -310,6 +366,15 @@ def _(mo):
         vortices, one per wavelength. This is the same mechanism (in a
         rotating, stratified form) behind meanders and eddy shedding in
         jet streams and western boundary currents.
+
+        **Where this goes next.** This chapter's script — linearize, find a
+        necessary criterion by an integral theorem, solve the eigenproblem
+        for growth rates, then watch nonlinearity saturate the winner — is
+        repeated verbatim in Ch. 16 (baroclinic instability: same theorem
+        structure, with the PV gradient's sign change now in the *vertical*)
+        and Ch. 17 (stratified and symmetric instabilities). Keep the
+        two-counter-propagating-waves cartoon; it is the one mental model
+        that survives every generalization.
         """
     )
     return

@@ -29,35 +29,73 @@ def _(mo):
         r"""
         ## Governing equations
 
-        **Symmetric & inertial instability.** For a zonal thermal-wind front
-        $U(y,z)$, $b(y,z)$ with $f\,\partial U/\partial z=-\partial b/
-        \partial y$, frictionless adiabatic motion in the $(y,z)$ plane
-        conserves absolute momentum $M=U-fy$ and buoyancy $b$ along parcel
-        trajectories. The front is unstable to slantwise displacements iff
-        the Ertel PV $q$ has the opposite sign to $f$:
+        ### The two numbers being compared
+
+        > **Richardson number**
+        > $\;\mathrm{Ri}=\dfrac{N^2}{(\partial U/\partial z)^2}$ —
+        > *stratification's stiffness versus the vertical shear trying to
+        > overturn it.* **Rossby number** (in this chapter's local form)
+        > $\;\mathrm{Ro}=-\dfrac{\partial U/\partial y}{f}$ — *relative
+        > vorticity versus planetary.* Every instability in this survey is
+        > a statement about where a flow sits in the (Ro, Ri) plane.
+
+        ### Symmetric & inertial instability: two conserved labels
+
+        For a zonal thermal-wind front $U(y,z)$, $b(y,z)$ with
+        $f\,\partial U/\partial z=-\partial b/\partial y$, frictionless
+        adiabatic motion in the $(y,z)$ plane conserves two parcel labels:
+        **absolute momentum** $M=U-fy$ (the rotating frame's version of
+        angular momentum) and buoyancy $b$. The stability question is then
+        pure geometry: displace a parcel and ask whether its conserved
+        labels push it back or further away.
+
+        - Displace *vertically*: $b$-conservation resists if $N^2>0$ —
+          ordinary gravitational stability.
+        - Displace *horizontally*: $M$-conservation resists if the absolute
+          vorticity $f(1+\mathrm{Ro})>0$ — a parcel moved poleward carries
+          too little $M$ for its new surroundings and gets pulled back,
+          exactly like the angular-momentum argument for orbits.
+        - Displace *slantwise*, along a path between the $M$-surfaces and
+          the $b$-surfaces: **if the $M$-surfaces are tilted flatter than
+          the $b$-surfaces**, there is a wedge of paths along which both
+          restoring mechanisms *assist* the displacement. (Compare Ch. 16's
+          wedge of instability — same geometry, with $M$ playing the role
+          the boundary played there.)
+
+        The wedge exists iff the Ertel PV of the front has the opposite
+        sign to $f$:
 
         $$q=(f-\partial U/\partial y)N^2-f(\partial U/\partial z)^2,
           \qquad qf<0 \iff (1+\mathrm{Ro})<\frac{1}{\mathrm{Ri}}$$
 
         (symbols as in [NOTATION](../notation)). Two limits separate the
-        mechanisms: $(1+\mathrm{Ro})<0$ (absolute vertical vorticity changes
-        sign) is unstable at *every* $\mathrm{Ri}>0$ — pure **inertial**
+        mechanisms: $(1+\mathrm{Ro})<0$ (absolute vorticity changes sign)
+        is unstable at *every* $\mathrm{Ri}>0$ — pure **inertial**
         instability, no buoyancy needed. Finite positive $(1+\mathrm{Ro})$
         with small $\mathrm{Ri}$ is **symmetric** instability — a genuine
         hybrid, extracting energy from both the horizontal shear and the
         sloping buoyancy surfaces.
 
-        **Kelvin-Helmholtz instability.** For an arbitrary (not necessarily
-        thermal-wind-balanced) stratified shear flow $U(z)$, $N^2(z)$, no
-        rotation, normal modes $\psi'=\phi(z)e^{ik(x-ct)}$ satisfy the
-        **Taylor-Goldstein equation**:
+        ### Kelvin–Helmholtz instability
 
-        $$(U-c)^2(\phi''-k^2\phi)-U''(U-c)\phi+N^2\phi=0.$$
+        For an arbitrary (not necessarily thermal-wind-balanced) stratified
+        shear flow $U(z)$, $N^2(z)$, no rotation, normal modes
+        $\psi'=\phi(z)e^{ik(x-ct)}$ satisfy the **Taylor–Goldstein
+        equation**:
 
-        The Miles (1961) / Howard (1961) theorem: if the gradient Richardson
-        number $\mathrm{Ri}=N^2/(\partial U/\partial z)^2\geq1/4$
-        *everywhere*, the flow is stable — a genuine mathematical guarantee,
-        not an empirical rule of thumb.
+        $$(U-c)^2(\phi''-k^2\phi)-U''(U-c)\phi+N^2\phi=0$$
+
+        — structurally Ch. 15's Rayleigh equation with a buoyancy term
+        bolted on (set $N^2=0$ and it collapses back). The energy
+        bookkeeping behind the famous threshold: exchanging two parcels
+        across a shear layer releases kinetic energy
+        $\sim\tfrac14(\Delta U)^2$ but costs potential energy
+        $\sim N^2(\Delta z)^2$; the release wins when
+        $\mathrm{Ri}\lesssim1/4$. The Miles (1961) / Howard (1961) theorem
+        hardens the heuristic into mathematics: if
+        $\mathrm{Ri}=N^2/(\partial U/\partial z)^2\geq1/4$ *everywhere*,
+        the flow is stable — a genuine guarantee, not an empirical rule of
+        thumb.
         """
     )
     return
@@ -312,6 +350,19 @@ def _(mo):
         for an unbalanced, non-rotating shear layer ($\mathrm{Ri}<1/4$) —
         slantwise motion has an extra degree of freedom (the horizontal
         shear) to draw on that pure vertical overturning does not.
+
+        **Where this goes next (and where these show up).** Symmetric
+        instability organizes the banded "slantwise convection" of winter
+        storms' frontal zones and drains low-PV water from the wintertime
+        Gulf Stream; inertial instability matters most near the equator,
+        where $f\to0$ makes $\mathrm{Ro}<-1$ easy to reach;
+        Kelvin–Helmholtz billows are *the* mechanism of clear-air turbulence
+        and of interior ocean mixing — the microscale end of the mixing
+        chain whose large-scale end is Ch. 19's eddy diffusivity, and whose
+        integrated effect is the abyssal $\kappa$ of Ch. 21. This closes
+        Part V's survey: every instability in the book has been an unstable
+        arrangement of the same conserved quantities (PV, $M$, $b$), and
+        Part VI now turns to the turbulence they collectively produce.
         """
     )
     return
