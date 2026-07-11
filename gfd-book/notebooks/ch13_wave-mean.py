@@ -216,6 +216,39 @@ def _(mo):
         numerical artifact (verified directly below: $\omega$ stays exactly
         conserved along the ray even as $y$ and $l$ both change
         enormously).
+
+        ### What diverges, exactly? The wave-action bookkeeping
+
+        The wavenumber blowing up is only half the singularity — the wave's
+        *amplitude* diverges too, and the argument is short enough to do.
+        In a slowly-varying medium the conserved wave quantity is not
+        energy (the shear can exchange energy with the wave) but **wave
+        action** $A=E/\hat\omega$, the energy density divided by the
+        *intrinsic* frequency $\hat\omega=\omega-U(y)k=-\beta k/(k^2+l^2)$
+        — a WKB result previewed here and derived properly in Ch. 23. For
+        a steady wave train, the meridional **flux of action** must be
+        independent of $y$:
+
+        $$c_{g,y}\,\frac{E}{\hat\omega}
+          =\frac{2\beta kl/K^4}{-\beta k/K^2}\,E
+          =-\frac{2l}{K^2}\,E=\text{const}
+          \qquad\Longrightarrow\qquad
+          E\propto\frac{K^2}{|l|}\sim|l|\ \to\ \infty.$$
+
+        The energy *density* piles up without bound as the ray slows down —
+        the same reason ocean swell steepens on a beach (slower group
+        speed, same flux, so energy accumulates). And the divergence has a
+        characteristic anatomy: since $E\sim\tfrac12K^2|\hat\psi|^2$, the
+        streamfunction amplitude actually *shrinks*
+        ($|\hat\psi|^2\sim E/K^2\propto1/|l|$), while the
+        along-flow velocity $|u'|\sim|l||\hat\psi|$ and the vorticity
+        $|\zeta'|\sim K^2|\hat\psi|$ grow
+        like $|l|^{1/2}$ and $|l|^{3/2}$: the wave is being sheared into
+        finer and finer, more and more intense filaments. No linear theory
+        survives that indefinitely — either viscosity erases the filaments
+        or the vorticity overturns nonlinearly, and in both cases the
+        wave's momentum flux is deposited *at* the critical layer, which
+        is the entire wave-mean interaction this chapter is named for.
         """
     )
     return

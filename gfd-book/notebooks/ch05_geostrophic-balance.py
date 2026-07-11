@@ -80,6 +80,40 @@ def _(mo):
           streamfunction convention in NOTATION shows $\psi=\phi/f$: the
           pressure field, rescaled, *is* the streamfunction. Every balanced
           model later in the book (Chs. 7, 8, 16, 18) leans on this.
+
+        ### The balance hierarchy: what lives between $Ro\ll1$ and $Ro\gg1$
+
+        Geostrophy is the bottom rung of a ladder. For steady flow along
+        *curved* isobars of radius $R$, the neglected acceleration is the
+        centripetal one, $V^2/R$, and keeping it gives **gradient-wind
+        balance** (the natural-coordinates force balance, positive $R$ for
+        cyclonic curvature):
+
+        $$\frac{V^2}{R}+fV=-\frac{\partial\phi}{\partial n}.$$
+
+        Its three limits organize a lot of atmospheric phenomenology:
+
+        - $V^2/R\ll fV$ (i.e. $Ro=V/fR\ll1$): drop the first term —
+          geostrophy again.
+        - $fV\ll V^2/R$ ($Ro\gg1$): **cyclostrophic balance**,
+          $V=\sqrt{-R\,\partial\phi/\partial n}$ — tornadoes, dust devils,
+          the bathtub vortex: rotation of the *vortex* balances pressure,
+          the planet irrelevant.
+        - No pressure gradient at all: $V^2/R+fV=0$, i.e. $R=-V/f$ —
+          uniform circular motion, which is precisely Ch. 3's inertial
+          oscillation, recovered as the force-free rung of the ladder.
+
+        Solving the quadratic for $V$ also delivers a genuinely observed
+        asymmetry between highs and lows. Around a **low** ($\partial\phi/
+        \partial n<0$, cyclonic), both terms carry the same sign and a
+        balanced $V$ exists for *any* pressure gradient — but it is
+        **subgeostrophic** (the centripetal term helps Coriolis, so less
+        wind is needed). Around a **high**, the balance requires
+        $|\partial\phi/\partial n|\le f^2|R|/4$ or the quadratic has no
+        real root: *anticyclones cannot sustain arbitrarily sharp pressure
+        gradients*, which is why weather-map highs are always broad and
+        flat while lows can be violently deep. One line of algebra,
+        directly checkable against any surface analysis chart.
         """
     )
     return

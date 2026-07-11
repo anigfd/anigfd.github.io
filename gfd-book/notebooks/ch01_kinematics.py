@@ -79,16 +79,60 @@ def _(mo):
         $S_n$ stretches material lines along one axis and compresses them
         along the perpendicular axis; $S_s$ does the same but along axes
         tilted $45°$; $\zeta$ rotates the neighborhood rigidly, stretching
-        nothing. The **Okubo-Weiss parameter**
+        nothing.
 
-        $$W=S_n^2+S_s^2-\zeta^2$$
+        ### Where $W$ actually comes from: an eigenvalue calculation
 
-        compares the two kinds of deformation. Where $W>0$, strain
-        dominates: nearby parcels separate exponentially along the
-        strain axis — this is where material lines (and dye patches) get
-        stretched into filaments. Where $W<0$, rotation dominates: nearby
-        parcels orbit each other without separating — a coherent vortex core.
-        $W=0$ is the (generically thin) boundary between the two regimes.
+        The claim "strain wins means exponential separation" is not a
+        metaphor — it is a two-line eigenvalue computation, worth doing
+        once in full. Let $\delta\mathbf x$ be the separation between two
+        nearby parcels. Both obey $d\mathbf x/dt=\mathbf u(\mathbf x)$;
+        subtracting and Taylor-expanding $\mathbf u$ to first order in the
+        separation gives a *linear* ODE with the velocity-gradient tensor
+        as its (locally frozen) matrix:
+
+        $$\frac{d(\delta\mathbf x)}{dt}=\mathsf A\,\delta\mathbf x,\qquad
+          \mathsf A=\begin{pmatrix}u_x & u_y\\ v_x & v_y\end{pmatrix}.$$
+
+        For incompressible 2D flow $u_x+v_y=0$, so $\operatorname{tr}
+        \mathsf A=0$ and the eigenvalues satisfy simply
+        $\lambda^2=-\det\mathsf A$. Writing the four entries in terms of
+        $(S_n,S_s,\zeta)$ — incompressibility gives $u_x=S_n/2$,
+        $v_y=-S_n/2$, and inverting the definitions gives
+        $v_x=(S_s+\zeta)/2$, $u_y=(S_s-\zeta)/2$ — the determinant works
+        out to
+
+        $$\det\mathsf A=u_xv_y-u_yv_x
+          =-\frac{S_n^2}{4}-\frac{S_s^2-\zeta^2}{4}
+          =-\frac{W}{4},
+          \qquad\text{so}\qquad
+          \lambda=\pm\frac{\sqrt W}{2}.$$
+
+        The **Okubo-Weiss parameter** $W=S_n^2+S_s^2-\zeta^2$ is therefore
+        nothing but (four times) the discriminant of the local separation
+        dynamics:
+
+        - $W>0$: $\lambda$ is **real**, $\pm\sqrt W/2$. Nearby parcels
+          separate exponentially at rate $\sqrt W/2$ along the unstable
+          eigenvector (and compress along the other) — this is where
+          material lines and dye patches are stretched into filaments.
+        - $W<0$: $\lambda$ is **purely imaginary**, $\pm i\sqrt{|W|}/2$.
+          The separation vector rotates at frequency $\sqrt{|W|}/2$
+          without growing — nearby parcels orbit each other, a coherent
+          vortex core.
+        - $W=0$ is the (generically thin) boundary between the two
+          regimes, where the local dynamics is degenerate (pure shear:
+          linear, not exponential, growth).
+
+        One honest caveat: the derivation froze $\mathsf A$ in time, which
+        is only justified if the parcel doesn't move somewhere with a
+        different $\mathsf A$ before the exponential behavior expresses
+        itself — i.e., if $\mathsf A$ varies slowly along trajectories.
+        Near sharp features this fails, and the Okubo-Weiss criterion is
+        known to over-predict filamentation there; more sophisticated
+        Lagrangian diagnostics (finite-time Lyapunov exponents) fix this
+        at much greater cost. For this notebook's smooth flow, $W$ is an
+        excellent guide.
 
         This notebook's flow is a steady superposition of uniform strain
         (rate $\alpha$) and a smooth (Lamb-Oseen-like) vortex of circulation
@@ -286,6 +330,13 @@ def _(mo):
         r"""
         ### Try this
 
+        - **Check the rate, not just the sign.** Far from the vortex the
+          flow is nearly pure strain, so the eigenvalue calculation
+          predicts nearby particles separate like $e^{\sqrt W t/2}
+          =e^{\alpha t}$ (using $W=4\alpha^2$ for pure strain). Pick two
+          adjacent particles that start in the red region, estimate how
+          many time units it takes their separation to grow by $e\approx
+          2.7$, and compare with $1/\alpha$ from your slider.
         - **Shrink the vortex.** Decrease $\Gamma$ (or increase $\alpha$)
           until the $W<0$ region disappears entirely: no radius is safe any
           more, and the whole ring should stretch into filaments regardless

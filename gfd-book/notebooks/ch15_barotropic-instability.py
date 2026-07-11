@@ -67,6 +67,55 @@ def _(mo):
         not sufficient — plenty of profiles with an inflection point are
         still stable at any given $k$, which is what Part A's solver is for.
 
+        ### Fjørtoft's second sieve, for free
+
+        The *real* part of the same integral identity, discarded above, is
+        not empty — it says
+
+        $$\int\frac{(\beta-U'')(U-c_r)\,|\phi|^2}{|U-c|^2}\,dy
+          =\int\big(|\phi'|^2+k^2|\phi|^2\big)\,dy\;>\;0.$$
+
+        And here is the trick: for an unstable mode the *imaginary*-part
+        integral vanishes, so you may subtract $(c_r-U_s)$ times it — for
+        **any** constant $U_s$ — without changing anything. Choosing $U_s$
+        to be the flow speed at the inflection point yields **Fjørtoft's
+        criterion**: instability also requires
+
+        $$(\beta-U'')(U-U_s)>0\ \text{somewhere}
+          \qquad\big(\text{at }\beta=0:\ U''(U-U_s)<0\ \text{somewhere}\big).$$
+
+        This is a genuinely finer sieve: a profile can have an inflection
+        point (passing Rayleigh) yet fail Fjørtoft and be provably stable —
+        loosely, the background *vorticity* $-U'$ must have an interior
+        **maximum** at the inflection point, not a minimum, for the
+        counter-propagating waves to sit close enough to interact. Check
+        the notebook's two unstable profiles against it: for
+        $U=\tanh(y/\delta)$, $U_s=0$ and $U''(U-U_s)=-2\tanh^2\!\text{sech}^2
+        (y/\delta)/\delta^2\le0$ everywhere — Fjørtoft is satisfied on the
+        entire domain, which is why the shear layer is such a robust
+        instability.
+
+        ### What growth costs: momentum flux tilted against the shear
+
+        Multiply the linearized vorticity equation by the perturbation
+        streamfunction and average over $x$: every term rearranges into the
+        **perturbation energy budget**
+
+        $$\frac{d}{dt}\left\langle\frac{u'^2+v'^2}{2}\right\rangle
+          =-\,\overline{u'v'}\;\frac{dU}{dy},$$
+
+        with $\overline{u'v'}$ the eddy momentum flux (Reynolds stress).
+        Growing disturbances must have $\overline{u'v'}$ *anti-correlated*
+        with the shear — they carry momentum **down** the mean-momentum
+        gradient, flattening the profile that feeds them. Geometrically
+        $\overline{u'v'}<0$ (where $dU/dy>0$) means the perturbation's
+        phase lines **tilt against the shear** — leaning into the flow like
+        a rower's oar, not swept passively with it. This is the barotropic
+        twin of Ch. 16's westward-tilt-with-height signature, and it is
+        directly visible in Part B: pause the snapshot browser during the
+        growth phase and look at the orientation of the vorticity bands
+        relative to each shear layer.
+
         **The mechanism behind the criterion:** a sign change in
         $\beta-U''$ means the flow supports Rossby-type waves (Ch. 9) riding
         on *oppositely-signed* PV gradients on either flank. Each wave
