@@ -29,6 +29,7 @@ site/content/      # Hugo pages: part/chapter tree, long-form text
 site/static/nb/    # exported WASM bundles land here (git-ignored; produced by `make`)
 Makefile           # `make notebooks` exports every changed .py -> site/static/nb/
 NOTATION.md        # symbol table + sign conventions (linked from every chapter)
+docs/              # contributor docs: architecture.md, gfdlib.md (API tour), authoring.md
 ```
 
 ## Build / preview / test commands
