@@ -28,27 +28,56 @@ def _(mo):
         r"""
         ## Governing equations
 
-        Taking the curl of the momentum equation gives the vorticity
-        equation; for a barotropic fluid on a $\beta$-plane it collapses to
-        material conservation of a single scalar, the **potential vorticity**
-        $q=\zeta+\beta y$ (symbols as in [NOTATION](../notation)):
+        ### Curl the momentum equation
+
+        Take $\partial_x(\text{$v$-equation})-\partial_y(\text{$u$-equation})$
+        of the 2D momentum equations on a $\beta$-plane. The pressure
+        gradient — a pure gradient — has zero curl and vanishes; what
+        survives, for a nondivergent flow, is an equation for the relative
+        vorticity $\zeta=v_x-u_y$ alone:
+
+        $$\frac{D\zeta}{Dt}+\beta v=0
+          \qquad\Longleftrightarrow\qquad
+          \frac{D}{Dt}\underbrace{(\zeta+\beta y)}_{q}=0.$$
+
+        The $\beta v$ term just says a parcel moving north picks up
+        planetary vorticity and must shed relative vorticity to compensate —
+        so the *sum* $q=\zeta+\beta y$, the **potential vorticity**, is
+        carried by each parcel like a dye (symbols as in
+        [NOTATION](../notation)):
 
         $$\frac{Dq}{Dt}=q_t+J(\psi,q)=0,\qquad \zeta=\nabla^2\psi=q-\beta y.$$
 
-        (The general Ertel PV $q=(\boldsymbol\omega_a\cdot\nabla\theta)/\rho$
-        reduces to this in the single-layer, constant-density limit; ch06 and
-        ch18 used the shallow-water and QG-turbulence special cases of the
-        same idea.)
+        This is the simplest member of a family. The full Ertel PV,
+        $q=(\boldsymbol\omega_a\cdot\nabla\theta)/\rho$, is materially
+        conserved in *any* adiabatic, frictionless stratified fluid;
+        Ch. 6's shallow-water $q=\zeta-\hat\eta$ and Ch. 8's QG PV are its
+        thin-layer and balanced limits. One conservation law, worn three
+        ways.
 
-        The **invertibility principle** is the operational content of this
-        equation: given $q(x,y)$ everywhere, a balance condition (here,
-        nondivergent flow: $\zeta=\nabla^2\psi$), and boundary conditions
-        (periodic), $\psi$ — and therefore $\mathbf u=(-\psi_y,\psi_x)$ — is
-        **uniquely determined**. Knowing where the PV is tells you the whole
-        flow; conservation then tells you how that PV (and hence the flow)
-        moves next. This notebook does nothing but invertibility, over and
-        over: invert once for a static picture, or invert every substep
-        while conserving $q$ to watch the flow evolve.
+        ### Invertibility: vorticity acts at a distance
+
+        Conservation alone is bookkeeping. The power move is the
+        **invertibility principle**: given $q(x,y)$ everywhere, a balance
+        condition (here, nondivergence: $\zeta=\nabla^2\psi$), and boundary
+        conditions (periodic), the streamfunction $\psi$ — and therefore the
+        entire velocity field $\mathbf u=(-\psi_y,\psi_x)$ — is **uniquely
+        determined** by one Poisson solve.
+
+        Note what kind of operator that is: $\nabla^{-2}$ is *nonlocal*. In
+        an unbounded domain $\psi(\mathbf x)=\frac{1}{2\pi}\int
+        \ln|\mathbf x-\mathbf x'|\,\zeta(\mathbf x')\,d^2x'$ — a vortex
+        patch induces flow **everywhere**, decaying slowly with distance,
+        exactly like a charge distribution induces an electrostatic
+        potential. That is why two vortices that never touch can advect each
+        other, and why "where the PV is" determines "what the whole fluid is
+        doing".
+
+        The complete dynamical loop, which this notebook runs over and over:
+        **invert** $q\to\psi$ (balance), **advect** $q$ with the resulting
+        flow (conservation), repeat. Invert once for a static picture, or
+        invert every substep to watch the flow evolve — nothing else is
+        needed.
         """
     )
     return
@@ -169,6 +198,16 @@ def _(mo):
         Poisson solve, no time-stepping. Right: the zonal-mean $q(y)$ and
         $u(y)$ — watch how, for the staircase preset, the wind extrema line
         up with the steepest part of the PV profile, not its flat plateaus.
+
+        **Why jets live at the risers:** for a zonal-mean profile the
+        inversion reads $\bar u=-\bar\psi_y$ with
+        $\bar\psi_{yy}=\bar q-\beta y$, so $\bar u_y\sim-(\bar q-\beta y)$ —
+        the *wind's curvature* tracks the PV anomaly, and the wind itself
+        peaks where the PV *gradient* is concentrated. Mix PV flat in a band
+        (a "tread") and you've killed the gradient there; all the gradient —
+        and hence a sharp eastward jet — piles up at the "riser" between
+        treads. Sharp PV gradients also *resist* mixing (they support strong
+        Rossby restoring, Ch. 9), so the staircase is self-reinforcing.
         """
     )
     return
@@ -294,16 +333,30 @@ def _(mo):
         - **Merger vs. no merger.** In the merger preset, increase
           separation until the two vortices stop merging within the run
           time and instead just co-rotate. Roughly how many blob-widths
-          apart is that threshold?
+          apart is that threshold? *Context:* for idealized equal vortex
+          patches the critical separation is $\approx3.2$ radii — inside it,
+          each vortex's strain field tears filaments off the other faster
+          than rotation can protect it; outside, they orbit like point
+          vortices essentially forever. See whether Gaussian blobs land near
+          the same number.
         - **Dipole speed.** In the dipole preset, decrease separation:
-          does the pair speed up or slow down? (Compare how far it travels
-          across the same run time $T$.)
+          does the pair speed up or slow down? *Point-vortex estimate:* each
+          vortex rides the other's induced velocity,
+          $U\sim\Gamma/(2\pi d)$ for circulation $\Gamma$ and separation
+          $d$ — so halving $d$ should roughly double the travel distance in
+          the same $T$. This self-propulsion is why dipoles are the fluid's
+          preferred way to *transport* vorticity (and heat, and tracers)
+          across a domain.
         - **Break the staircase.** In the staircase preset, increase
           $\beta$ from 0: do the risers (and their jets) stay put, drift,
-          or get smeared out by Rossby-wave radiation?
+          or get smeared out by Rossby-wave radiation? Note which way any
+          drift goes, and whether the jets *survive* — sharp PV gradients
+          support fast Rossby waves, which make the risers elastic rather
+          than fragile.
         - **Count the jets.** Change the number of bands and confirm the
           zonal-mean panel always shows $2\times$ that many alternating
-          jets — one per riser.
+          jets — one per riser. (Periodic in $y$: $n$ treads means $2n$
+          sign-alternating risers.)
 
         ### What you should have seen
 
@@ -317,6 +370,13 @@ def _(mo):
         quiet, well-mixed plateaus. This last result is the PV-staircase
         picture believed to underlie multiple-jet systems from the
         atmosphere's storm track to Jupiter's banded winds.
+
+        **Where this goes next.** The invert-then-advect loop is the entire
+        computational content of quasi-geostrophy: Ch. 8 changes only the
+        inversion operator (adding a stretching term), Ch. 9 linearizes the
+        same equation to get Rossby waves, and Ch. 18 runs it at high
+        amplitude to get geostrophic turbulence — which *produces* the
+        staircase you placed here by hand.
         """
     )
     return

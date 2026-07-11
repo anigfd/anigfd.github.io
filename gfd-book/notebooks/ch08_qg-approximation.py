@@ -28,24 +28,55 @@ def _(mo):
         r"""
         ## Governing equations
 
-        Starting from Ch. 6's rotating shallow water and formally expanding
-        in small Rossby number $Ro=U/(f_0L)$: the leading-order flow is
-        geostrophic, and the $O(Ro)$ ageostrophic correction is exactly what
-        advances the leading-order field forward in time. Carrying this
-        through collapses RSW to a single evolution equation for the
-        **quasi-geostrophic potential vorticity** (symbols as in
-        [NOTATION](../notation)):
+        ### The expansion, honestly sketched
 
-        $$q_t+J(\psi,q)=0,\qquad q=\nabla^2\psi-\frac{\psi}{L_R^2}+\beta y.$$
+        Quasi-geostrophy is what you get when you take Ch. 6's rotating
+        shallow water and ask: *what equation does the balanced remnant obey
+        once it is allowed to evolve?* The formal route is an expansion in
+        $Ro=U/(f_0L)\ll1$, under three standing assumptions that should be
+        checked, not mumbled:
 
-        Compare this to Ch. 7's barotropic $q=\zeta+\beta y$: QG adds a
-        **stretching term** $-\psi/L_R^2$, from the free-surface deformation
-        that RSW allows and pure 2D barotropic flow does not. Nondimensionalized
-        by $L_R$ so $L_R=1$, the balance operator becomes
-        $(\nabla^2-1)\psi=q-\beta y$ — **exactly** Ch. 6's shallow-water PV
-        Helmholtz operator. QG inversion is nothing new: it's the same
-        operator, applied to a field that's now free to evolve nonlinearly on
-        a $\beta$-plane.
+        1. **Time is advective:** $\partial_t\sim U/L$, i.e. the flow evolves
+           on its own turnover time, $Ro^{-1}$ slower than $f_0^{-1}$ — the
+           fast inertia–gravity waves of Ch. 6 are *filtered out by fiat*.
+        2. **$\beta$ is weak:** $\beta L/f_0=O(Ro)$ — planetary vorticity
+           varies, but not enough to break geostrophy at leading order.
+        3. **Height anomalies are small:** $\eta/H=O(Ro)$, consistent with
+           geostrophy at scale $L\sim L_R$.
+
+        Expand $\mathbf u=\mathbf u_0+Ro\,\mathbf u_1+\cdots$. At $O(1)$ the
+        momentum equations return geostrophic balance — which determines
+        $\mathbf u_0$ from $\eta$ but says *nothing about evolution*
+        (balance is degenerate: Ch. 5's diagnostic, again). The evolution
+        appears at $O(Ro)$, where the small **ageostrophic** circulation
+        $\mathbf u_1$ — undetermined itself — is eliminated between the
+        momentum and height equations, exactly the way divergence was
+        eliminated in Ch. 6's PV argument. What survives is one prognostic
+        equation for one scalar (symbols as in [NOTATION](../notation)):
+
+        $$q_t+J(\psi,q)=0,\qquad
+          q=\nabla^2\psi-\frac{\psi}{L_R^2}+\beta y .$$
+
+        ### What's new: the stretching term
+
+        Compare with Ch. 7's barotropic $q=\zeta+\beta y$: QG adds
+        $-\psi/L_R^2$. Physically, high pressure ($\psi>0$) means a raised
+        free surface, i.e. a *stretched* fluid column, which by Ch. 6's PV
+        logic carries an anticyclonic contribution — the free-surface
+        deformation that rigid-lid 2D flow forbids. Nondimensionalizing by
+        $L_R$ (so $L_R=1$), the inversion becomes
+
+        $$(\nabla^2-1)\,\psi=q-\beta y,$$
+
+        **exactly** Ch. 6's Helmholtz operator. QG inversion is nothing new —
+        it is the adjustment chapter's operator, now applied every timestep
+        to a field free to evolve nonlinearly on a $\beta$-plane. The
+        stretching term is also a statement about *reach*: the $-1$ in
+        $(\nabla^2-1)$ makes the Green's function decay exponentially beyond
+        $L_R$ (a Bessel $K_0$, not Ch. 7's long-range $\ln r$), so a QG
+        vortex's influence is **screened** beyond the deformation radius.
+        Scales $\ll L_R$ behave like 2D flow; scales $\gg L_R$ barely induce
+        any velocity at all.
         """
     )
     return
@@ -118,6 +149,19 @@ def _(mo):
         $k\to0$; the QG relation is capped at $\beta/2$, attained at
         $k=1/L_R$ — the deformation radius sets an intrinsic scale below
         which Rossby waves simply can't get any faster.
+
+        **Derive it yourself in two lines:** linearize $q_t+J(\psi,q)=0$
+        about rest. With $q'=(\nabla^2-1)\psi'$ the Jacobian contributes
+        only the planetary term $\beta\psi'_x$, so
+        $(\nabla^2-1)\psi'_t+\beta\psi'_x=0$; substituting
+        $\psi'\sim e^{i(kx+ly-\omega t)}$ gives
+        $\omega=-\beta k/(k^2+l^2+1)$. The $+1$ — the stretching term — is
+        the *only* difference from Ch. 7's barotropic waves, and it is
+        precisely what tames the $k\to0$ divergence: the longest waves must
+        move whole columns of fluid against the free surface's stiffness,
+        and that inertia caps their frequency at $\beta L_R/2$
+        (dimensionally). Long oceanic Rossby waves really do cross basins
+        at close to this non-dispersive limiting speed, $\beta L_R^2$.
         """
     )
     scen_md
@@ -257,6 +301,18 @@ def _(mo):
         westward drift is the beta-gyre signature: the asymmetric dipolar
         correction the vortex develops on a $\beta$-plane self-advects it,
         even though nothing in the flow was given any initial translation.
+
+        **The mechanism, step by step:** the vortex's swirling flow carries
+        ambient fluid across the planetary vorticity gradient — parcels
+        advected poleward on one flank acquire negative relative vorticity
+        ($Dq/Dt=0$ with $\beta y$ rising), parcels moving equatorward on the
+        other flank acquire positive $\zeta$. The result is a weak secondary
+        dipole (the *beta-gyres*) straddling the vortex, and by Ch. 7's
+        dipole physics, a dipole self-propels — dragging the parent vortex
+        with it, generically westward with a small poleward (for cyclones)
+        component. The same mechanism, in a more complicated fluid, is a
+        leading-order part of why hurricanes drift even in zero steering
+        flow.
         """
     )
     return
@@ -283,16 +339,23 @@ def _(mo):
         ### Try this
 
         - **Turn off $\beta$.** Set $\beta=0$: the vortex should sit still
-          and simply diffuse very slowly — no drift, no wake. Then turn
-          $\beta$ back up and watch the wake reappear.
+          and simply diffuse very slowly — no drift, no wake. *This is the
+          control experiment:* an axisymmetric vortex is an exact steady
+          solution of $q_t+J(\psi,q)=0$ (its $q$ and $\psi$ contours
+          coincide, so the Jacobian vanishes). Everything interesting in
+          this notebook is therefore attributable to $\beta$ alone.
         - **Tight vs. broad vortex.** Compare $\sigma=0.4$ and $\sigma=2.0$
           at fixed $\beta$: which sheds a more visible Rossby wave wake in
-          the same run time, and why does that match the dispersion-relation
-          panel (which $k$'s does each vortex size project onto)?
+          the same run time? *Reason it out first:* a vortex of size
+          $\sigma$ projects onto wavenumbers $k\sim1/\sigma$. The tight
+          vortex lives at $k\gg1$, where $\omega\to0$ — its wake is slow
+          and stays coiled around it; the broad one projects near the
+          $k\sim1$ frequency peak and radiates efficiently. Radiating is
+          *losing*: check whether the broad vortex also decays faster.
         - **Read the cap.** At your chosen $\beta$, use the dispersion panel
-          to read off $\beta/2$ — that's the fastest possible Rossby-wave
-          frequency at any wavenumber. Does the wake in the snapshot browser
-          ever seem to move faster than that bound would allow?
+          to read off $\beta/2$ — the fastest possible Rossby-wave frequency
+          at any wavenumber. Does the wake in the snapshot browser ever seem
+          to move faster than that bound would allow?
 
         ### What you should have seen
 
@@ -304,6 +367,14 @@ def _(mo):
         reuses Ch. 6's Helmholtz inversion exactly and caps the Rossby-wave
         frequency at $\beta/2$. This is the mechanism behind the observed
         westward propagation of oceanic mesoscale eddies.
+
+        **Where this goes next.** QG is the workhorse for the rest of the
+        book: Ch. 9 follows its waves through varying media (ray tracing),
+        Ch. 16 stacks two QG layers to get baroclinic instability — the
+        instability that *makes* the eddies whose drift you just watched —
+        and Ch. 18 runs QG at statistical steady state to get geostrophic
+        turbulence. If you can read $q=\nabla^2\psi-\psi/L_R^2+\beta y$
+        term by term, you can read all of them.
         """
     )
     return
