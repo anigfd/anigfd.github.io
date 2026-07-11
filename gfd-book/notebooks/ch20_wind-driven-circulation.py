@@ -28,31 +28,62 @@ def _(mo):
         r"""
         ## Governing equations
 
-        The steady, linear, vertically-integrated barotropic vorticity
-        equation on a $\beta$-plane, forced by wind-stress curl and damped
-        by friction (symbols as in [NOTATION](../notation)):
+        ### How wind becomes vorticity: Ekman pumping
+
+        The wind does not push the gyre around directly. Stress drives a
+        thin surface **Ekman layer** whose transport is $90°$ to the right
+        of the wind (Northern Hemisphere); where the stress *curl* is
+        negative (as between the westerlies and the trades), the Ekman
+        transports converge and pump water gently **downward** into the
+        interior ($w_{Ek}=\nabla\times\boldsymbol\tau/(\rho f)$, at a
+        stately ~30 m/*year*). The interior feels the wind only as this
+        squashing of its water columns — a vorticity forcing.
+
+        ### Sverdrup balance: the interior in one line
+
+        Steady, linear, vertically-integrated vorticity balance on a
+        $\beta$-plane (symbols as in [NOTATION](../notation)):
 
         $$\beta\frac{\partial\psi}{\partial x}=\frac{1}{\rho H}\nabla\times
           \boldsymbol\tau + \mathcal F,$$
 
         nondimensionalized on a unit square basin with idealized single-gyre
-        forcing $\nabla\times\boldsymbol\tau\propto-\sin(\pi y)$. Dropping
-        friction ($\mathcal F=0$) gives **Sverdrup balance**,
-        $\psi_x=-\sin(\pi y)$ — a first-order ODE in $x$ that can only
-        satisfy $\psi=0$ at *one* wall (conventionally the eastern one):
-        $\psi_{Sv}=(1-x)\sin(\pi y)$. Something else must close the
-        circulation at $x=0$. Two classical choices for $\mathcal F$:
+        forcing $\nabla\times\boldsymbol\tau\propto-\sin(\pi y)$. Read the
+        frictionless balance ($\mathcal F=0$) physically: $\beta\psi_x$ is
+        $\beta v$ — a column squashed by Ekman pumping must *lose* planetary
+        vorticity, so it slides **equatorward** (Ch. 7's $Dq/Dt=0$ yet
+        again). The whole subtropical interior drifts slowly south; that is
+        the **Sverdrup balance** (1947), and it is beautifully verified in
+        the real ocean's interior.
+
+        But integrate it: $\psi_x=-\sin(\pi y)$ is *first-order* in $x$ and
+        can satisfy $\psi=0$ at only *one* wall (conventionally the eastern):
+        $\psi_{Sv}=(1-x)\sin(\pi y)$. Mass does not close; every parcel
+        drifting equatorward must somehow get back poleward. Something else
+        has to happen at $x=0$.
+
+        ### Closing the basin: friction, and why the west
+
+        Two classical choices for $\mathcal F$:
 
         $$\textbf{Stommel (1948):}\ \varepsilon\nabla^2\psi+\psi_x=-\sin(\pi y),
         \qquad
         \textbf{Munk (1950):}\ -\delta^3\nabla^4\psi+\psi_x=-\sin(\pi y),$$
 
-        linear bottom drag and lateral (biharmonic) friction respectively,
-        each introducing a thin **western** boundary layer (never an
-        eastern one — Sverdrup's first-order balance only allows friction
-        to matter where it can locally reverse the sign of the dominant
-        balance, which happens only on the western side for realistic
-        $\beta>0$) that closes $\psi=0$ at $x=0$.
+        linear bottom drag and lateral (biharmonic) friction respectively.
+        Each introduces a thin boundary layer of width $\varepsilon$
+        (Stommel) or $\delta$ (Munk) in which friction competes with
+        $\beta$. Why must it sit on the **western** wall? Vorticity
+        bookkeeping: the wind injects negative vorticity over the whole
+        gyre, steadily, so the boundary layer must be a net *source* of
+        positive vorticity. A poleward return current hugging the west wall
+        rubs against it in the sense that supplies exactly that; the same
+        current on the east wall would *add* negative vorticity, and the
+        budget could never balance. (Equivalently: relative to the westward
+        Rossby-wave drift of Chs. 8–9, the western wall is "downstream" —
+        energy piles up there like water at a dam.) Hence the Gulf Stream
+        sits at the American coast and not the European one — an asymmetry
+        set by which way the planet spins, and nothing else.
         """
     )
     return
@@ -253,6 +284,14 @@ def _(mo):
         pick. That geometric asymmetry, not any special property of the
         Gulf Stream itself, is the entire reason western boundary currents
         exist and eastern ones don't.
+
+        **Where this goes next.** This linear, steady gyre is the skeleton;
+        the real Gulf Stream is its unstable, eddying descendant — run the
+        boundary current through Ch. 16's baroclinic instability and
+        Ch. 18's turbulence and you get the observed meanders, rings, and
+        recirculations. Ch. 21 completes the circulation picture with the
+        part the wind cannot do: the buoyancy-driven overturning that
+        ventilates the deep ocean beneath these wind-driven gyres.
         """
     )
     return

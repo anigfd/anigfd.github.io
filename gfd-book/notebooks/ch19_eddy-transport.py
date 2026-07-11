@@ -27,21 +27,48 @@ def _(mo):
         r"""
         ## Governing equations
 
-        Split a tracer's total concentration into an imposed, unbounded
-        **mean gradient** and a doubly-periodic **perturbation**:
+        ### Why "eddy diffusivity" needs defending
+
+        Molecular diffusion moves heat down its gradient because molecules
+        genuinely random-walk. Eddies are not molecules — they are ordered,
+        long-lived, and much bigger than the gradients they act on — so the
+        claim that their net effect on a tracer looks like a (much larger)
+        diffusivity is a *hypothesis*, one that every ocean and climate
+        model bets on when it writes
+        $\overline{v'c'}=-K\,\partial\overline C/\partial y$ for eddies it
+        cannot resolve. This notebook's purpose is to test that bet in the
+        one setting where the answer can be *measured* cleanly.
+
+        ### The mean-gradient trick
+
+        Split the tracer into an imposed, unbounded **mean gradient** and a
+        doubly-periodic **perturbation**:
         $C_{total}(x,y,t)=\Gamma y+c'(x,y,t)$ (symbols as in
-        [NOTATION](../notation)). Substituting into the advection-diffusion
+        [NOTATION](../notation)). Substituting into the advection–diffusion
         equation, $c'$ obeys
 
         $$\frac{\partial c'}{\partial t}+J(\psi,c')=-\Gamma v+\kappa\nabla^2c',$$
 
         stirred by the SAME vorticity field $\zeta=\nabla^2\psi$ evolving
-        under its own barotropic dynamics (ch. 18) — the tracer is passive:
+        under its own barotropic dynamics (Ch. 18) — the tracer is passive:
         advected by the flow, but exerting no force back on it. The
-        turbulent (eddy) flux this stirring produces defines an **effective
-        diffusivity** through the classic flux-gradient closure:
+        $-\Gamma v$ source term has a plain physical reading: a parcel
+        moving *up* the mean gradient ($v>0$) arrives carrying less tracer
+        than its new surroundings, i.e. a negative $c'$ — and that
+        systematic correlation between $v'$ and $c'$ **is** the eddy flux.
+        The turbulent flux defines an **effective diffusivity** through the
+        flux–gradient closure:
 
         $$K_{eff}=-\frac{\overline{v'c'}}{\Gamma}.$$
+
+        Dimensionally $K_{eff}\sim u_{rms}\,\ell_{mix}$ — velocity times the
+        distance a parcel travels before its tracer identity is blended
+        away (Prandtl's *mixing length*). For ocean mesoscale eddies
+        ($u\sim0.1$ m/s, $\ell\sim50$ km) that gives
+        $K_{eff}\sim10^3$–$10^4\,$m²/s, against a molecular
+        $\kappa\sim10^{-7}$ m²/s for heat: stirring beats diffusion by ten
+        orders of magnitude, which is why the parameterization question is
+        existential for climate modeling.
         """
     )
     return
@@ -275,6 +302,22 @@ def _(mo):
         molecular $\kappa$, and exactly the quantity ocean and atmosphere
         models parameterize when they can't afford to resolve the eddies
         themselves.
+
+        **A caution worth carrying forward:** the flux-gradient closure
+        worked here partly because the tracer was passive and the gradient
+        imposed. For tracers that *feel back* on the flow — PV above all —
+        eddy fluxes can be spatially inhomogeneous (near-zero inside
+        Ch. 7's staircase risers, huge in the mixed treads) and even
+        locally *up*-gradient. "The eddies act like diffusion" is a good
+        first model and a famously dangerous last one.
+
+        **Where this goes next.** Down-gradient PV mixing by exactly these
+        eddies is what sharpens Ch. 18's jets; the diffusivity you measured
+        is the quantity the Gent–McWilliams parameterization supplies to
+        every non-eddy-resolving ocean climate model; and the microscale
+        end of the same story — how the filaments' variance is finally
+        destroyed — is Ch. 17's Kelvin–Helmholtz billows, feeding the
+        abyssal $\kappa$ that Ch. 21's overturning balance runs on.
         """
     )
     return
