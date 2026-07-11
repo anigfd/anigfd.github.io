@@ -97,6 +97,30 @@ def _(mo):
           learns to make this sign flip; in the snapshot browser you can
           watch it happen.
 
+        If the geometric argument feels too slick, verify it by brute
+        force. Differentiating $\omega^2=(N^2k^2+f^2m^2)/(k^2+m^2)$ with
+        respect to each wavenumber component (write $K^2=k^2+m^2$ and use
+        the quotient rule) gives
+
+        $$\mathbf c_g=\left(\frac{\partial\omega}{\partial k},
+          \frac{\partial\omega}{\partial m}\right)
+          =\frac{1}{\omega K^2}\Big(k\,(N^2-\omega^2),\ m\,(f^2-\omega^2)\Big),$$
+
+        and the dot product with $\mathbf k=(k,m)$ collapses using the
+        dispersion relation itself:
+
+        $$\mathbf c_g\cdot\mathbf k
+          =\frac{k^2N^2+m^2f^2-\omega^2K^2}{\omega K^2}
+          =\frac{\omega^2K^2-\omega^2K^2}{\omega K^2}=0
+          \qquad\text{— exactly, not approximately.}$$
+
+        The component form also shows *why* the vertical components
+        oppose: for $f<\omega<N$, the factor $(N^2-\omega^2)$ is positive
+        but $(f^2-\omega^2)$ is **negative** — so $c_{g,z}$ and the
+        vertical phase speed $\omega m/K^2$ always carry opposite signs.
+        The mooring-record sign flip is not folklore; it is that minus
+        sign.
+
         Waves exist only where $f\le|\omega|\le N(z)$. Where $N(z)$ drops
         below $\omega$, the wave cannot propagate and **reflects** at that
         turning level — no boundary condition is imposed there; the wave

@@ -62,13 +62,42 @@ def _(mo):
         built* — verified directly in `gfdlib.baroclinic.to_modes`
         (not just asserted; see `tests/test_gfdlib.py`).
 
-        ### Available potential energy, revisited
+        ### Available potential energy: derived, not defined
 
-        Ch. 16 computed $EPE=\tfrac12F\langle(\psi_1-\psi_2)^2\rangle
-        =2F\langle\psi_{bc}^2\rangle$ without naming it this way: APE lives
-        **entirely in the baroclinic mode** — a flow with $\psi_{bc}\equiv0$
-        (purely barotropic) has exactly zero APE, by construction, no matter
-        how energetic its barotropic circulation is.
+        Why should $\tfrac12F\langle(\psi_1-\psi_2)^2\rangle$ deserve the
+        name "potential energy" at all? Trace it to the interface. In a
+        two-layer fluid, each layer's pressure is geostrophically tied to
+        its streamfunction ($\phi_i=f_0\psi_i$, Ch. 5), and the interface
+        displacement $\eta_I$ is what supports the pressure *difference*
+        between the layers — hydrostatically,
+
+        $$\eta_I=\frac{f_0}{g'}\,(\psi_2-\psi_1)=-\frac{2f_0}{g'}\,\psi_{bc},$$
+
+        with $g'$ the reduced gravity. The potential energy of deforming
+        that interface is the standard $\tfrac12g'\langle\eta_I^2\rangle$
+        (per unit area, relative to flat), which after substituting and
+        using $F=f_0^2/(g'H)$ works out — up to the nondimensionalization
+        used in this notebook's energetics — to exactly
+
+        $$APE=\tfrac12F\,\langle(\psi_1-\psi_2)^2\rangle
+             =2F\,\langle\psi_{bc}^2\rangle.$$
+
+        So the "APE" curve plotted below is literally the energy stored in
+        the tilted interface, and it lives **entirely in the baroclinic
+        mode**: a flow with $\psi_{bc}\equiv0$ has a flat interface and
+        exactly zero APE, no matter how energetic its barotropic
+        circulation. There is also a conservation law worth knowing: for
+        the unforced, inviscid system, the total
+
+        $$E=\underbrace{\tfrac12\langle|\nabla\psi_1|^2
+          +|\nabla\psi_2|^2\rangle}_{KE_1+KE_2}
+          +\underbrace{\tfrac12F\langle(\psi_1-\psi_2)^2\rangle}_{APE}$$
+
+        is exactly conserved (multiply each PV equation by $-\psi_i$,
+        integrate by parts over the periodic domain, add). The three curves
+        in this notebook's energetics panel are the three pieces of this
+        one conserved quantity — energy can only *move between them*, and
+        watching where it moves is the entire experiment.
 
         ### Where the split BREAKS
 

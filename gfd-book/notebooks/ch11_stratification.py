@@ -35,17 +35,41 @@ def _(mo):
         Ch. 10's two-layer split, $\psi_{bt}=(\psi_1+\psi_2)/2$,
         $\psi_{bc}=(\psi_1-\psi_2)/2$, decoupled the layer PV equations
         exactly. The continuous analog does the same for a stratified fluid
-        that varies smoothly with $z$: separate the linear, hydrostatic
-        equations by writing every field's $z$-dependence as
-        $\Phi_n(z)$ times a horizontal structure that evolves independently
-        for each $n$. Carrying this through (tracking $w$'s vertical
-        structure via continuity, and using the buoyancy equation to relate
-        it back to $\Phi$) gives a single eigenvalue problem for the mode
-        shapes (symbols as in [NOTATION](../notation)):
+        that varies smoothly with $z$, and the derivation is worth seeing
+        once in full. Take the linear, hydrostatic, Boussinesq equations
+        (Ch. 2) and look for solutions in which the *horizontal* structure
+        is common to $u,v,\phi$ (they are tied together by geostrophy and
+        hydrostatics) while $w$ and $b$ carry their own vertical shapes:
+
+        $$ (u,v,\phi)\propto\Phi(z),\qquad
+           w\propto W(z),\qquad b\propto B(z),$$
+
+        each multiplying the same horizontal wave. Three of the equations
+        then relate the three vertical structures:
+
+        - **Continuity** $u_x+v_y+w_z=0$: the horizontal divergence has
+          $\Phi$'s shape, so $W'\propto\Phi$ — say $W'=\gamma\,\Phi$ for a
+          separation constant $\gamma$.
+        - **Hydrostatic balance** $\phi_z=b$: $B=\Phi'$ (up to the same
+          constants).
+        - **Buoyancy conservation** $b_t+wN^2=0$: $B\propto N^2W$, i.e.
+          $\Phi'\propto N^2W$, so $W\propto\Phi'/N^2$.
+
+        Substituting the third relation into the first eliminates $W$
+        entirely, and the separation constant — call it $1/c^2$, with
+        dimensions of (speed)$^{-2}$ — lands in exactly one place
+        (symbols as in [NOTATION](../notation)):
 
         $$\frac{d}{dz}\!\left[\frac{1}{N^2(z)}\frac{d\Phi_n}{dz}\right]
           +\frac{1}{c_n^2}\Phi_n=0,
           \qquad \Phi_n'(0)=\Phi_n'(H)=0.$$
+
+        The boundary conditions are just $w=0$ at the rigid bottom and lid:
+        since $W\propto\Phi'/N^2$, zero vertical velocity means zero
+        $\Phi'$. Notice what does **not** appear: $f_0$. Rotation enters
+        only afterward, when each mode's gravity-wave speed $c_n$ is
+        converted to a deformation radius $L_n=c_n/f_0$ — the eigenvalue
+        problem itself is a property of the stratification alone.
 
         This is a genuine Sturm-Liouville eigenvalue problem: it has a
         countable, orthogonal family of solutions $\Phi_0,\Phi_1,\Phi_2,
@@ -75,6 +99,35 @@ def _(mo):
         `gfdlib.stratification`'s docstring and tests). This is the
         benchmark the numerical solver below is checked against before
         trusting it on a realistic, depth-varying $N^2(z)$.
+
+        ### The WKB estimate: one integral (almost) beats the eigensolver
+
+        For variable $N(z)$ there is a classical approximation that
+        requires no matrix at all. Seek a rapidly-oscillating solution
+        $\Phi\sim e^{i\theta(z)}$ with slowly-varying local wavenumber
+        $\theta'(z)$: substituting into the eigenvalue equation and keeping
+        the dominant ($\theta'^2$) terms gives $\theta'(z)=N(z)/c$ — the
+        mode oscillates fastest in $z$ exactly where the stratification is
+        strongest. Requiring $n$ half-wavelengths to fit between the two
+        Neumann boundaries ($\theta(H)-\theta(0)=n\pi$) then quantizes $c$:
+
+        $$c_n\approx\frac{1}{n\pi}\int_0^H N(z)\,dz.$$
+
+        For constant $N$ this reproduces $N_0H/(n\pi)$ *exactly*, and it is
+        the formula behind the standard global atlas of deformation radii
+        built from hydrographic data (Chelton et al. 1998). But test it
+        against this notebook's own solver before trusting it — the result
+        is instructive. For the default pycnocline profile, WKB gets modes
+        2–5 to within a few percent, **but is off by $\sim$40% for
+        mode 1**. That is not a bug; it is the approximation's own premise
+        failing exactly where you'd most like to use it: WKB assumed a
+        *rapidly oscillating* $\Phi$, and mode 1 — with its single, slow
+        sign change — oscillates least of all. The sharper the pycnocline
+        (the further from constant $N$), the worse the mode-1 estimate;
+        Chelton et al. apply an empirical correction for precisely this
+        reason. The honest summary: $c_n\propto1/n$ with the coefficient
+        $\int N\,dz/\pi$ is asymptotically exact for high modes and a
+        useful first guess — never a substitute — for the gravest one.
         """
     )
     return

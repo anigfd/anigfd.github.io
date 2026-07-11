@@ -28,18 +28,61 @@ def _(mo):
         r"""
         ## Governing equations
 
-        ### The full system (Boussinesq)
+        ### Deriving Boussinesq: where does the density go?
 
-        For a fluid whose density varies only weakly about a reference
-        $\rho_0$ (the Boussinesq approximation — valid whenever the depth of
-        the fluid is much less than a density scale height, true for both
-        the ocean and, less obviously, most of the troposphere), mass,
-        momentum, and buoyancy obey (symbols as in
+        Start from the exact momentum equation for a fluid of density
+        $\rho$ in a rotating frame,
+
+        $$\rho\left(\frac{D\mathbf u}{Dt}+f\hat{\mathbf z}\times\mathbf u\right)
+          =-\nabla p-\rho g\hat{\mathbf z}+\mu\nabla^2\mathbf u,$$
+
+        and split both density and pressure into a motionless, hydrostatic
+        reference state plus a fluctuation: $\rho=\rho_0+\rho'(\mathbf x,t)$
+        with $\rho_0$ constant, and $p=\bar p(z)+p'$ with
+        $d\bar p/dz=-\rho_0g$. Subtracting the reference state kills the
+        two large terms ($-\nabla\bar p$ and $-\rho_0g\hat{\mathbf z}$
+        cancel identically), leaving
+
+        $$(\rho_0+\rho')\left(\frac{D\mathbf u}{Dt}+f\hat{\mathbf z}\times\mathbf u\right)
+          =-\nabla p'-\rho'g\hat{\mathbf z}+\mu\nabla^2\mathbf u.$$
+
+        Now the one approximation, made honestly. The density fluctuation
+        appears in two places, and they are NOT equally important:
+
+        - **In the inertia** (left side), it enters as the *ratio*
+          $\rho'/\rho_0$ — a few percent in the ocean ($\rho'\sim$ a few
+          kg/m³ against $\rho_0\approx1025$), and $\sim$3% even for a 10 K
+          temperature anomaly in air. Dropping it changes accelerations by
+          that same few percent. Negligible.
+        - **In the gravity term**, it enters *multiplied by $g$*, and it is
+          the ONLY thing left there — the reference gravity already
+          cancelled. Dropping it would remove buoyancy entirely: no
+          convection, no stratification, no internal waves, none of
+          Part IV or V of this book. Not negligible, not even close.
+
+        The Boussinesq approximation is precisely this asymmetry: neglect
+        $\rho'$ wherever it competes with $\rho_0$, keep it where it
+        multiplies $g$. Dividing through by $\rho_0$ and defining the
+        kinematic pressure $\phi=p'/\rho_0$ and buoyancy $b=-g\rho'/\rho_0$
+        (positive $b$ = lighter than reference = upward force) gives the
+        system used everywhere in this book (symbols as in
         [NOTATION](../notation)):
 
         $$\nabla\cdot\mathbf u=0,\qquad
           \frac{D\mathbf u}{Dt}+f\hat{\mathbf z}\times\mathbf u=-\nabla\phi+b\hat{\mathbf z}+\nu\nabla^2\mathbf u,
           \qquad \frac{Db}{Dt}=\kappa\nabla^2 b.$$
+
+        (The incompressibility condition $\nabla\cdot\mathbf u=0$ comes from
+        the same logic applied to mass conservation
+        $D\rho/Dt+\rho\nabla\cdot\mathbf u=0$: with $\rho\approx\rho_0$
+        constant at leading order, the divergence must vanish. The validity
+        requirement is that the fluid's depth be much less than a density
+        scale height $H_\rho=\rho_0/|d\rho/dz|$ — tens of kilometers in the
+        ocean, so excellent there; $\sim$8 km in the atmosphere, so the
+        troposphere is marginal and quantitative atmospheric work uses the
+        *anelastic* refinement, which keeps $\nabla\cdot(\bar\rho\mathbf u)
+        =0$ instead. Every qualitative mechanism in this book survives that
+        refinement unchanged.)
 
         Every later chapter in this book is what remains of this system
         after dropping the terms that don't matter at that chapter's scale.
@@ -71,7 +114,7 @@ def _(mo):
         | $Ek=\nu/(f_0H^2)$ | friction / Coriolis (vertical/boundary-layer scale $H$) | $\nu\partial^2\mathbf u/\partial z^2$ |
         | $Fr=U/(NH)$ | inertia / buoyancy restoring | vertical motion vs. stratification |
         | $Re=UL/\nu$ | inertia / viscosity | $\nu\nabla^2\mathbf u$ |
-        | $Bu=(L_R/L)^2$, $L_R=NH/f_0$ | (rotation length / your length)$^2$ | relates $Ro$ and $Fr$: $Bu=(Fr/Ro)^2$ |
+        | $Bu=(L_R/L)^2$, $L_R=NH/f_0$ | (deformation radius / your length)$^2$ | relates $Ro$ and $Fr$: $Bu=(Ro/Fr)^2$ |
 
         `gfdlib.scaling` computes each of these from raw physical inputs
         ($U,L,H,N,\nu$, latitude) — the calculator below.

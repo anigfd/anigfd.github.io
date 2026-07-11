@@ -42,6 +42,41 @@ def _(mo):
           Bu=\left(\frac{L_R}{L}\right)^2\ \gtrless\ 1,
           \qquad L_R=\frac{NH}{f_0}.$$
 
+        ### Two derivations of $Bu$, one number
+
+        First, pure algebra: $Bu$ is not independent of Ch. 2's other
+        numbers. Directly from the definitions,
+
+        $$\left(\frac{Fr}{Ro}\right)^2
+          =\left(\frac{U/(NH)}{U/(f_0L)}\right)^2
+          =\left(\frac{f_0L}{NH}\right)^2
+          =\left(\frac{L}{L_R}\right)^2=\frac{1}{Bu},$$
+
+        so $Bu=(Ro/Fr)^2$: the Burger number measures whether *rotation*
+        ($Ro$ small first) or *stratification* ($Fr$ small first) is the
+        stronger constraint at your scale. $Bu\gg1$ means stratification
+        dominates the balance; $Bu\ll1$ means rotation does.
+
+        Second, dynamically — where $Bu$ actually shows up in an equation.
+        Ch. 8's QGPV is $q=\nabla^2\psi-\psi/L_R^2+\beta y$; estimate the
+        sizes of its two flow-dependent terms for a disturbance of scale
+        $L$ and streamfunction magnitude $\Psi$:
+
+        $$\frac{|\text{relative vorticity}|}{|\text{stretching}|}
+          =\frac{\Psi/L^2}{\Psi/L_R^2}
+          =\frac{L_R^2}{L^2}=Bu.$$
+
+        $Bu\gg1$: relative vorticity dominates and the free surface (or
+        interface) is effectively rigid — the disturbance behaves like
+        Ch. 7's pure 2D vorticity dynamics *locally*, but its energy is
+        stored increasingly in potential form. $Bu\ll1$: stretching
+        dominates — the disturbance is mostly interface displacement, its
+        induced velocities are screened (Ch. 8's Bessel-$K_0$ Green's
+        function), and Rossby waves at that scale approach their
+        non-dispersive long-wave limit. $Bu\sim1$ is where the two terms
+        trade places — and, not coincidentally, where baroclinic
+        instability (Ch. 16) extracts energy fastest.
+
         - **$Ro>1$ — unbalanced.** Acceleration is as large as Coriolis; no
           steady balance exists to expand around. Inertia-gravity waves
           (Ch. 6) dominate; concepts like PV invertibility (Ch. 7) still

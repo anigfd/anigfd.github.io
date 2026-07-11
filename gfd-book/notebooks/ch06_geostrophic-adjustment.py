@@ -348,6 +348,32 @@ def _(mo):
         below: the total-energy curve (dashed) stays flat because the
         *domain* is closed, but the energy near the disturbance drops as the
         wave front carries its share outward.
+
+        **Derive the wave tax yourself, one Fourier mode at a time.** For a
+        single mode of (nondimensional) wavenumber $k$ released from rest
+        with height amplitude $\hat\eta_0$: the initial energy is all
+        potential, $E_0=\tfrac14|\hat\eta_0|^2$ per unit area (the
+        $\tfrac14$ from averaging $\cos^2$). The balanced end state has
+        $\hat\eta_{bal}=\hat\eta_0/(1+k^2)$ (the low-pass inversion above),
+        and its geostrophic velocity $(\hat u,\hat v)=(-\eta_y,\eta_x)$
+        carries kinetic energy $k^2$ times its potential energy. Total
+        retained energy:
+
+        $$E_{bal}=\underbrace{\tfrac14|\hat\eta_{bal}|^2}_{PE}
+          +\underbrace{\tfrac14k^2|\hat\eta_{bal}|^2}_{KE}
+          =\frac{1+k^2}{(1+k^2)^2}\,\tfrac14|\hat\eta_0|^2
+          =\frac{E_0}{1+k^2}.$$
+
+        The fraction radiated is therefore $k^2/(1+k^2)$, mode by mode: a
+        long wave ($k\ll1$, scale $\gg L_R$) keeps nearly everything; a
+        short wave ($k\gg1$) loses nearly everything — the energetic
+        restatement of this chapter's central sentence. Gill's famous
+        overall $2/3$ comes from integrating this per-mode fraction over
+        the step profile's particular spectrum; broader initial profiles
+        waste less, narrower ones more. And notice the retained energy's
+        internal split, $KE/PE=k^2$: large-scale balanced remnants store
+        their energy almost entirely as *potential* energy — the reservoir
+        Ch. 16's baroclinic instability will later raid.
         """
     )
     return

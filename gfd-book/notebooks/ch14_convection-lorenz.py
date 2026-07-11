@@ -60,13 +60,41 @@ def _(mo):
         ### Linear onset: why there is a critical $Ra$, and why a preferred cell size
 
         Linearize about rest ($\zeta,\theta$ small; drop the Jacobians) and
-        insert normal modes $\sim e^{\sigma t}\sin(kx)\sin(\pi z)$ — the
-        $\sin(\pi z)$ satisfies both free-slip ($\zeta=0$) and
-        fixed-temperature ($\theta=0$) conditions at the plates. Setting the
-        growth rate $\sigma=0$ gives the neutral curve:
+        insert normal modes — the
+        $\sin(\pi z)$ factor satisfies both free-slip ($\zeta=0$) and
+        fixed-temperature ($\theta=0$) conditions at the plates, and the
+        $x$-phases are chosen so each equation's terms share a spatial
+        pattern:
 
-        $$Ra_c(k)=\frac{(k^2+\pi^2)^3}{k^2},\qquad
-          Ra_c=\min_k Ra_c(k)=\frac{27\pi^4}{4}\approx657.5\ \text{at}\ k_c=\frac{\pi}{\sqrt2}.$$
+        $$\psi=\hat\psi\,e^{\sigma t}\sin(kx)\sin(\pi z),\qquad
+          \theta=\hat\theta\,e^{\sigma t}\cos(kx)\sin(\pi z).$$
+
+        With $K^2=k^2+\pi^2$ (so $\nabla^2\to-K^2$ and
+        $\zeta=\nabla^2\psi=-K^2\psi$), the two linearized equations become
+        two algebraic relations between the amplitudes:
+
+        $$-\sigma K^2\hat\psi=Pr\,K^4\hat\psi-Pr\,Ra\,k\,\hat\theta,
+          \qquad
+          \sigma\hat\theta=-K^2\hat\theta+k\,\hat\psi.$$
+
+        At marginal stability set $\sigma=0$ (legitimate here because this
+        problem satisfies "exchange of stabilities" — instability sets in
+        as steady growth, not oscillation; for free-slip boundaries that
+        is a provable property, not an assumption). The second equation
+        gives $\hat\theta=k\hat\psi/K^2$; substituting into the first and
+        cancelling $\hat\psi$:
+
+        $$Pr\,K^4=Pr\,Ra\,\frac{k^2}{K^2}
+          \qquad\Longrightarrow\qquad
+          Ra_c(k)=\frac{K^6}{k^2}=\frac{(k^2+\pi^2)^3}{k^2}.$$
+
+        Note $Pr$ cancelled: the onset threshold is the same for air,
+        water, and magma — only the growth *rate* above threshold knows
+        the difference. Minimizing over $k$
+        ($dRa_c/dk^2=0\Rightarrow3k^2=k^2+\pi^2$):
+
+        $$k_c=\frac{\pi}{\sqrt2},\qquad
+          Ra_c=\min_k Ra_c(k)=\frac{27\pi^4}{4}\approx657.5.$$
 
         The *shape* of $Ra_c(k)$ is worth a minute of thought. Very wide
         cells ($k\to0$) are inefficient — fluid must travel a long

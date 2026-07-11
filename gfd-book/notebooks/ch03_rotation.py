@@ -28,6 +28,55 @@ def _(mo):
 def _(mo):
     mo.md(
         r"""
+        ## Where the Coriolis force comes from
+
+        Every chapter of this book uses $f$; this is the one place its
+        origin is derived rather than assumed. For any vector $\mathbf B$,
+        the rates of change seen in an inertial frame and in a frame
+        rotating at $\boldsymbol\Omega$ differ by the rotation of the
+        frame's own axes:
+
+        $$\left(\frac{d\mathbf B}{dt}\right)_{\!in}
+          =\left(\frac{d\mathbf B}{dt}\right)_{\!rot}
+          +\boldsymbol\Omega\times\mathbf B.$$
+
+        Apply this twice — once to position (giving $\mathbf u_{in}=
+        \mathbf u_{rot}+\boldsymbol\Omega\times\mathbf r$), then to that
+        velocity — and Newton's second law, written in the rotating frame,
+        acquires two extra apparent accelerations:
+
+        $$\frac{D\mathbf u}{Dt}
+          =\ldots-\underbrace{2\boldsymbol\Omega\times\mathbf u}_{\text{Coriolis}}
+          -\underbrace{\boldsymbol\Omega\times(\boldsymbol\Omega\times\mathbf r)}_{\text{centrifugal}}.$$
+
+        The factor of 2 in Coriolis is bookkeeping made visible: one factor
+        comes from the parcel's velocity being measured against rotating
+        axes, the other from its position vector rotating too. The
+        centrifugal term is a pure gradient ($\tfrac12\nabla|\boldsymbol
+        \Omega\times\mathbf r|^2$), so it is absorbed once and for all into
+        gravity — "vertical" on a rotating planet already *means* the
+        direction of combined gravity + centrifugal force, which is why
+        centrifugal force never appears again in this book.
+
+        For large-scale flow, only the **locally vertical component** of
+        $2\boldsymbol\Omega$ acts on the (nearly horizontal) velocity:
+        at latitude $\varphi$,
+
+        $$f=2\Omega\sin\varphi
+          \;\approx\;\underbrace{2\Omega\sin\varphi_0}_{f_0}
+          +\underbrace{\frac{2\Omega\cos\varphi_0}{a}}_{\beta}\,y
+          +\cdots$$
+
+        The constant term is the **$f$-plane**; keeping the linear term is
+        the **$\beta$-plane** ($y=a(\varphi-\varphi_0)$ the northward
+        distance, $a$ the planetary radius). Every $\beta$ in this book —
+        Rossby waves (ch. 9), the Rhines scale (ch. 18), westward
+        intensification (ch. 20) — is this Taylor coefficient: the
+        curvature of the planet, smuggled into Cartesian coordinates as a
+        linear gradient in the background rotation. At $\varphi_0=45°$,
+        $f_0\approx1.03\times10^{-4}\,$s$^{-1}$ and
+        $\beta\approx1.6\times10^{-11}\,$m$^{-1}$s$^{-1}$.
+
         ## Part A — Inertial oscillations
 
         ### Governing equations
@@ -183,6 +232,29 @@ def _(mo):
         and therefore the geostrophic velocity it determines — to be
         *literally the same at every height*. A fluid column moves as a
         single rigid unit, a **Taylor column**, from bottom to top.
+
+        The textbook derivation reaches the same place by a route worth
+        knowing, because it works in full 3D vector form. Take the curl of
+        the steady, inviscid, homogeneous momentum balance
+        $2\boldsymbol\Omega\times\mathbf u=-\nabla(p/\rho_0)$: the
+        right side vanishes (curl of a gradient), and the vector identity
+        $\nabla\times(\boldsymbol\Omega\times\mathbf u)
+        =\boldsymbol\Omega(\nabla\cdot\mathbf u)
+        -(\boldsymbol\Omega\cdot\nabla)\mathbf u$ (for constant
+        $\boldsymbol\Omega$), together with incompressibility, leaves
+
+        $$(\boldsymbol\Omega\cdot\nabla)\,\mathbf u=0
+          \qquad\Longleftrightarrow\qquad
+          \frac{\partial\mathbf u}{\partial z}=0
+          \ \ (\text{taking }\boldsymbol\Omega\parallel\hat{\mathbf z}).$$
+
+        *All three* velocity components are independent of the coordinate
+        along the rotation axis — including $w$, which the thermal-wind
+        route above says nothing about. (With a flat bottom, $w=0$ there
+        forces $w=0$ everywhere: rapidly rotating homogeneous flow is not
+        just columnar but genuinely two-dimensional, which is one deep
+        reason Ch. 18 studies 2D turbulence in a book about
+        three-dimensional fluids.)
 
         Below, `gfdlib.balance`'s exact frontal buoyancy field and
         thermal-wind integral (identical code to Ch. 5) are evaluated with

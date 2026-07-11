@@ -41,10 +41,10 @@ directly on it.
 
 ## Exercises
 
-1. *(analytic)* Show algebraically that $Bu=(Fr/Ro)^2$ (both are ratios
-   built from the same $U,L,H,N,f_0$), so the $(Ro,Bu)$ map is equivalent
-   to an $(Ro,Fr)$ map — confirm this against the definitions in
-   `gfdlib.scaling`.
+1. *(analytic)* Show algebraically that $Bu=(Ro/Fr)^2$ (both are ratios
+   built from the same $U,L,H,N,f_0$; note $Fr/Ro=f_0L/(NH)=L/L_R$), so the
+   $(Ro,Bu)$ map is equivalent to an $(Ro,Fr)$ map — confirm this against
+   the definitions in `gfdlib.scaling`.
 2. *(computational)* Modify `ch04_scaling.py` to add a sixth reference
    point for Ch. 12's internal-wave beams, using that chapter's typical
    $\hat N,\hat f,\hat\omega$ to estimate an effective $Ro,Bu$ (this
