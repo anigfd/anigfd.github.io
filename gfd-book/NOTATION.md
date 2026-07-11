@@ -297,6 +297,46 @@ for the geostrophically balanced height field carrying that PV.
 > of the same order as a mixing-length estimate $u_{rms}\times$(domain
 > scale) — a real emergent result of the simulation, not tuned to match.
 
+## Wind-driven circulation (Stommel; Munk)
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $\varepsilon$ | Stommel nondimensional bottom-drag parameter | boundary layer width $\sim\varepsilon$ |
+| $\delta$ | Munk nondimensional lateral-friction parameter | boundary layer width $\sim\delta$ |
+| $f(x)$ | west-east profile, $\psi=f(x)\sin(\pi y)$ | $f(0)=0$ always; $f'(0)=0$ too for Munk (no-slip) |
+
+> **A genuinely new domain shape.** Every earlier chapter's domain was
+> doubly-periodic or a channel with two boundaries; this is the first
+> *bounded rectangular basin*, four walls. `gfdlib.circulation` solves the
+> Stommel and Munk gyre problems two independent ways: an exact analytic
+> solution (separating $\psi=f(x)\sin(\pi y)$ reduces the PDE to a linear
+> ODE for $f(x)$ with constant coefficients, solved via its characteristic
+> polynomial's roots — quadratic formula for Stommel, `numpy.roots` for
+> Munk's quartic — and a small `numpy.linalg.solve` for the boundary
+> constants), and a general 2D finite-difference direct solve (Kronecker-
+> sum operators, `numpy.linalg.solve`, no SciPy) that works for arbitrary
+> forcing, cross-validated against the analytic solution with clean 2nd-order
+> convergence (`gfdlib` tests).
+>
+> **Munk's biharmonic operator is handled by keeping $\zeta=\nabla^2\psi$ as
+> an independent field** (the same pattern as ch16/17/19's coupled states)
+> rather than a hand-derived 4th-order stencil, closed with Thom's (1933)
+> wall-vorticity formula $\zeta_{wall}=2\psi_{adjacent}/d^2$ (derived by
+> Taylor-expanding $\psi$ from a $\psi=\psi_n=0$ wall) for no-slip on the
+> east/west walls, with free-slip ($\zeta=0$, no correction needed) on the
+> north/south walls — the standard textbook simplification that keeps the
+> problem separable.
+>
+> **A real bug, caught by a convergence test, not an eyeball check.** An
+> earlier version enforced no-slip on *all four* walls (matching physical
+> intuition, but not the separable-solution assumption). It disagreed with
+> the exact analytic solution by a stubborn $\sim30\%$ — but critically,
+> that error did **not** shrink with grid refinement at *any* boundary-layer
+> width tested (0.08 to 0.4), immediately distinguishing a genuine
+> discretization error (which must vanish as $\Delta x\to0$) from a
+> boundary-condition mismatch (which does not). The fix — free-slip on
+> north/south, matching the classical Pedlosky/Vallis treatment — restored
+> clean 2nd-order convergence.
+
 ## Dimensionless numbers
 | Number | Definition | Regime |
 |---|---|---|

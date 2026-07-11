@@ -1,6 +1,6 @@
 """Numeric correctness of gfdlib primitives. `make test` must pass before commit."""
 import numpy as np
-from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg, instability, baroclinic, symmetric, mixing
+from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg, instability, baroclinic, symmetric, mixing, circulation
 
 
 def test_poisson_roundtrip():
@@ -505,6 +505,70 @@ def test_double_shear_layer_vorticity_signs():
     y2_idx = np.argmin(np.abs(g.y[0, :] - 0.75 * g.L))
     assert zeta[0, y1_idx] < 0
     assert zeta[0, y2_idx] > 0
+
+
+def test_stommel_analytic_satisfies_bcs_and_sverdrup_limit():
+    """The exact separable Stommel solution satisfies psi=0 at both x
+    boundaries exactly, and recovers the classic Sverdrup interior
+    solution f=1-x away from the western boundary layer as eps->0."""
+    eps = 0.05
+    assert abs(circulation.stommel_f(np.array([0.0, 1.0]), eps)).max() < 1e-8
+
+    eps_small = 1e-4
+    f_small = circulation.stommel_f(np.array([0.5, 0.8, 0.99]), eps_small)
+    f_sverdrup = 1 - np.array([0.5, 0.8, 0.99])
+    assert np.max(np.abs(f_small - f_sverdrup)) < 0.02
+
+
+def test_stommel_fd_matches_analytic_with_2nd_order_convergence():
+    """The general 2D finite-difference Stommel solver, cross-validated
+    against the independently-derived exact analytic solution, must
+    converge at 2nd order as resolution increases."""
+    eps = 0.05
+    errs = []
+    for n in [40, 80]:
+        psi_fd, x_full, y_full = circulation.solve_stommel_fd(n, n, eps)
+        X, Y = np.meshgrid(x_full, y_full, indexing="xy")
+        psi_exact = circulation.stommel_analytic(X, Y, eps)
+        errs.append(np.max(np.abs(psi_fd - psi_exact)))
+    # doubling resolution should cut error by ~4x (2nd order); allow slack
+    assert errs[1] < errs[0] / 2.5
+    assert errs[1] < 0.01
+
+
+def test_munk_analytic_satisfies_noslip_bcs():
+    """The exact separable Munk solution satisfies BOTH psi=0 and
+    psi'=0 (no-slip) at both x boundaries exactly, verified via the exact
+    closed-form derivative (not a finite-difference estimate, which is
+    inaccurate at this sharp a boundary layer even on a fine grid)."""
+    delta = 0.1
+    C, roots, fp = circulation._munk_coeffs(delta)
+
+    def fprime(x):
+        return np.real(np.sum(C * roots * np.exp(roots * x)))
+
+    for x in [0.0, 1.0]:
+        assert abs(circulation.munk_f(np.array([x]), delta)[0]) < 1e-8
+        assert abs(fprime(x)) < 1e-8
+
+
+def test_munk_fd_matches_analytic_with_2nd_order_convergence():
+    """The general 2D coupled (psi,zeta) finite-difference Munk solver
+    (no-slip east/west via Thom's formula, free-slip north/south), cross-
+    validated against the independently-derived exact analytic solution,
+    must converge at 2nd order. (Getting the north/south BC wrong -- full
+    no-slip on all four walls -- was tried and gave a resolution-
+    INDEPENDENT ~30% error, immediately distinguishing a boundary-
+    condition mismatch from genuine discretization error.)"""
+    delta = 0.15
+    errs = []
+    for n in [30, 60]:
+        psi_fd, x_full, y_full = circulation.solve_munk_fd(n, n, delta)
+        X, Y = np.meshgrid(x_full, y_full, indexing="xy")
+        psi_exact = circulation.munk_analytic(X, Y, delta)
+        errs.append(np.max(np.abs(psi_fd - psi_exact)))
+    assert errs[1] < errs[0] / 2.5
+    assert errs[1] < 0.01
 
 
 def _run_mixing(Gamma, nu=1e-6, nnu=2, kappa=1e-6, kappa_nnu=2, n=64,
