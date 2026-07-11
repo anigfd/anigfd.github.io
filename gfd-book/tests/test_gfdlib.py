@@ -1,6 +1,6 @@
 """Numeric correctness of gfdlib primitives. `make test` must pass before commit."""
 import numpy as np
-from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg, instability, baroclinic, symmetric, mixing, circulation, overturning, stratification, wavemean
+from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg, instability, baroclinic, symmetric, mixing, circulation, overturning, kinematics, rotation, scaling, stratification, wavemean
 
 
 def test_poisson_roundtrip():
@@ -949,3 +949,86 @@ def test_ray_group_velocity_vanishes_near_critical_layer():
             cgy_mid = wavemean.ray_rhs_shear(state, k, beta, dUdy)[0]
     cgy_final = wavemean.ray_rhs_shear(state, k, beta, dUdy)[0]
     assert abs(cgy_final) < abs(cgy_mid)
+
+
+def test_okubo_weiss_pure_strain_exact():
+    """With Gamma=0 (no vortex) the flow is exactly linear strain, so
+    central differences are exact regardless of step size: W=4*alpha^2
+    everywhere, strain-dominated (W>0)."""
+    alpha = 0.5
+    W = kinematics.okubo_weiss(3.0, -2.0, alpha=alpha, Gamma=0.0, sigma=1.0)
+    assert abs(W - 4 * alpha ** 2) < 1e-8
+
+
+def test_okubo_weiss_vortex_core_vorticity_dominated():
+    """At the center of a pure (alpha=0) Lamb-Oseen-like vortex the flow is
+    locally solid-body rotation: zero strain, vorticity=Gamma/(2*pi*sigma^2),
+    so W=-zeta^2<0 (vorticity-dominated core)."""
+    Gamma, sigma = 2.0, 1.0
+    zeta_center = Gamma / (2 * np.pi * sigma ** 2)
+    W = kinematics.okubo_weiss(0.0, 0.0, alpha=0.0, Gamma=Gamma, sigma=sigma)
+    assert W < 0.0
+    assert abs(W - (-zeta_center ** 2)) / zeta_center ** 2 < 0.05
+
+
+def test_inertial_rhs_returns_to_start_after_one_period():
+    """Numerically integrating du/dt=f*v, dv/dt=-f*u for exactly one period
+    T=2*pi/f must return to the starting velocity."""
+    f = 2.0
+    dt = 1e-4
+    nsteps = int(round((2 * np.pi / f) / dt))
+    state = np.array([1.0, 0.0])
+    for _ in range(nsteps):
+        state = timestep.rk4(lambda t, s: rotation.inertial_rhs(s, f), state, dt)
+    assert np.max(np.abs(state - [1.0, 0.0])) < 1e-4
+
+
+def test_inertial_trajectory_constant_radius_and_speed():
+    """The analytic solution is an exact circle: constant distance from its
+    center, and constant speed (rotation conserves kinetic energy)."""
+    f, u0, v0, x0, y0 = 1.3, 0.7, -0.4, 2.0, -1.0
+    t = np.linspace(0, 7.3, 500)
+    x, y, u, v = rotation.inertial_trajectory(t, u0, v0, f, x0, y0)
+    w0 = u0 + 1j * v0
+    center = (x0 + 1j * y0) + w0 / (1j * f)
+    r = np.sqrt((x - center.real) ** 2 + (y - center.imag) ** 2)
+    assert np.max(np.abs(r - abs(w0) / f)) < 1e-10
+    assert np.max(np.abs(np.sqrt(u ** 2 + v ** 2) - abs(w0))) < 1e-10
+
+
+def test_inertial_numeric_matches_analytic_trajectory():
+    """Independent check: RK4-stepping the full (x,y,u,v) state must agree
+    with the closed-form inertial_trajectory."""
+    f, u0, v0 = 2.1, 1.0, 0.3
+    dt, nsteps = 1e-3, 2000
+
+    def rhs(t, s):
+        x, y, u, v = s
+        return np.array([u, v, f * v, -f * u])
+
+    state = np.array([0.0, 0.0, u0, v0])
+    for _ in range(nsteps):
+        state = timestep.rk4(rhs, state, dt)
+    x_a, y_a, u_a, v_a = rotation.inertial_trajectory(dt * nsteps, u0, v0, f)
+    assert np.max(np.abs(state - [x_a, y_a, u_a, v_a])) < 1e-6
+
+
+def test_rossby_and_burger_numbers():
+    assert abs(scaling.rossby_number(U=1.0, f=1e-4, L=1e5) - 0.1) < 1e-12
+    N, H, f, L = 0.01, 1000.0, 1e-4, 5e4
+    Lr = scaling.deformation_radius(N, H, f)
+    assert abs(Lr - N * H / f) < 1e-12
+    assert abs(scaling.burger_number(N, H, f, L) - (Lr / L) ** 2) < 1e-10
+
+
+def test_coriolis_parameter_known_values():
+    Omega = 7.292e-5
+    assert abs(scaling.coriolis_parameter(0.0)) < 1e-15
+    assert abs(scaling.coriolis_parameter(30.0) - Omega) < 1e-10
+    assert abs(scaling.coriolis_parameter(90.0) - 2 * Omega) < 1e-10
+
+
+def test_classify_regime_known_points():
+    assert scaling.classify_regime(2.0, 5.0) == 0
+    assert scaling.classify_regime(0.1, 2.0) == 1
+    assert scaling.classify_regime(0.1, 0.5) == 2

@@ -34,7 +34,7 @@ notebook** (`notebooks/chNN_slug.py`) built on shared primitives in
 
 | Part | Chapters | Notebooks | gfdlib modules |
 |---|---|---|---|
-| **I — Foundations** | 1–4: kinematics, governing equations, rotation, scaling | 📝 planned | — |
+| **I — Foundations** | 1 kinematics & Okubo-Weiss ✅ · 2 governing eqns/Boussinesq scaling ✅ · 3 rotation (inertial oscillations, Taylor-Proudman) ✅ · 4 Ro-Bu regime map ✅ | 4 of 4 | `kinematics`, `rotation`, `scaling` |
 | **II — Balance & adjustment** | 5 geostrophic/thermal wind ✅ · 6 rotating shallow water & adjustment ✅ · 7 vorticity & PV ✅ | 3 of 3 | `balance`, `shallowwater`, `pv` |
 | **III — Quasi-geostrophy** | 8 the QG approximation ✅ · 9 Rossby waves & ray tracing ✅ · 10 two-layer QG modes ✅ | 3 of 3 | `qg`, `rossby`, `baroclinic` |
 | **IV — Stratified flow & waves** | 11 stratification & vertical modes ✅ · 12 internal gravity waves ✅ · 13 wave–mean interaction ✅ | 3 of 3 | `internalwaves`, `stratification`, `wavemean` |

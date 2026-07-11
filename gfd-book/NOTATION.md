@@ -388,6 +388,47 @@ for the geostrophically balanced height field carrying that PV.
 > north/south, matching the classical Pedlosky/Vallis treatment — restored
 > clean 2nd-order convergence.
 
+## Kinematics: strain, vorticity & the Okubo-Weiss parameter
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $S_n=u_x-v_y$ | normal strain | |
+| $S_s=v_x+u_y$ | shear strain | |
+| $W=S_n^2+S_s^2-\zeta^2$ | Okubo-Weiss parameter | $W<0$ vorticity-dominated, $W>0$ strain-dominated |
+
+> **A steady strain + smooth vortex, differentiated by finite differences,
+> not by hand.** `gfdlib.kinematics.velocity_field` is a Lamb-Oseen-like
+> vortex superposed on uniform strain (both individually divergence-free);
+> `okubo_weiss` gets $S_n,S_s,\zeta$ from central differences of that
+> velocity field, the same safety pattern `gfdlib.rossby` uses for its ray
+> equations (correctness then rests only on `velocity_field` itself, not on
+> a hand-differentiated closed form for the smoothed vortex profile).
+> Verified against two independently-derivable limits: with $\Gamma=0$ the
+> flow is exactly linear strain, so central differences are *exact*
+> (`W=4\alpha^2` to floating-point precision, any $h$); at the vortex center
+> with $\alpha=0$ the flow is locally solid-body rotation with zero strain,
+> so $W=-\zeta_{center}^2$ with $\zeta_{center}=\Gamma/(2\pi\sigma^2)$ from
+> the vortex's small-$r$ Taylor expansion.
+
+## Inertial oscillations & the Taylor-Proudman limit
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $w=u+iv$ | complex velocity | $dw/dt=-ifw$ on an unforced $f$-plane |
+| $T=2\pi/f$ | inertial period | |
+
+> **Taylor-Proudman is not a separate solver — it is $b\equiv0$ in Ch. 5's
+> thermal wind.** `gfdlib.rotation` handles only the inertial-oscillation
+> half (`inertial_rhs` for RK4 integration, `inertial_trajectory` for the
+> closed-form circle $w(t)=w_0e^{-ift}$, radius $|w_0|/f$, period $2\pi/f$);
+> the Taylor-Proudman half of ch03 reuses `gfdlib.balance.thermal_wind_u`
+> directly with the buoyancy contrast swept to zero, since
+> $f\,u_{g,z}=-b_y\equiv0\Rightarrow u_{g,z}=0$ requires no new code, only a
+> new reading of code that already existed. Verified: the numerically
+> RK4-integrated $(x,y,u,v)$ trajectory matches `inertial_trajectory` to
+> $10^{-6}$; the closed-form trajectory's radius and speed are exactly
+> constant (a genuine circle) to $10^{-10}$; the thermal-wind shear range is
+> exactly linear in $\Delta b$ (inherited directly from `thermal_wind_u`'s
+> own linearity — no fitting).
+
 ## Vertical normal modes (Sturm-Liouville, rigid lid)
 | Symbol | Meaning | Convention |
 |---|---|---|
@@ -462,3 +503,14 @@ for the geostrophically balanced height field carrying that PV.
 | Rayleigh $Ra$ | $g\alpha\Delta T H^3/(\nu\kappa)$ | convective onset |
 | Reynolds $Re$ | $UL/\nu$ | inertia vs. viscosity |
 | Richardson $Ri$ | $N^2/(\partial_z u)^2$ | shear stability |
+
+> **`gfdlib.scaling` turns the table above into testable functions**
+> (`rossby_number`, `ekman_number`, `froude_number`, `reynolds_number`,
+> `burger_number`, `deformation_radius`, `coriolis_parameter`) plus a coarse
+> three-region `classify_regime(Ro, Bu)` used by ch04's regime map: $Ro>1$
+> unbalanced; $Ro<1,Bu>1$ ($L<L_R$) QG-baroclinic (Ch. 16 territory);
+> $Ro<1,Bu<1$ ($L>L_R$) QG-barotropic (Taylor-Proudman-like, Ch. 3/18
+> territory). A pedagogical simplification of the classical Ro-Bu regime
+> diagram — real transitions are smooth, not the sharp lines drawn on the
+> map — but the two boundaries ($Ro=1$, $Bu=1$) are exactly the numbers'
+> own definitions, not fitted thresholds.

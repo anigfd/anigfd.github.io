@@ -38,6 +38,26 @@ diverging + symmetric limits for **signed** fields (vorticity, PV, height
 anomaly), perceptually-uniform sequential for non-negative fields. Using
 this module is what keeps every chapter's figures visually consistent.
 
+## Part I — Foundations
+
+### `kinematics` (ch. 1)
+Prescribed 2D flow: `velocity_field` (steady strain + a Lamb-Oseen-like
+vortex, closed form), `vortex_velocity`, and `okubo_weiss` (the
+strain-vs-vorticity parameter $W$, from central differences of
+`velocity_field` — same safety pattern as `rossby`'s ray equations).
+
+### `rotation` (ch. 3)
+Inertial oscillations: `inertial_rhs` (for RK4 integration) and
+`inertial_trajectory` (closed-form circular solution, radius $|w_0|/f$,
+period $2\pi/f$). Taylor-Proudman itself reuses `balance.thermal_wind_u`
+directly (it is the $b\equiv0$ limit of thermal wind — no new solver).
+
+### `scaling` (ch. 2, 4)
+Dimensionless-number calculator: `rossby_number`, `ekman_number`,
+`froude_number`, `reynolds_number`, `burger_number`, `deformation_radius`,
+`coriolis_parameter`, and `classify_regime(Ro, Bu)` (the three-region
+unbalanced / QG-baroclinic / QG-barotropic map ch. 4 renders).
+
 ## Part II — Balance and adjustment
 
 ### `balance` (ch. 5)
