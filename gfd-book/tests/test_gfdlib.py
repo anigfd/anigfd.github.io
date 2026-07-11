@@ -1,6 +1,6 @@
 """Numeric correctness of gfdlib primitives. `make test` must pass before commit."""
 import numpy as np
-from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg, instability, baroclinic, symmetric, mixing, circulation, overturning, kinematics, rotation, scaling
+from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg, instability, baroclinic, symmetric, mixing, circulation, overturning, kinematics, rotation, scaling, stratification, wavemean
 
 
 def test_poisson_roundtrip():
@@ -766,6 +766,189 @@ def test_taylor_goldstein_j0_peak_matches_michalke():
     growth = instability.taylor_goldstein_growth_rate_curve(z, U, N2, k_values)
     k_peak = k_values[np.argmax(growth)]
     assert abs(k_peak - 0.4446) < 0.03
+
+
+def test_pv_2layer_inverts_invert_2layer():
+    """pv_2layer and invert_2layer are exact inverses of each other (up to
+    the k=0 mode, which every Helmholtz/Poisson inversion in this book
+    sets to zero by convention)."""
+    g = spectral.Grid(32)
+    rng = np.random.default_rng(3)
+    psi1 = rng.standard_normal((32, 32)); psi1 -= psi1.mean()
+    psi2 = rng.standard_normal((32, 32)); psi2 -= psi2.mean()
+    F = 1.3
+    q1_hat, q2_hat = baroclinic.pv_2layer(g.fft(psi1), g.fft(psi2), g, F)
+    psi1_rec, psi2_rec = baroclinic.invert_2layer(q1_hat, q2_hat, g, F)
+    assert np.max(np.abs(g.ifft(psi1_rec) - psi1)) < 1e-8
+    assert np.max(np.abs(g.ifft(psi2_rec) - psi2)) < 1e-8
+
+
+def test_baroclinic_modes_decouple_exactly():
+    """Summing/differencing the 2-layer PV operator gives EXACTLY the
+    barotropic vorticity equation (no F) for the barotropic mode and a
+    single-layer QG stretching equation (coefficient 2F) for the baroclinic
+    mode -- verified directly against gfdlib.baroclinic.to_modes, not
+    assumed from the docstring's algebra."""
+    g = spectral.Grid(32)
+    rng = np.random.default_rng(4)
+    psi1 = rng.standard_normal((32, 32)); psi1 -= psi1.mean()
+    psi2 = rng.standard_normal((32, 32)); psi2 -= psi2.mean()
+    F = 0.7
+    q1_hat, q2_hat = baroclinic.pv_2layer(g.fft(psi1), g.fft(psi2), g, F)
+    q_bt_hat, q_bc_hat = baroclinic.to_modes(q1_hat, q2_hat)
+    psi_bt_hat, psi_bc_hat = baroclinic.to_modes(g.fft(psi1), g.fft(psi2))
+
+    expected_q_bt = g.laplacian(psi_bt_hat)
+    expected_q_bc = g.laplacian(psi_bc_hat) - 2 * F * psi_bc_hat
+    assert np.max(np.abs(g.ifft(q_bt_hat) - g.ifft(expected_q_bt))) < 1e-8
+    assert np.max(np.abs(g.ifft(q_bc_hat) - g.ifft(expected_q_bc))) < 1e-8
+
+
+def test_modes_roundtrip():
+    """from_modes is the exact inverse of to_modes."""
+    rng = np.random.default_rng(5)
+    a, b = rng.standard_normal((16, 16)), rng.standard_normal((16, 16))
+    bt, bc = baroclinic.to_modes(a, b)
+    a_rec, b_rec = baroclinic.from_modes(bt, bc)
+    assert np.max(np.abs(a_rec - a)) < 1e-12
+    assert np.max(np.abs(b_rec - b)) < 1e-12
+
+
+def test_vertical_modes_constant_N_matches_exact_cosines():
+    """For constant N, Phi_n=cos(n*pi*z/H), c_n=N*H/(n*pi) is an exact
+    solution (derived and checked by hand -- see gfdlib.stratification's
+    module docstring); the finite-difference solver must reproduce both
+    the eigenvalues and the mode shapes."""
+    N0, H = 0.01, 1000.0
+    z = np.linspace(0.0, H, 400)
+    N2 = np.full_like(z, N0 ** 2)
+    n_modes = 4
+    c, Phi = stratification.vertical_modes(z, N2, H, n_modes)
+
+    for k in range(n_modes):
+        n = k + 1
+        c_exact = N0 * H / (n * np.pi)
+        assert abs(c[k] - c_exact) / c_exact < 1e-3
+        phi_exact = np.cos(n * np.pi * z / H)
+        # sign convention: Phi(0)=1, matching cos(0)=1 -- compare directly
+        assert np.max(np.abs(Phi[k] - phi_exact)) < 1e-2
+
+
+def test_vertical_modes_ordering_is_decreasing_speed():
+    """Higher modes must have strictly smaller c (shorter deformation
+    radius, more vertical structure) -- true for any physical N2(z), not
+    just the constant-N exact case."""
+    z = np.linspace(0.0, 1000.0, 300)
+    N2 = stratification.pycnocline_N2(z, N2_min=1e-5, N2_max=1e-4,
+                                       z_center=300.0, thickness=100.0)
+    c, _ = stratification.vertical_modes(z, N2, 1000.0, 5)
+    assert np.all(np.diff(c) < 0)
+
+
+def test_vertical_modes_neumann_bc_satisfied():
+    """Every computed mode's boundary slope, measured by finite difference,
+    must be much smaller than a typical INTERIOR slope of the same mode --
+    the discrete signature of Phi'(0)=Phi'(H)=0."""
+    z = np.linspace(0.0, 1000.0, 400)
+    N2 = stratification.pycnocline_N2(z, N2_min=1e-5, N2_max=1e-4,
+                                       z_center=300.0, thickness=100.0)
+    c, Phi = stratification.vertical_modes(z, N2, 1000.0, 3)
+    dphi = np.diff(Phi, axis=1)
+    interior_rms_slope = np.sqrt(np.mean(dphi[:, 1:-1] ** 2, axis=1))
+    boundary_slope = np.maximum(np.abs(dphi[:, 0]), np.abs(dphi[:, -1]))
+    assert np.all(boundary_slope < 0.1 * interior_rms_slope)
+
+
+def test_stokes_drift_matches_particle_advection():
+    """Independent check: advecting a single particle (via gfdlib.timestep.
+    rk4) in wave_velocity for many periods and measuring its net drift rate
+    must approach the closed-form stokes_drift formula."""
+    A, k, omega = 0.05, 1.0, 2.0
+    T_period = 2 * np.pi / omega
+    n_periods, substeps = 1000, 20
+    dt = T_period / substeps
+    nsteps = int(round(n_periods * T_period / dt))
+
+    def rhs(t, s):
+        return np.array([wavemean.wave_velocity(s[0], t, A, k, omega)])
+
+    state = np.array([0.0])
+    t = 0.0
+    for _ in range(nsteps):
+        state = timestep.rk4(rhs, state, dt, t)
+        t += dt
+    measured = state[0] / t
+    predicted = wavemean.stokes_drift(A, k, omega)
+    assert abs(measured - predicted) / predicted < 0.05
+
+
+def test_stokes_drift_direction_matches_phase_propagation():
+    """For k,omega>0 the drift must be positive -- same direction as phase
+    propagation (kx-omega*t=const moves toward +x as t grows), matching
+    the classical surface-gravity-wave result."""
+    assert wavemean.stokes_drift(0.1, 1.0, 2.0) > 0
+    assert wavemean.stokes_drift(0.1, -1.0, 2.0) < 0
+
+
+def _linear_shear_ray_setup(Lambda=1.0, k=1.0, beta=0.5, y0=0.0, l0=1.0):
+    def U(y):
+        return Lambda * y
+
+    def dUdy(y):
+        return Lambda
+
+    omega0 = wavemean.rossby_shear_dispersion(y0, k, l0, U, beta)
+    y_c = omega0 / (k * Lambda)   # where U(y_c)=omega0/k
+    return U, dUdy, omega0, y_c
+
+
+def test_ray_conserves_omega_on_steady_shear():
+    """omega(y(t),k,l(t)) must stay exactly constant along the ray (the
+    medium is steady), even as y and l both evolve substantially."""
+    U, dUdy, omega0, _ = _linear_shear_ray_setup()
+    k, beta = 1.0, 0.5
+    state = np.array([0.0, 1.0])
+    dt, nsteps = 1e-4, 50000
+    for _ in range(nsteps):
+        state = timestep.rk4(lambda t, s: wavemean.ray_rhs_shear(s, k, beta, dUdy), state, dt)
+    y, l = state
+    omega_now = wavemean.rossby_shear_dispersion(y, k, l, U, beta)
+    assert abs(omega_now - omega0) < 1e-6
+
+
+def test_ray_approaches_critical_layer_without_crossing():
+    """The ray must approach y_c asymptotically (getting monotonically
+    closer over the back half of the run) without ever crossing it, while
+    |l| grows without bound -- the signature of a critical layer in linear
+    inviscid ray theory."""
+    U, dUdy, omega0, y_c = _linear_shear_ray_setup()
+    k, beta = 1.0, 0.5
+    state = np.array([0.0, 1.0])
+    dt, nsteps = 1e-4, 200000
+    l_prev = 1.0
+    for i in range(nsteps):
+        state = timestep.rk4(lambda t, s: wavemean.ray_rhs_shear(s, k, beta, dUdy), state, dt)
+        if i == nsteps // 2:
+            y_mid, l_mid = state
+    y_final, l_final = state
+    assert abs(y_final - y_c) < abs(y_mid - y_c)   # got closer in the back half
+    assert (y_c - y_final) * (y_c - 0.0) > 0        # never crossed y_c (same side as start)
+    assert abs(l_final) > abs(l_mid) > 1.0           # |l| grew monotonically-ish
+
+
+def test_ray_group_velocity_vanishes_near_critical_layer():
+    """dy/dt must shrink toward zero as the ray nears the critical layer --
+    the ray asymptotes rather than crossing at finite speed."""
+    U, dUdy, omega0, y_c = _linear_shear_ray_setup()
+    k, beta = 1.0, 0.5
+    state = np.array([0.0, 1.0])
+    dt = 1e-4
+    for i in range(200000):
+        state = timestep.rk4(lambda t, s: wavemean.ray_rhs_shear(s, k, beta, dUdy), state, dt)
+        if i == 100000:
+            cgy_mid = wavemean.ray_rhs_shear(state, k, beta, dUdy)[0]
+    cgy_final = wavemean.ray_rhs_shear(state, k, beta, dUdy)[0]
+    assert abs(cgy_final) < abs(cgy_mid)
 
 
 def test_okubo_weiss_pure_strain_exact():
