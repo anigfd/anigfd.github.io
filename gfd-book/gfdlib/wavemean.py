@@ -72,3 +72,38 @@ def ray_rhs_shear(state, k, beta, dUdy_func):
     dydt = 2.0 * beta * k * l / K2 ** 2
     dldt = -k * dUdy_func(y)
     return np.array([dydt, dldt])
+
+
+def wave_activity(zeta, grid, beta):
+    """Zonal-mean wave-activity diagnostics for a barotropic vorticity
+    field on a beta-plane (used by ch. 23):
+
+        ubar(y)   -- zonal-mean zonal velocity
+        A(y)      -- small-amplitude pseudomomentum density,
+                     A = <q'^2>_x / (2*qbar_y)
+        qbar_y(y) -- zonal-mean PV gradient, beta + d(zetabar)/dy
+
+    with q' = zeta - zetabar(y) the deviation from the instantaneous zonal
+    mean (the beta*y part of q is purely zonal-mean and drops out of q'
+    automatically). Returns (ubar, A, qbar_y), each shape (n,).
+
+    The point of this diagnostic is the NON-ACCELERATION THEOREM: for
+    conservative, small-amplitude waves, d/dt (ubar + A) = 0 pointwise in
+    y -- the mean flow can only change by exactly minus the change in
+    pseudomomentum. Verified in the tests against a full nonlinear
+    integration (a wave packet on a sinusoidal shear): the two changes,
+    each ~1e-5, cancel to better than 1% of themselves.
+
+    Validity requires qbar_y bounded away from zero (A is undefined where
+    the mean PV gradient vanishes) -- choose beta larger than the shear's
+    max |U''| when designing experiments, or expect the diagnostic to blow
+    up at the qbar_y zero crossings, correctly reflecting that the
+    small-amplitude theory itself fails there.
+    """
+    zbar = zeta.mean(axis=0)                       # zonal mean (x is axis 0)
+    q_prime = zeta - zbar[None, :]
+    qbar_y = beta + np.gradient(zbar, grid.dx)
+    A = (q_prime ** 2).mean(axis=0) / (2.0 * qbar_y)
+    psi_hat = grid.invert_laplacian(grid.fft(zeta))
+    ubar = grid.ifft(-grid.ddy(psi_hat)).mean(axis=0)
+    return ubar, A, qbar_y

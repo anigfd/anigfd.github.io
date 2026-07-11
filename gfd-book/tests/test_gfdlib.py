@@ -1,6 +1,6 @@
 """Numeric correctness of gfdlib primitives. `make test` must pass before commit."""
 import numpy as np
-from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg, instability, baroclinic, symmetric, mixing, circulation, overturning, kinematics, rotation, scaling, stratification, wavemean
+from gfdlib import spectral, timestep, diagnostics, shallowwater, internalwaves, convection, pv, balance, rossby, qg, instability, baroclinic, symmetric, mixing, circulation, overturning, kinematics, rotation, scaling, stratification, wavemean, vortex
 
 
 def test_poisson_roundtrip():
@@ -1032,3 +1032,122 @@ def test_classify_regime_known_points():
     assert scaling.classify_regime(2.0, 5.0) == 0
     assert scaling.classify_regime(0.1, 2.0) == 1
     assert scaling.classify_regime(0.1, 0.5) == 2
+
+
+def test_vortex_corotating_pair_period():
+    """Two equal vortices (Gamma, separation d) co-rotate about their
+    centroid with period T = 2*pi^2*d^2/Gamma -- integrating exactly one
+    period must return both to their starting positions."""
+    Gamma = np.array([1.0, 1.0])
+    d = 1.0
+    state0 = np.array([[-d / 2, d / 2], [0.0, 0.0]])
+    T = 2 * np.pi ** 2 * d ** 2 / Gamma[0]
+    nsteps = 2000
+    dt = T / nsteps
+    s = state0.copy()
+    for _ in range(nsteps):
+        s = timestep.rk4(lambda t, st: vortex.vortex_rhs(st, Gamma), s, dt)
+    assert np.max(np.abs(s - state0)) < 1e-8
+
+
+def test_vortex_dipole_translation_speed():
+    """An opposite-signed pair (+Gamma at top, -Gamma at bottom, separation
+    d) translates at speed Gamma/(2*pi*d)."""
+    Gamma = np.array([1.0, -1.0])
+    d = 1.0
+    s = np.array([[0.0, 0.0], [d / 2, -d / 2]])
+    T_run, dt = 5.0, 0.001
+    for _ in range(int(T_run / dt)):
+        s = timestep.rk4(lambda t, st: vortex.vortex_rhs(st, Gamma), s, dt)
+    expected = Gamma[0] / (2 * np.pi * d) * T_run
+    assert np.max(np.abs(s[0] - expected)) < 1e-6      # both moved in +x
+    assert np.max(np.abs(s[1] - np.array([d / 2, -d / 2]))) < 1e-6  # y unchanged
+
+
+def test_vortex_invariants_conserved():
+    """H, Q, P, L all conserved along an RK4 trajectory of a 4-vortex
+    system at small dt (RK4's error at this dt is far below tolerance)."""
+    Gamma = np.array([1.0, 1.0, 1.0, -0.5])
+    s = np.array([[0.0, 1.0, 0.3, -0.8], [0.0, 0.0, 0.9, 0.4]])
+    inv0 = np.array(vortex.invariants(s, Gamma))
+    dt = 0.002
+    for _ in range(5000):
+        s = timestep.rk4(lambda t, st: vortex.vortex_rhs(st, Gamma), s, dt)
+    inv1 = np.array(vortex.invariants(s, Gamma))
+    assert np.max(np.abs(inv1 - inv0)) < 1e-6
+
+
+def test_vortex_midpoint_bounded_vs_heun_secular_drift():
+    """The chapter's punchline, as a test: over a long chaotic 4-vortex
+    run at the SAME order and step size, the symplectic implicit midpoint's
+    energy error stays bounded while non-symplectic Heun's drifts secularly
+    -- midpoint must end at least 30x closer to the true energy."""
+    Gamma = np.array([1.0, 1.0, 1.0, -0.5])
+    s0 = np.array([[0.0, 1.0, 0.3, -0.8], [0.0, 0.0, 0.9, 0.4]])
+    H0 = vortex.hamiltonian(s0, Gamma)
+    dt, nsteps = 0.05, 20000
+    sa, sb = s0.copy(), s0.copy()
+    for _ in range(nsteps):
+        sa = vortex.step_heun(sa, Gamma, dt)
+        sb = vortex.step_midpoint(sb, Gamma, dt)
+    err_heun = abs(vortex.hamiltonian(sa, Gamma) - H0)
+    err_mid = abs(vortex.hamiltonian(sb, Gamma) - H0)
+    assert err_heun > 30 * err_mid
+
+
+def test_wave_activity_single_wave_analytic():
+    """For a single small wave q' = a*cos(k0*x) on a resting beta-plane,
+    A = <q'^2>/(2*beta) = a^2/(4*beta), uniform in y."""
+    g = spectral.Grid(64)
+    beta, a2, k0 = 4.0, 0.01, 3
+    zeta = a2 * np.cos(k0 * g.x)
+    ubar, A, qbar_y = wavemean.wave_activity(zeta, g, beta)
+    assert np.max(np.abs(qbar_y - beta)) < 1e-12       # no zonal-mean shear
+    assert np.max(np.abs(A - a2 ** 2 / (4 * beta))) < 1e-12
+    assert np.max(np.abs(ubar)) < 1e-12                 # pure wave, no mean flow
+
+
+def test_nonacceleration_theorem():
+    """d/dt (ubar + A) = 0: evolve a small wave packet on a sinusoidal
+    shear with the FULL nonlinear barotropic solver; the mean-flow change
+    and the pseudomomentum change (each ~1e-5) must cancel to a small
+    fraction of themselves."""
+    n, beta, U0 = 96, 5.0, 1.0
+    g = spectral.Grid(n)
+    a, sigma, k0, x0, y0 = 0.05, 0.5, 6.0, np.pi, np.pi
+
+    zeta_bar0 = U0 * np.sin(g.y)                       # U = U0*cos(y)
+    env = np.exp(-((g.x - x0) ** 2 + (g.y - y0) ** 2) / (2 * sigma ** 2))
+    zeta0 = zeta_bar0 + a * env * np.cos(k0 * (g.x - x0))
+    zh = g.fft(zeta0) * g.dealias
+
+    L_op = -1e-9 * g.k2 ** 2 + 1j * beta * g.kx * g.k2_inv
+    rhs_nl = lambda t, F: -g.jacobian(g.invert_laplacian(F), F)
+
+    ubar0, A0, _ = wavemean.wave_activity(g.ifft(zh), g, beta)
+    dt = 0.005
+    for _ in range(600):
+        zh = timestep.ifrk4_step(zh, rhs_nl, dt, L_op) * g.dealias
+    ubar1, A1, _ = wavemean.wave_activity(g.ifft(zh), g, beta)
+
+    dU, dA = ubar1 - ubar0, A1 - A0
+    assert np.abs(dU).max() > 1e-7                     # something actually happened
+    assert np.abs(dU + dA).max() < 0.05 * np.abs(dU).max()
+
+
+def test_sw_divergence_analytic_and_geostrophic():
+    """divergence() matches an analytic case exactly, and vanishes for a
+    geostrophically balanced state."""
+    g = spectral.Grid(64)
+    u = np.sin(g.x)
+    v = np.cos(2 * g.y)
+    delta = shallowwater.divergence(np.stack([np.zeros_like(u), u, v]), g)
+    expected = np.cos(g.x) - 2 * np.sin(2 * g.y)
+    assert np.max(np.abs(delta - expected)) < 1e-10
+
+    eta = np.sin(g.x) * np.cos(g.y)
+    eta_hat = g.fft(eta)
+    u_g = g.ifft(-g.ddy(eta_hat))
+    v_g = g.ifft(g.ddx(eta_hat))
+    delta_g = shallowwater.divergence(np.stack([eta, u_g, v_g]), g)
+    assert np.max(np.abs(delta_g)) < 1e-12

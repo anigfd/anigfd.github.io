@@ -56,3 +56,17 @@ def invert_pv(q, grid):
     """
     q_hat = grid.fft(q)
     return grid.ifft(-q_hat / (grid.k2 + 1.0))
+
+
+def divergence(state, grid):
+    """delta = u_x + v_y, computed spectrally (used by ch. 24).
+
+    The single sharpest slow/fast discriminator in rotating shallow water:
+    the geostrophic (slow) mode has delta = 0 identically, while
+    inertia-gravity waves are MADE of divergence -- so the RMS of delta is
+    a direct meter of how far off the slow manifold a state is. A
+    geostrophically balanced state (u = -eta_y, v = eta_x) returns zero to
+    spectral accuracy; see tests.
+    """
+    eta, u, v = state
+    return grid.ifft(grid.ddx(grid.fft(u)) + grid.ddy(grid.fft(v)))

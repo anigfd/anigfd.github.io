@@ -40,7 +40,7 @@ notebook** (`notebooks/chNN_slug.py`) built on shared primitives in
 | **IV — Stratified flow & waves** | 11 stratification & vertical modes ✅ · 12 internal gravity waves ✅ · 13 wave–mean interaction ✅ | 3 of 3 | `internalwaves`, `stratification`, `wavemean` |
 | **V — Instabilities** | 14 convection → Lorenz ✅ · 15 barotropic ✅ · 16 baroclinic (Eady + 2-layer) ✅ · 17 symmetric/KH survey ✅ | 4 of 4 | `convection`, `instability`, `baroclinic`, `symmetric` |
 | **VI — Turbulence & circulation** | 18 geostrophic turbulence ✅ · 19 eddy transport & mixing ✅ · 20 wind-driven gyres (Stommel/Munk) ✅ · 21 overturning circulation ✅ | 4 of 4 | `diagnostics`, `mixing`, `circulation`, `overturning` |
-| **VII — Structure** (optional capstone) | 22–24: Hamiltonian GFD, wave activity, balanced models | 📝 optional | — |
+| **VII — Structure** (optional capstone) | 22 Hamiltonian GFD & symplectic integration ✅ · 23 wave activity & non-acceleration ✅ · 24 balanced models & the slow manifold ✅ | 3 of 3 | `vortex`, `wavemean`, `shallowwater` |
 
 Every notebook also draws on the cross-cutting modules `spectral`
 (pseudo-spectral grid), `timestep` (RK4, integrating-factor RK4, leapfrog),
