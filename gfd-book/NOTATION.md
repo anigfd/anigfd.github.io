@@ -168,6 +168,24 @@ for the geostrophically balanced height field carrying that PV.
 > Phillips' original 1954 model) produces the expected life cycle —
 > exponential growth, a peak, decay, and equilibration — confirmed by a
 > multi-hundred-time-unit run at the notebook's actual resolution.
+>
+> **Barotropic/baroclinic mode decomposition (ch. 10).**
+> $\psi_{bt}=(\psi_1+\psi_2)/2$, $\psi_{bc}=(\psi_1-\psi_2)/2$ decouple the
+> two-layer PV equations EXACTLY: summing/differencing
+> $q_1=\nabla^2\psi_1+F(\psi_2-\psi_1)$, $q_2=\nabla^2\psi_2+F(\psi_1-\psi_2)$
+> cancels the $F$ terms in the sum and doubles them in the difference,
+> giving $q_{bt}=\nabla^2\psi_{bt}$ (exactly ch. 7/18's barotropic PV, no
+> $F$ at all) and $q_{bc}=\nabla^2\psi_{bc}-2F\psi_{bc}$ (exactly ch. 8's
+> single-layer QGPV, with deformation parameter $2F$). `gfdlib.baroclinic.
+> to_modes`/`from_modes` implement the (trivial, linear) change of
+> variables; `pv_2layer` is the forward operator (exact inverse of
+> `invert_2layer`). Verified directly, not just asserted from the algebra:
+> `to_modes` applied to `pv_2layer`'s output matches the two decoupled
+> single-layer operators to $10^{-8}$. The decoupling holds only for the
+> LINEAR operator — the Jacobian nonlinearity in `rhs_2layer` still couples
+> the two modes, which is exactly what ch. 10's notebook demonstrates (a
+> disturbance seeded purely in $q_{bc}$ measurably leaks barotropic KE
+> through nonlinear self-advection alone).
 
 ## Symmetric, inertial & Kelvin-Helmholtz instability (survey)
 | Symbol | Meaning | Convention |
@@ -369,6 +387,70 @@ for the geostrophically balanced height field carrying that PV.
 > boundary-condition mismatch (which does not). The fix — free-slip on
 > north/south, matching the classical Pedlosky/Vallis treatment — restored
 > clean 2nd-order convergence.
+
+## Vertical normal modes (Sturm-Liouville, rigid lid)
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $\Phi_n(z)$ | $n$-th vertical mode shape | $\Phi_n'(0)=\Phi_n'(H)=0$; normalized $\Phi_n(0)=1$ |
+| $c_n$ | $n$-th mode speed | $L_n=c_n/f_0$ the $n$-th deformation radius |
+
+> **The equation is $d/dz[(1/N^2)\,d\Phi/dz]+(1/c^2)\Phi=0$ — no $f_0$ in
+> the eigenvalue problem itself.** Derived from scratch (separate the
+> linear hydrostatic equations in $z$, track $w$'s structure through
+> continuity, tie it back to $\Phi'$ through the buoyancy equation) and
+> checked twice: for constant $N$, $\Phi_n=\cos(n\pi z/H)$,
+> $c_n=NH/(n\pi)$ solves it exactly by direct substitution (no $f_0$
+> anywhere), and mode $n=0$ ($\Phi\equiv$const) is trivially a solution
+> with $c_0=\infty$ — the CONTINUOUS analog of `gfdlib.baroclinic`'s
+> barotropic mode, no deformation-radius constraint at all.
+>
+> **A real, instructive bug: equal-weight ghost points broke matrix
+> symmetry.** A first implementation of `gfdlib.stratification.
+> vertical_modes` used naive ghost-point differencing for the Neumann BCs;
+> it gave eigenvalues that LOOKED nearly correct (within 0.3% of the
+> constant-$N$ benchmark) but mode SHAPES that were badly, visibly wrong
+> once plotted (values 100x too large in the interior) — because the
+> boundary row's coefficient came out exactly double its neighboring
+> interior row's reference to it, making the matrix asymmetric and
+> `numpy.linalg.eigh` invalid on it (silently: `eigh` doesn't check
+> symmetry, it just uses the lower/upper triangle and returns garbage for
+> the rest). Fixed with the standard finite-VOLUME treatment (half-cell
+> control volumes at the two boundaries) symmetrized via a diagonal
+> congruence transform before calling `eigh` — verified: mode shapes now
+> match the exact constant-$N$ cosines to $10^{-12}$, not just the
+> eigenvalues to a few tenths of a percent. The lesson generalizes: for any
+> self-adjoint eigenvalue problem, checking eigenVALUES against a benchmark
+> is not sufficient — check eigenVECTORS too.
+
+## Wave-mean-flow interaction (Stokes drift; Rossby critical layers)
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $u_S=A^2k/(2\omega)$ | Stokes drift of $u'=A\cos(kx-\omega t)$ | positive = with phase propagation |
+| $y_c$ | critical layer | $U(y_c)=\omega/k$, the Doppler-shifted phase speed |
+
+> **Stokes drift is not a separate force — it's evaluating $u'$ at the
+> parcel's true position instead of its mean one.** `gfdlib.wavemean.
+> stokes_drift` is derived from scratch in three lines (displacement
+> $\xi=(A/\omega)\sin(\omega t-kx_0)$, then $\langle\xi\,\partial_xu'
+> \rangle$) and verified two ways: against direct RK4 particle advection
+> in `wave_velocity` (Ch. 1's $d\mathbf x/dt=\mathbf u$ machinery, now
+> genuinely time-dependent) sampled stroboscopically once per period, and
+> by sign (positive for $k,\omega$ same sign — with phase propagation,
+> matching the classical surface-wave result).
+>
+> **Rossby-wave critical layers extend ch. 9's ray tracing to a
+> Doppler-shifted medium.** `gfdlib.wavemean.rossby_shear_dispersion` adds
+> a background shear $U(y)$ to the barotropic dispersion relation;
+> `ray_rhs_shear` is its EXACT symbolic ray-equation derivative (safe to
+> hand-differentiate here, unlike ch. 9's central-difference approach,
+> since the formula is simple). Verified directly by integration, not just
+> asserted from the algebra: $\omega$ stays conserved along the ray to
+> $10^{-6}$ even as $y$ and $l$ both change substantially; the ray
+> approaches but never crosses the analytically-predicted critical layer
+> $y_c=\omega_0/(k\Lambda)$ (linear-shear case), with $|l|\to\infty$ and
+> the meridional group velocity $dy/dt\to0$ as it does — the mathematical
+> signature of a genuine singularity in linear ray theory, not a numerical
+> artifact.
 
 ## Dimensionless numbers
 | Number | Definition | Regime |

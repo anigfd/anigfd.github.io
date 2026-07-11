@@ -66,12 +66,36 @@ WKB ray tracing on the sphere: `stationary_wavenumber2`, `dispersion_omega`,
 `ray_rhs` (dλ/dt, dφ/dt, dm/dt), `launch_state`, `great_circle_deviation` —
 reproduces the classic "great-circle" stationary-Rossby-wave ray paths.
 
+### `baroclinic`'s mode-decomposition additions (ch. 10)
+`to_modes`/`from_modes` — the linear change of variables
+ψ_bt=(ψ1+ψ2)/2, ψ_bc=(ψ1-ψ2)/2 that decouples the 2-layer PV equations
+exactly into ch. 7/18's barotropic equation and ch. 8's single-layer QG
+equation; `pv_2layer` is the forward PV operator (exact inverse of
+`invert_2layer`). See the `baroclinic` entry under Part V below for the
+rest of the module.
+
 ## Part IV — Stratified flow and waves
 
 ### `internalwaves` (ch. 12)
 `dispersion_omega(kx, kz, N, f)` (anisotropic dispersion ω² = (N²kₓ² +
 f²k_z²)/k²), `beam_angle`, and `step_leapfrog` for the forced
 internal-wave-beam simulation.
+
+### `stratification` (ch. 11)
+`vertical_modes(z, N2, H, n_modes)` — the Sturm-Liouville vertical-mode
+eigensolver d/dz[(1/N²)dΦ/dz]+(1/c²)Φ=0, solved via a finite-volume
+discretization symmetrized into an ordinary `numpy.linalg.eigh` problem
+(a naive ghost-point attempt produced eigenvalues that looked nearly right
+but mode shapes that were badly wrong — see the module's docstring for the
+full story). `pycnocline_N2` builds an idealized sech²-shaped
+stratification profile.
+
+### `wavemean` (ch. 13)
+`wave_velocity`/`stokes_drift` — a single Fourier wave and its exact
+Lagrangian-mean drift A²k/(2ω), verified against direct particle advection.
+`rossby_shear_dispersion`/`ray_rhs_shear` — Ch. 9's ray tracing extended to
+a Doppler-shifted background shear U(y), used to track a ray's approach to
+a critical layer (wavenumber divergence, vanishing group velocity).
 
 ## Part V — Instabilities
 
@@ -86,10 +110,12 @@ Shear instability eigenproblems, solved with matrix methods (pure
 Taylor–Goldstein `taylor_goldstein_growth_rate(_curve)`, `hazel_profile`,
 and `double_shear_layer` initial conditions for nonlinear roll-up.
 
-### `baroclinic` (ch. 16)
+### `baroclinic` (ch. 16, mode-decomposition additions reused in ch. 10)
 The book's centerpiece: `eady_growth_rate(_curve)` (the Eady dispersion
 relation) and the two-layer QG model — `invert_2layer` (coupled PV
-inversion) and `rhs_2layer` (with β and bottom friction r).
+inversion) and `rhs_2layer` (with β and bottom friction r). `to_modes`,
+`from_modes`, and `pv_2layer` (added for ch. 10) live here too — see the
+Part III entry above.
 
 ### `symmetric` (ch. 17)
 The Ri–Ro stability map: `ertel_pv_ratio`, `critical_ri`, `classify`

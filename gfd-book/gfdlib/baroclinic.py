@@ -71,6 +71,48 @@ def invert_2layer(q1_hat, q2_hat, grid, F):
     return psi1_hat, psi2_hat
 
 
+def pv_2layer(psi1_hat, psi2_hat, grid, F):
+    """Forward 2-layer QGPV operator (perturbation PV only, no mean beta*y
+    term -- matches the convention used everywhere else in this module):
+    the exact inverse operation of invert_2layer.
+
+        q1 = laplacian(psi1) + F*(psi2-psi1)
+        q2 = laplacian(psi2) + F*(psi1-psi2)
+    """
+    q1_hat = grid.laplacian(psi1_hat) + F * (psi2_hat - psi1_hat)
+    q2_hat = grid.laplacian(psi2_hat) + F * (psi1_hat - psi2_hat)
+    return q1_hat, q2_hat
+
+
+def to_modes(field1, field2):
+    """Barotropic/baroclinic decomposition of any 2-layer field pair
+    (psi, q, ...): field_bt=(field1+field2)/2 (depth mean), field_bc=
+    (field1-field2)/2 (half the inter-layer difference). Linear, so this
+    works identically in physical or spectral space.
+
+    Applied to (psi1,psi2), this decouples the 2-layer QGPV EXACTLY (no
+    approximation) when the two layers have equal thickness, as assumed by
+    invert_2layer's symmetric F coupling: summing and differencing
+    q1=lap(psi1)+F(psi2-psi1), q2=lap(psi2)+F(psi1-psi2) gives
+
+        q_bt = lap(psi_bt)              -- ordinary barotropic PV, no F at all
+        q_bc = lap(psi_bc) - 2*F*psi_bc -- QG-stretching PV, coefficient 2F
+
+    i.e. an isolated baroclinic-mode disturbance (q_bt=0 identically) obeys
+    exactly ch8's single-layer QG equation with L_R^2=1/(2F); an isolated
+    barotropic disturbance obeys exactly ch7/ch18's barotropic vorticity
+    equation. The two modes are decoupled ONLY in the mean-field/linear
+    operator; the Jacobian nonlinearity in rhs_2layer still couples them
+    (see ch10) -- that coupling is the entire content of ch10's notebook.
+    """
+    return 0.5 * (field1 + field2), 0.5 * (field1 - field2)
+
+
+def from_modes(field_bt, field_bc):
+    """Inverse of to_modes: field1=field_bt+field_bc, field2=field_bt-field_bc."""
+    return field_bt + field_bc, field_bt - field_bc
+
+
 def rhs_2layer(state_hat, grid, F, U1, U2, beta, r=0.0):
     """Nonlinear + mean-flow + beta + Ekman-drag tendency for state_hat=
     (q1_hat,q2_hat), the perturbation QGPV in each layer, IN SPECTRAL SPACE
