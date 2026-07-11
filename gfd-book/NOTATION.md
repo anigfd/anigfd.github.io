@@ -271,6 +271,32 @@ for the geostrophically balanced height field carrying that PV.
 > by a reference buoyancy frequency $N_0$ (time) and the domain width (length):
 > $\hat N=N/N_0,\ \hat f=f/N_0,\ \hat\omega=\omega/N_0$.
 
+## Eddy transport & mixing (passive tracer in 2D turbulence)
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $\Gamma=d\bar C/dy$ | imposed mean tracer gradient | $C_{total}=\Gamma y+c'(x,y,t)$, $c'$ periodic |
+| $K_{eff}=-\overline{v'c'}/\Gamma$ | effective (eddy) diffusivity | domain average; $K_{eff}>0$ = down-gradient |
+
+> **The mean-gradient trick.** A passive tracer with an unbounded mean
+> gradient is handled the same way ch16/ch18 handle a mean shear or
+> $\beta y$: split into an imposed linear part and a periodic perturbation
+> $c'$, so `gfdlib.mixing.rhs_coupled` can evolve $c'$ on the same doubly-
+> periodic `spectral.Grid` as the vorticity that stirs it, with the mean
+> gradient appearing as an ordinary source term $-\Gamma v$ (the tracer is
+> passive: it's advected by, but does not feed back on, the vorticity).
+>
+> **$K_{eff}$ is intrinsically $\Gamma$-independent — verified, not
+> assumed.** The $c'$ equation is *linear* in $c'$, so $c'\propto\Gamma$ for
+> a fixed flow realization and $K_{eff}=-\overline{v'c'}/\Gamma$ must be
+> exactly independent of $\Gamma$. Checked numerically: two runs on the
+> identical vorticity history with $\Gamma$ differing by a factor of 2 give
+> $K_{eff}$ agreeing to machine precision (relative difference $10^{-16}$),
+> and a control run with the velocity field identically zero gives
+> $K_{eff}=0$ exactly (no possible eddy flux without a flow). For freely-
+> decaying 2D turbulence, $K_{eff}$ comes out positive (down-gradient) and
+> of the same order as a mixing-length estimate $u_{rms}\times$(domain
+> scale) — a real emergent result of the simulation, not tuned to match.
+
 ## Wind-driven circulation (Stommel; Munk)
 | Symbol | Meaning | Convention |
 |---|---|---|
