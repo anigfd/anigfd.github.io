@@ -41,21 +41,58 @@ def _(mo):
         $n_\nu = 1$ is Newtonian viscosity; $n_\nu > 1$ is *hyperviscosity*,
         which confines dissipation to the smallest scales.
 
+        (Why study 2D turbulence in a GFD book at all? Because rotation and
+        stratification make large-scale flow *behave* two-dimensionally:
+        Ch. 8's QG dynamics is layerwise-2D by construction, and everything
+        in this chapter transfers to it nearly verbatim. The atmosphere and
+        ocean are, at large scales, the best 2D-turbulence laboratories in
+        existence.)
+
+        ### Two invariants, one inescapable conclusion
+
         With $\nu = 0$ and $\beta = 0$ the flow conserves both
 
         $$E = \tfrac{1}{2}\langle|\nabla\psi|^2\rangle
         \qquad\text{and}\qquad
         Z = \tfrac{1}{2}\langle\zeta^2\rangle .$$
 
-        Because $Z$ weights small scales more heavily than $E$, any spreading of
-        the spectrum must send energy to **large** scales and enstrophy to
-        **small** scales (Fjørtoft's argument) — the *dual cascade*. Kraichnan
-        (1967) predicts $E(k)\propto k^{-5/3}$ in the inverse-energy range and
-        $E(k)\propto k^{-3}$ in the forward-enstrophy range. On the
-        $\beta$-plane the inverse cascade is arrested near the **Rhines
-        wavenumber** $k_\beta \simeq \sqrt{\beta/2U}$, where turbulent
-        turnover and Rossby-wave frequencies match, and the flow reorganizes
-        into zonal jets.
+        In spectral form $E=\int E(k)\,dk$ while $Z=\int k^2E(k)\,dk$ — the
+        *same* spectrum, but enstrophy weights it by $k^2$. Now run
+        **Fjørtoft's argument**: turbulence spreads the spectrum out
+        (nonlinearity mixes scales — that is what turbulence *is*). But you
+        cannot spread $E(k)$ while conserving both its area and its
+        $k^2$-weighted area unless the *bulk of the energy* moves toward
+        **small** $k$ while the *bulk of the enstrophy* moves toward
+        **large** $k$. Try it with three wavenumbers and a pencil: move
+        energy from $k$ to $2k$ and $k/2$; conservation forces most of it
+        downscale in $k$. The conclusion is kinematic — no mechanism, no
+        model, just the two conservation laws.
+
+        This **dual cascade** is exactly backwards from 3D turbulence
+        (where vortex stretching, forbidden in 2D, destroys enstrophy
+        conservation and energy famously falls *down* the scales to
+        dissipation). In 2D, friction at small scales is nearly harmless to
+        the energy — the flow instead builds ever-larger structures.
+        Kraichnan (1967) supplies the spectra: $E(k)\propto k^{-5/3}$ in
+        the inverse-energy range and $E(k)\propto k^{-3}$ in the
+        forward-enstrophy range.
+
+        ### The arrest: where turbulence meets Rossby waves
+
+        On a $\beta$-plane the upscale march does not continue forever.
+        Compare timescales: an eddy of size $1/k$ turns over in
+        $\tau_{turb}\sim1/(Uk)$, while a Rossby wave at that scale
+        oscillates in $\tau_{wave}\sim k^2/(\beta k_x)$. At large $k$
+        turbulence is faster and waves are irrelevant; at small $k$ the
+        wave restoring wins and inhibits the nonlinear transfer. They match
+        at
+
+        > the **Rhines wavenumber** $\;k_\beta\simeq\sqrt{\beta/2U}$ — *the
+        > scale where the inverse cascade runs into Rossby-wave stiffness
+        > and stalls.* The arrest is anisotropic: purely zonal modes
+        > ($k_x=0$) have **no** Rossby restoring at all, so energy funnels
+        > into them — and the flow reorganizes into **zonal jets** of width
+        > $\sim\pi/k_\beta$.
         """
     )
     return
@@ -347,14 +384,27 @@ def _(mo):
 
         - **Selective decay.** Run the decaying preset with $\nu = 0$: $E$ stays
           flat while $Z$ falls. Why can the dealiasing filter remove enstrophy
-          but almost no energy?
+          but almost no energy? *(Answer with Fjørtoft in hand: the cascade
+          delivers enstrophy to the cutoff wavenumber, where the filter eats
+          it, but the energy has gone the other way — by the time anything
+          reaches the small scales, it carries lots of $\zeta^2$ and almost
+          no $|\nabla\psi|^2$.)*
         - **Find the arrest.** In the β-plane preset, sweep $\beta$ from 0 to 50.
           At what $\beta$ do stripes first appear in the Hovmöller panel? Compare
-          the jet spacing with $\pi/k_\beta$.
+          the jet spacing with $\pi/k_\beta$ (compute $U$ from the final
+          energy, $U=\sqrt{2E}$). Also check the *sign* structure: are the
+          eastward jets sharper than the westward ones? (They should be —
+          recall Ch. 7's staircase: sharp PV risers make sharp *eastward*
+          jets, while the westward flow spreads over the mixed treads.)
         - **Cascade sharpness.** Compare $n_\nu = 1$ and $n_\nu = 2$ at the same
           final $Z/Z_0$: which gives a longer $k^{-3}$ range, and why?
+          (Hyperviscosity $\propto k^{2n_\nu}$ is negligible until very
+          near the cutoff, so it leaves more of the inertial range
+          untouched — that's its entire job.)
         - **Initial scale.** Move $k_0$ from 6 to 14: does the final vortex size
-          care where the energy started?
+          care where the energy started? The inverse cascade erases its
+          origins — a hint of why large-scale flows can have *universal*
+          statistics despite wildly different forcing.
 
         ### What you should have seen
 
@@ -366,6 +416,14 @@ def _(mo):
         by the Rhines scale — the 2D cascade arrested by Rossby waves. This is
         the mechanism behind banded winds on giant planets, the multiple jets of
         the Southern Ocean, and the eddy-driven midlatitude jet.
+
+        **Where this goes next.** Ch. 16's baroclinic instability is the
+        *energy source* this chapter left unspecified — it injects eddy
+        energy near the deformation radius, and the inverse cascade carries
+        it upscale from there. Ch. 19 asks what this stirring does to
+        anything carried by the flow (tracers, heat, PV — and PV mixing is
+        what builds Ch. 7's staircase); Ch. 20 puts the turbulence in a
+        basin with boundaries and gets the ocean gyres.
         """
     )
     return

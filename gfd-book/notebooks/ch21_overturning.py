@@ -29,24 +29,59 @@ def _(mo):
         r"""
         ## Governing equations
 
-        **Abyssal recipes (Munk 1966).** Deep water sinks at high
-        latitudes and slowly upwells everywhere else; a steady 1D balance
-        between that upwelling $w$ and diapycnal diffusion $\kappa$ sets
-        the interior stratification (symbols as in
+        ### Abyssal recipes (Munk 1966)
+
+        Deep water sinks at a few high-latitude spots and slowly upwells
+        everywhere else. In the vast interior, a steady 1D balance between
+        that upwelling $w$ and diapycnal (across-density-surface) diffusion
+        $\kappa$ sets the stratification (symbols as in
         [NOTATION](../notation)):
 
         $$w\frac{\partial T}{\partial z}=\kappa\frac{\partial^2T}{\partial z^2}.$$
 
-        **The overturning cell.** Differential heating along one boundary
-        of a 2D Boussinesq fluid — warm at one end, cool at the other —
-        drives a vorticity source through the buoyancy term, exactly as in
-        Ch. 14, but with the *sign* of the forcing now varying
-        horizontally instead of only vertically:
+        Read it as a tug-of-war: upwelling drags cold bottom water upward,
+        trying to fill the whole column with abyssal properties; diffusion
+        leaks warmth downward from the surface, resisting. The general
+        solution is $T=A+Be^{wz/\kappa}$, so the contest is settled by one
+        number, $w H/\kappa$ (a **Péclet number**): large $wH/\kappa$
+        confines the warm water to a thin exponential boundary layer of
+        thickness $\kappa/w$ at the top — the **thermocline** — above a
+        nearly uniform abyss. That is, to first order, the observed
+        structure of every ocean basin.
+
+        The audacity of Munk's 1966 paper was to run this in reverse: from
+        the *observed* thermocline shape and tracer-derived $\kappa$
+        ($\sim10^{-4}\,$m²/s — and note that is $10^3$ times molecular,
+        i.e. it is Ch. 17's breaking internal waves in disguise), infer
+        $w\sim10^{-7}$ m/s — about 4 meters per *year* — and hence the
+        first quantitative estimate of the global overturning rate,
+        $\sim$25 Sverdrups, from a napkin-sized ODE.
+
+        ### The overturning cell: horizontal convection
+
+        Part A assumed the upwelling; Part B builds the machine that makes
+        it. Apply *differential* heating along one boundary of a 2D
+        Boussinesq fluid — warm at one end, cool at the other — and the
+        buoyancy torque $\partial\theta/\partial x$ drives circulation
+        exactly as in Ch. 14, except the forcing's sign now varies
+        *horizontally* instead of only vertically:
 
         $$\frac{\partial\zeta}{\partial t}+J(\psi,\zeta)=Pr\nabla^2\zeta+Pr\!\cdot\!Ra\,
           \frac{\partial\theta}{\partial x},\qquad
           \frac{\partial\theta}{\partial t}+J(\psi,\theta)=\nabla^2\theta+Q(x,z),
           \qquad \nabla^2\psi=\zeta.$$
+
+        The distinction matters more than it looks. Rayleigh–Bénard heating
+        (Ch. 14) is a *battle at every column* — heavy over light
+        everywhere — so it fragments into many rolls and has a critical
+        $Ra_c$ below which nothing moves. Heating that varies *along* the
+        boundary creates one basin-scale pressure contrast, so the response
+        is a single cell spanning the domain, and there is **no threshold**:
+        any nonzero contrast drives some circulation (nothing must be
+        overturned to get started — the torque
+        $\partial\theta/\partial x\neq0$ exists immediately). This
+        "horizontal convection" (Rossby 1965) is the laboratory version of
+        both the Hadley cell and the MOC.
         """
     )
     return
@@ -322,6 +357,18 @@ def _(mo):
         Hadley cell and the ocean's meridional overturning circulation —
         the two phenomena that, together with wind-driven gyres (Ch. 20),
         set the shape of the entire general circulation.
+
+        **Where this leaves you.** This chapter closes the book's main
+        physical arc, and it is worth seeing how much of the book it
+        quietly used: the Boussinesq solver came from Ch. 14, the $\kappa$
+        in the abyssal recipe is made by Ch. 17's shear instabilities and
+        Ch. 12's breaking internal waves, the deep circulation's pathways
+        are steered by Ch. 20's vorticity balance (deep western boundary
+        currents!), and the whole enterprise of inferring circulation from
+        stratification rests on Ch. 5's idea that balanced fields encode
+        the flow. Part VII, if you continue, revisits this same machinery
+        from the variational/Hamiltonian side — optional, but the "why
+        behind the why."
         """
     )
     return
