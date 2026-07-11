@@ -28,8 +28,11 @@ def _(mo):
         r"""
         ## Governing equations
 
+        ### Setup and the two dimensionless numbers
+
         Boussinesq convection between free-slip, fixed-temperature plates at
-        $z=0,1$, periodic in $x$, nondimensionalized by $H$, $H^2/\kappa$, and
+        $z=0,1$, periodic in $x$, nondimensionalized by the depth $H$, the
+        thermal diffusion time $H^2/\kappa$, and the imposed contrast
         $\Delta T$ (symbols as in [NOTATION](../notation)):
 
         $$\zeta_t + J(\psi,\zeta) = Pr\,\nabla^2\zeta + Pr\,Ra\,\theta_x,
@@ -37,28 +40,77 @@ def _(mo):
           \theta_t + J(\psi,\theta) = \nabla^2\theta + \psi_x,
           \qquad \nabla^2\psi=\zeta,$$
 
-        with $u=-\psi_z,\ w=\psi_x$, $\theta$ the temperature deviation from
-        the linear conduction profile, and $Ra=g\alpha\Delta T H^3/(\nu\kappa)$,
-        $Pr=\nu/\kappa$. Linearizing about rest and seeking normal modes
-        $\sim e^{\sigma t}\sin(kx)\sin(\pi z)$ gives the neutral curve and the
-        **critical Rayleigh number**:
+        with $u=-\psi_z,\ w=\psi_x$ and $\theta$ the temperature *deviation*
+        from the linear conduction profile (so $\theta\equiv0$ is the
+        no-motion state, and the $+\psi_x$ term is advection of that
+        background profile by $w$). Two numbers control everything:
+
+        > **Rayleigh number**
+        > $\;Ra=\dfrac{g\alpha\Delta T\,H^3}{\nu\kappa}$ — *buoyancy forcing
+        > versus the two diffusivities that resist it.* The numerator is how
+        > hard hot fluid is pushed up; the denominator is how fast viscosity
+        > kills the motion and conduction erases the temperature anomaly
+        > driving it. Convection requires the push to win: $Ra>Ra_c$.
+        >
+        > **Prandtl number** $\;Pr=\dfrac{\nu}{\kappa}$ — *which diffuses
+        > faster, momentum or heat.* Air: $Pr\approx0.7$; water:
+        > $Pr\approx7$; Earth's mantle: $Pr\sim10^{23}$ (momentum diffuses
+        > essentially instantly; the flow is slaved to the temperature).
+
+        ### Linear onset: why there is a critical $Ra$, and why a preferred cell size
+
+        Linearize about rest ($\zeta,\theta$ small; drop the Jacobians) and
+        insert normal modes $\sim e^{\sigma t}\sin(kx)\sin(\pi z)$ — the
+        $\sin(\pi z)$ satisfies both free-slip ($\zeta=0$) and
+        fixed-temperature ($\theta=0$) conditions at the plates. Setting the
+        growth rate $\sigma=0$ gives the neutral curve:
 
         $$Ra_c(k)=\frac{(k^2+\pi^2)^3}{k^2},\qquad
           Ra_c=\min_k Ra_c(k)=\frac{27\pi^4}{4}\approx657.5\ \text{at}\ k_c=\frac{\pi}{\sqrt2}.$$
 
-        **The Lorenz (1963) truncation.** Keeping only the three
-        most energetic modes of $(\psi,\theta)$ consistent with the boundary
-        conditions and substituting into the governing equations gives three
-        coupled ODEs for their amplitudes $(X,Y,Z)$:
+        The *shape* of $Ra_c(k)$ is worth a minute of thought. Very wide
+        cells ($k\to0$) are inefficient — fluid must travel a long
+        horizontal path for each unit of vertical heat transport — so the
+        required forcing diverges as $1/k^2$. Very narrow cells
+        ($k\to\infty$) put hot and cold fluid so close together that
+        diffusion short-circuits them; that end diverges as $k^4$. In
+        between sits a preferred cell width, $k_c$: cells roughly
+        $2\sqrt2$ as wide as the layer is deep. The fluid *chooses its own
+        pattern scale* — nothing in the forcing (uniform heating!) picked it.
+
+        ### The Lorenz (1963) truncation
+
+        Keep only the gravest mode of $\psi$ and the two thermally-relevant
+        modes of $\theta$ compatible with the boundary conditions:
+
+        $$\psi\propto X(t)\sin(k_cx)\sin(\pi z),\quad
+          \theta\propto Y(t)\cos(k_cx)\sin(\pi z)-Z(t)\sin(2\pi z),$$
+
+        so $X$ is the roll circulation speed, $Y$ the temperature contrast
+        between rising and sinking fluid, and $Z$ the distortion of the
+        *mean* vertical temperature profile away from linear conduction.
+        Substituting and discarding every harmonic these three modes
+        generate gives
 
         $$\dot X=\sigma(Y-X),\qquad \dot Y=rX-Y-XZ,\qquad \dot Z=XY-bZ,$$
 
-        with $\sigma=Pr$, $r=Ra/Ra_c$, $b=8/3$. The origin $(0,0,0)$
-        (conduction) is stable for $r<1$; the pair
-        $(\pm\sqrt{b(r-1)},\pm\sqrt{b(r-1)},r-1)$ (steady convection rolls)
-        exists and is stable for $1<r<r_H\approx24.74$ (at $\sigma=10,b=8/3$);
-        beyond $r_H$ all three fixed points are unstable and trajectories
-        wander on the chaotic **Lorenz attractor**.
+        with $\sigma=Pr$, $r=Ra/Ra_c$ (forcing measured in units of onset),
+        and $b=8/3$ (a geometric factor from $k_c$). The nonlinearities
+        $XZ$ and $XY$ are the two survivors of the Jacobians — advection of
+        the mean profile by the roll, and construction of the mean-profile
+        distortion by the heat flux. Fixed-point anatomy:
+
+        - **Origin** $(0,0,0)$ = conduction; stable for $r<1$, loses
+          stability at exactly $r=1$ — the truncation *inherits* the
+          $Ra_c$ of the full PDE by construction.
+        - **Pair** $(\pm\sqrt{b(r-1)},\pm\sqrt{b(r-1)},r-1)$ = steady rolls
+          (the sign is the roll's rotation direction); stable for
+          $1<r<r_H\approx24.74$ (at $\sigma=10$, $b=8/3$).
+        - Beyond $r_H$, **all three** fixed points are unstable — via a
+          *subcritical* Hopf bifurcation, so there is no stable orbit to
+          land on — and trajectories wander forever on the chaotic
+          **Lorenz attractor**, hopping irregularly between the two rolls'
+          basins.
         """
     )
     return
@@ -388,6 +440,18 @@ def _(mo):
         from a fixed start so they land **on the attractor** before the clock
         starts — the transient relaxation onto the attractor has its own
         (much smaller) rate and is not the Lyapunov exponent.
+
+        **How to read the right panel:** on a log axis, exponential
+        separation $\|\delta u\|\sim\varepsilon e^{\lambda_1t}$ is a straight
+        line whose slope is the leading **Lyapunov exponent** $\lambda_1$.
+        The line must eventually *saturate* — the attractor is a bounded
+        object, so two trajectories can never get farther apart than its
+        diameter. The consequence Lorenz drew is arithmetic, and brutal:
+        improving the initial condition by a factor of 10 buys only
+        $\ln(10)/\lambda_1\approx2.6$ extra time units of predictability.
+        Accuracy bought exponentially, predictability gained linearly —
+        that asymmetry is why weather forecasts have a horizon (~2 weeks)
+        that no conceivable observing system will push past by much.
         """
     )
     return
@@ -538,16 +602,27 @@ def _(mo):
         ### Try this
 
         - **Find $Ra_c$ numerically.** In Part A, sweep $Ra$ near 658 (try
-          600, 660, 750): watch $\theta$ decay, barely persist, or grow.
-        - **Prandtl number.** At fixed $Ra=2000$, compare $Pr=0.1$ (air-like)
-          and $Pr=10$ (water-like): which develops convection faster?
+          600, 660, 750): watch $\theta$ decay, barely persist, or grow. The
+          growth rate right at onset is *zero*, so near-critical runs take a
+          long time to declare themselves — that slowness ("critical slowing
+          down") is itself a universal signature of being near a
+          bifurcation, used today to detect approaching tipping points in
+          climate records.
+        - **Prandtl number.** At fixed $Ra=2000$, compare $Pr=0.1$ (air-like
+          order of magnitude) and $Pr=10$ (water-like): which develops
+          convection faster? Note $Ra$ doesn't contain the growth *rate* —
+          $Pr$ multiplies the buoyancy torque in the $\zeta$ equation, so it
+          sets how quickly the roll spins up even though it cannot change
+          *whether* it does.
         - **Read the bifurcation diagram.** Identify the single-branch region
           (steady rolls), locate $r_H$, and find at least one narrow window
           of $r>24.74$ where the smear briefly collapses back to a simple
-          curve (a periodic window inside the chaos).
+          curve (a periodic window inside the chaos — chaos and order
+          interleave at every scale of $r$).
         - **Doubling time.** From the fitted $\lambda_1$, compute how much
           longer you could predict the flow if your initial condition were
-          10× more precise.
+          10× more precise ($\Delta t=\ln 10/\lambda_1$). Now 100× more
+          precise. Notice the returns diminishing.
 
         ### What you should have seen
 
@@ -561,6 +636,19 @@ def _(mo):
         The bifurcation diagram makes the whole route from order to chaos
         visible in a single plot — this is the calculation, drawn from a real
         fluid-dynamics problem, that founded chaos theory.
+
+        **Where this goes next.** This chapter is the book's template for
+        *every* instability: identify a control parameter, find the
+        critical value by linear theory, then watch nonlinearity decide
+        what grows into. Chs. 15–17 replay exactly that script with shear
+        (Rayleigh–Kuo), stratified shear (Taylor–Goldstein), and rotation
+        (symmetric instability) as the antagonists; Ch. 16's baroclinic
+        instability is the version that makes weather. And the machinery
+        built here is reused literally: Ch. 21 drives this same
+        `ChannelGrid` Boussinesq solver with *differential* surface heating
+        to produce the ocean's overturning circulation. The predictability
+        lesson, meanwhile, is the founding theorem of ensemble weather
+        forecasting.
         """
     )
     return
