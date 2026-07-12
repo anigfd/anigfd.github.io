@@ -32,6 +32,17 @@ compiled to WebAssembly).
 marimo copies a notebook's `public/` folder into every WASM export — that is
 how the shared library travels with each chapter bundle.
 
+**Only put things in `notebooks/public/` that every chapter should carry.**
+Because all notebooks are siblings in one flat `notebooks/` directory, they
+all share this one `public/` folder — marimo has no way to scope it to a
+single chapter, so anything placed there (the 40 KB wheel; fine) gets
+duplicated into all 24 exports. A chapter-specific precomputed dataset (see
+the performance-budget note below) belongs in `notebooks/data/<name>.npz`
+instead: `make notebooks` copies `notebooks/data/chNN_slug.npz` into only
+that chapter's own `site/static/nb/chNN_slug/public/` after export, so it
+isn't paid for by the other 23 chapters. (Discovered when a single 5 MB file
+in the shared folder was quietly adding ~125 MB to the built site.)
+
 ### 2. Every notebook has a dual-mode import cell
 
 Each notebook (see `notebooks/_template.py`) begins with:
@@ -94,7 +105,8 @@ notebook design decision traces back to this:
   a steps-per-frame slider are standard controls.
 - **Precompute genuinely heavy runs offline** and ship the fields as data
   the widget scrubs through (e.g. a full baroclinic life cycle), rather than
-  integrating live.
+  integrating live — put the file in `notebooks/data/<name>.npz`, not
+  `notebooks/public/` (see above).
 - **Lazy-load**: Pyodide does not boot until the reader clicks Run.
 
 ## Testing and CI
