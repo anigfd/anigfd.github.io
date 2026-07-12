@@ -42,6 +42,34 @@ immediately distinguishing a genuine discretization error from a
 boundary-condition mismatch; the fix (free-slip north/south, the standard
 textbook simplification) restored clean convergence.
 
+## What to look for
+
+1. **The asymmetry is the phenomenon.** In either friction model, look at
+   the streamfunction: a broad, slow interior drift and one thin, intense
+   return current — always on the **west** wall, never the east, no
+   matter what you do to the sliders. The interior matches the Sverdrup
+   solution $(1-x)\sin(\pi y)$ (overlaid in the mid-basin profile), which
+   already "chose" the eastern wall for its boundary condition; friction
+   is only allowed to fix what remains, at the west.
+2. **Two frictions, two boundary layers.** Toggle Stommel ↔ Munk at
+   comparable boundary-layer widths: Stommel's current decays
+   monotonically into the interior, while Munk's *overshoots* — a weak
+   countercurrent just east of the main jet (the extra structure a
+   4th-order operator's oscillatory roots permit). The Gulf Stream's
+   observed offshore countercurrent looks distinctly more Munk than
+   Stommel.
+3. **Squeeze the layer.** Shrink $\varepsilon$ (or $\delta$): the western
+   current narrows and its peak velocity grows in inverse proportion,
+   because its job is fixed — it must return exactly the transport the
+   Sverdrup interior carries equatorward, however thin friction makes it.
+   This width–speed trade is why the real Gulf Stream, with its tiny
+   effective friction, is so fast and so narrow.
+4. **Numerics you can audit.** Flip to the finite-difference solution and
+   compare with the analytic curve at increasing resolution: the error
+   drops cleanly at 2nd order. The convergence study here is the same
+   habit every chapter's test suite applies — and "The model" section's
+   story of the all-walls-no-slip bug shows what it catches.
+
 {{< marimo src="/nb/ch20_wind-driven-circulation/" >}}
 
 ## Both fluids

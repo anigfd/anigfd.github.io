@@ -37,6 +37,31 @@ vary with depth without any special-case machinery. Two presets: uniform $N$
 a **wave duct**, bounded above and below by genuine turning-level reflections
 the solver produces on its own.
 
+## What to look for
+
+1. **Four beams, one angle.** Run the *St. Andrew's Cross* preset: the
+   point forcing radiates four beams whose inclination is set by
+   $\omega/N$ alone — steepen them toward vertical by raising
+   $\hat\omega$ toward $\hat N$, flatten them by lowering it. No property
+   of the *forcing* (its size, its strength) moves that angle; only the
+   frequency does.
+2. **Phase across, energy along.** Zoom your attention onto one beam and
+   scrub consecutive frames: the crests march *across* the beam while the
+   beam itself extends *along* its own axis. That is
+   $\mathbf c_g\perp\mathbf k$ seen directly — energy propagating
+   perpendicular to phase, the signature strangeness of internal waves.
+3. **The waveguide.** Switch to the *thermocline duct* preset: where the
+   local $N(z)$ falls below $\omega$, the beam bends back — a turning
+   level. The solver was never told about reflection; it emerges from
+   $N^2(z)\psi_{xx}$ alone. Watch the reflected beam interfere with the
+   incident one inside the duct.
+4. **Rotation closes the window from below.** Turn $\hat f$ up from zero:
+   nothing dramatic happens until $\hat\omega$ approaches $\hat f$, and
+   then the beams flatten toward horizontal and the response stalls —
+   the other edge of the internal-wave frequency window $f<\omega<N$.
+   Waves exist only inside it; both presets live or die by where
+   $\hat\omega$ sits in that window.
+
 {{< marimo src="/nb/ch12_internal-gravity-waves/" >}}
 
 ## Both fluids

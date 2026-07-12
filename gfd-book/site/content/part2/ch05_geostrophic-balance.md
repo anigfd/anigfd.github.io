@@ -30,6 +30,32 @@ idealized frontal buoyancy field and the geostrophic wind it implies, exact
 to floating-point precision. Move a slider and the reconstruction updates
 live.
 
+## What to look for
+
+1. **Tighten the front.** Shrink $L_y$ at fixed $\Delta b$: the total
+   temperature contrast across the domain hasn't changed, but the jet
+   strengthens roughly as $1/L_y$. Thermal wind responds to the *gradient*
+   $b_y$, not the contrast — which is why the jet stream lives over the
+   frontal zone and not over the (much larger) pole-to-equator temperature
+   difference as a whole.
+2. **Weaken rotation.** Lower $f$ and the same buoyancy field implies a
+   stronger shear ($u_{g,z}=-b_y/f$). Watch the Rossby number in the
+   jet-core readout climb as you do — the diagnostic is telling you it is
+   sawing off the branch it sits on, since geostrophy itself assumes
+   $Ro\ll1$. This is also why the "dynamic method" fails near the equator.
+3. **Move the tropopause.** Slide $H_{trop}$ up and down: the jet core
+   rides exactly at the level where $b_y$ changes sign, because that is
+   where the integrand of the thermal-wind integral reverses and the
+   accumulated shear peaks. Nothing about the wind was prescribed at that
+   height — it is all inherited from the mass field.
+4. **Check the reversal.** The frontal $b_y$ changes sign at $z=H_{trop}$
+   by construction, so $u_{g,z}=-b_y/f$ must reverse there too: the wind
+   grows monotonically with height through the whole "troposphere," peaks
+   exactly at the tropopause, and decays above. No extremum-seeking was
+   coded anywhere — the jet maximum is the *integral* of $-b_y/f$ turning
+   around, which is why real jet cores hug the tropopause on every
+   observed cross-section.
+
 {{< marimo src="/nb/ch05_geostrophic-balance/" >}}
 
 ## Both fluids

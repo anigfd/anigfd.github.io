@@ -32,6 +32,30 @@ inversion, just now driving a fully nonlinear evolution. No new inversion
 code exists or is needed; `gfdlib.qg` supplies only the modified
 Rossby-wave dispersion relation.
 
+## What to look for
+
+1. **Screening.** Set $\beta=0$ and look at the initial streamfunction: a
+   vortex of radius $\sigma\lesssim L_R$ has its far-field velocity cut off
+   exponentially beyond $L_R$ (the $-\psi/L_R^2$ term turns the inversion
+   from a long-range logarithm into a short-range Yukawa-like kernel).
+   Compare against Ch. 7, where the same blob's influence extended across
+   the whole domain.
+2. **Westward drift from nothing.** Turn $\beta$ up: an isolated,
+   perfectly symmetric vortex begins to translate westward without being
+   pushed. Watch the first frames closely — advection of planetary
+   vorticity builds an antisymmetric secondary dipole (the *beta-gyre*)
+   across the vortex, and it is that dipole which carries the parent
+   along at a speed of order $\beta L_R^2$.
+3. **The wake.** As the vortex drifts it sheds a trailing Rossby-wave
+   wake. Check the dispersion-relation panel: the wake's dominant
+   wavelength sits near the wavenumber whose westward phase speed matches
+   the vortex's own drift — the wave the vortex can resonate with.
+4. **The capped dispersion curve.** In the dispersion panel, note that
+   $|\omega|$ has a maximum near $k\sim1/L_R$: unlike Ch. 7's barotropic
+   waves, QG Rossby waves cannot propagate faster than $\beta L_R^2$, and
+   long waves all bunch at that speed — why oceanic eddies of many sizes
+   drift westward at nearly the same rate.
+
 {{< marimo src="/nb/ch08_qg-approximation/" >}}
 
 ## Both fluids

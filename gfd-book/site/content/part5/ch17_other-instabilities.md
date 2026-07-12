@@ -43,6 +43,34 @@ $\mathrm{Ri}=1/4$ point, where the equation's critical-layer indicial roots
 coalesce — a classically hard point for simple discretizations. The
 notebook flags this honestly rather than hiding it.
 
+## What to look for
+
+1. **One map, three regimes.** Move the marker around the Ro–Ri plane:
+   along $\mathrm{Ro}=0$ the stability boundary sits exactly at
+   $\mathrm{Ri}=1$ (symmetric instability of a balanced front); push
+   $\mathrm{Ro}$ below $-1$ and the front is unstable at *every* Ri —
+   anticyclonic shear has overwhelmed planetary rotation and the
+   instability is purely inertial. The whole map is one sign condition on
+   the Ertel PV, $q<0$.
+2. **Why $\mathrm{Ri}=1$, not $1/4$.** Note the factor-of-four gap
+   between the symmetric threshold ($\mathrm{Ri}<1$) and the
+   Kelvin-Helmholtz one ($\mathrm{Ri}<1/4$): slantwise parcels sliding
+   along tilted absolute-momentum surfaces can extract energy in
+   conditions where purely vertical overturning cannot. Exercise 3 asks
+   you to articulate the extra degree of freedom.
+3. **Miles-Howard with the seams showing.** In the Taylor-Goldstein panel,
+   sweep $J$ upward: the growth-rate curve shrinks and dies by
+   $J\approx1/4$, as the theorem demands. Near the threshold, though, the
+   computed curve doesn't vanish perfectly cleanly — the notebook
+   documents why (the critical layer's indicial roots coalesce exactly at
+   $\mathrm{Ri}=1/4$, the hardest possible point for a finite-difference
+   scheme) rather than tuning the plot until it looked right. Numerical
+   evidence has error bars; this is what honest ones look like.
+4. **A familiar limit.** Set $J=0$ and compare the Taylor-Goldstein curve
+   to Ch. 15's $\tanh$-layer result: same equation, same peak, same
+   $k\delta\approx0.445$. Stratification is a continuous deformation of
+   the barotropic problem, not a different subject.
+
 {{< marimo src="/nb/ch17_other-instabilities/" >}}
 
 ## Both fluids

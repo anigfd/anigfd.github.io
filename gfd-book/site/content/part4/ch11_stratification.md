@@ -29,6 +29,31 @@ problem by the finite-volume method and solves it as a genuinely symmetric
 eigenproblem (`numpy.linalg.eigh`), validated against the exact
 constant-$N$ solution $\Phi_n=\cos(n\pi z/H)$, $c_n=N_0H/(n\pi)$.
 
+## What to look for
+
+1. **Trust, then verify.** Start with the *constant-$N$* profile: the
+   computed modes should lie exactly on the analytic $\cos(n\pi z/H)$
+   curves with $c_n=N_0H/(n\pi)$ — the notebook overlays both. (With the
+   default $N_0=10^{-2}\,$s$^{-1}$, $H=1000\,$m, $f_0=10^{-4}\,$s$^{-1}$,
+   that puts $L_1=c_1/f_0\approx32\,$km — already the right order for
+   midlatitude ocean eddies.)
+2. **Realistic stratification bends the modes.** Switch to the
+   *pycnocline* profile: the zero crossings and extrema of every mode get
+   pulled toward the high-$N^2$ layer, and mode 1's velocity structure
+   (which follows $\Phi_1$) concentrates its shear across the pycnocline —
+   the vertical structure Ch. 10's two layers were caricaturing.
+3. **Sharpen the pycnocline toward the two-layer limit.** Narrow the
+   thickness slider at fixed $N_{min},N_{max}$: $L_1$ converges toward
+   the two-layer $\sqrt{g'H_1H_2/(H_1+H_2)}/f_0$ value, while the higher
+   modes — which the two-layer model simply does not have — keep changing.
+   What survives truncation and what doesn't is exercise 3's subject.
+4. **Latitude matters, stratification radius doesn't care.** Slide $f_0$
+   across its range (equatorward to poleward): every $c_n$ is untouched
+   (they are properties of $N^2(z)$ alone) but every $L_n=c_n/f_0$
+   shrinks toward the pole — the reason observed eddy scales shrink from
+   $\sim$200 km in the subtropics to $\sim$10 km in the subpolar oceans
+   (Chelton et al. 1998, in the further reading).
+
 {{< marimo src="/nb/ch11_stratification/" >}}
 
 ## Both fluids

@@ -30,6 +30,34 @@ mode space; `pv_2layer` is the forward PV operator (exact inverse of
 unchanged, with zero mean shear — an unforced initial-value problem, not
 an instability calculation.
 
+## What to look for
+
+1. **Start pure, watch it leak.** The initial condition lives entirely in
+   the baroclinic mode ($\psi_{bt}=0$ exactly, to machine precision — the
+   mode-energy panel confirms it at $t=0$). Run, and watch the barotropic
+   energy curve lift off from zero: the *linear* decoupling is exact, so
+   every bit of barotropic flow you see was manufactured by the nonlinear
+   term $J(\psi_{bc},q_{bc})$, which projects back onto the barotropic
+   equation.
+2. **Two vortices, two personalities.** Look at the two mode fields side
+   by side as the run evolves: the baroclinic part stays compact
+   (screened at the scale $1/\sqrt{2F}$, Ch. 8's mechanism with $L_R$
+   replaced by the *baroclinic* deformation radius), while the growing
+   barotropic part spreads — it has no deformation radius to stop it.
+3. **$F$ is the knob that matters.** Raise $F$ (thinner layers / weaker
+   stratification): the baroclinic mode becomes more tightly screened and
+   the leak into the barotropic mode changes character. Compare the
+   final barotropic-energy fraction at $F=0.5$ and $F=3$ before reading
+   exercise 3.
+4. **Read the two panels as two earlier chapters.** The snapshot browser
+   shows $q_{bt}$ and $q_{bc}$ side by side: the left panel is a flow
+   obeying exactly Ch. 7's barotropic vorticity equation, the right panel
+   one obeying exactly Ch. 8's single-layer QG equation — and at frame 0
+   the left panel is identically zero. What couples them afterward is
+   nothing in the linear physics, only advection. That change of glasses —
+   from two similar-looking layers to two familiar, decoupled equations —
+   is the whole point of the chapter.
+
 {{< marimo src="/nb/ch10_two-layer-qg/" >}}
 
 ## Both fluids

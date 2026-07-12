@@ -34,6 +34,34 @@ across hundreds of values simultaneously (vectorized, not looped) and plots
 every local maximum of $Z(t)$, making the transition to chaos at
 $r_H\approx24.74$ visible in one figure.
 
+## What to look for
+
+1. **A genuine threshold.** Run the 2D simulation just below and just
+   above $Ra_c=27\pi^4/4\approx657.5$ (the free-slip critical value —
+   the slider crosses it): below, the seeded perturbation dies and pure
+   conduction remains; above, rolls emerge with horizontal wavelength
+   near $2\sqrt2\,H$, the $k_c=\pi/\sqrt2$ mode that goes unstable first.
+   Instability as a bifurcation, not a matter of degree.
+2. **Watch the truncation be good, then fail.** At modest supercriticality
+   the Lorenz variables track the 2D simulation's story faithfully —
+   steady rolls are the fixed points $C_\pm$. Push $r$ (the Lorenz stand-in
+   for $Ra/Ra_c$) past $\approx24.74$ and the trajectory abandons the
+   fixed points for the butterfly. The three-mode model is no longer
+   quantitatively the PDE — but the qualitative lesson it discovered is
+   the one that matters.
+3. **Sensitive dependence, measured.** Run several trajectories with the
+   `trajectories` slider: initial conditions differing by $10^{-8}$ stay
+   visually identical for a while, then separate completely — and the
+   separation panel shows the gap growing along a straight line on the
+   log axis (the Lyapunov exponent) until it saturates at attractor size.
+   That exponential is why weather forecasts gain so little lead time from
+   enormous gains in observation accuracy.
+4. **Order inside chaos.** In the bifurcation diagram, look past the onset
+   at $r_H\approx24.74$ for narrow vertical windows where the smear of
+   $Z$-maxima briefly collapses toward a few clean branches — periodic
+   windows, the fine structure exercise 3 sends you hunting for with a
+   narrower sweep and more $r$ values.
+
 {{< marimo src="/nb/ch14_convection-lorenz/" >}}
 
 ## Both fluids
