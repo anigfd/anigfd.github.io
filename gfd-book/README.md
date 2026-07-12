@@ -1,9 +1,10 @@
-# Interactive Geophysical Fluid Dynamics
+# Interactive Lecture Notes on Geophysical Fluid Dynamics
 
-An interactive GFD textbook: long-form text on a Hugo site plus runnable
-**[marimo](https://marimo.io)** notebooks exported to **WebAssembly**
-(Pyodide), so readers execute every model directly in the browser — no
-install, no server. A runnable companion to Vallis, Salmon, and Pedlosky.
+Graduate-level lecture notes on geophysical fluid dynamics: long-form text
+on a Hugo site plus runnable **[marimo](https://marimo.io)** notebooks
+exported to **WebAssembly** (Pyodide), so readers execute every model
+directly in the browser — no install, no server. A runnable companion to
+Vallis, Salmon, and Pedlosky.
 
 - **Live site:** https://www.aneeshcs.com/gfd/
 - **Audience:** first-year PhD students in atmospheric & oceanic sciences,

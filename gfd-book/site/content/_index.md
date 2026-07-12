@@ -1,5 +1,5 @@
 ---
-title: "Interactive Geophysical Fluid Dynamics"
+title: "Interactive Lecture Notes on Geophysical Fluid Dynamics"
 ---
 
 A graduate GFD course where **every model runs in your browser**. The text
