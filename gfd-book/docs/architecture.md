@@ -108,7 +108,15 @@ notebook design decision traces back to this:
 
 ## Reproducibility
 
-Pin marimo and Pyodide versions per release and tag the repo per "edition"
-(`requirements.txt` is the source of truth for authoring-side versions).
+`requirements.txt` pins exact versions (marimo, numpy, matplotlib, pytest)
+rather than floors — the source of truth for authoring-side versions. This
+also pins the reader-side Pyodide runtime: marimo's own version fully
+determines which Pyodide build `marimo export html-wasm` bundles (see
+`PYODIDE_VERSION` in `marimo/_pyodide/pyodide_constraints.py`), so pinning
+marimo is what makes every reader's in-browser environment reproducible,
+not just the authoring environment. The repo is tagged per "edition"; the
+tag marks a commit where the pinned versions, all 24 chapters, and a clean
+CI run (tests + WASM export of every notebook) coincide.
+
 marimo notebooks are plain `.py` files, so chapter diffs review like
 ordinary code.
