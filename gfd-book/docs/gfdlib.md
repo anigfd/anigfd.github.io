@@ -160,6 +160,28 @@ upwelling–diffusion balance, exact solution), `surface_heating`
 (differential surface-concentrated forcing), `rhs_overturning`
 (horizontal convection, reusing ch. 14's `ChannelGrid`).
 
+## Part VII — Structure (the optional capstone)
+
+### `vortex` (ch. 22)
+The Kirchhoff point-vortex Hamiltonian system: `vortex_rhs` (mutual
+Biot-Savart), `hamiltonian`, `invariants` (H, Q, P, L — the Noether
+charges), `step_midpoint` (implicit midpoint: symplectic for this
+non-separable H, conserves quadratic invariants exactly), and `step_heun`
+(the same-order non-symplectic control for energy-drift comparisons).
+Verified against the exact co-rotating-pair period and dipole speed.
+
+### `wavemean` additions (ch. 23)
+`wave_activity(zeta, grid, beta)` — zonal-mean $\bar u$, pseudomomentum
+density $A=\overline{q'^2}/2\bar q_y$, and $\bar q_y$ from one vorticity
+snapshot; the diagnostic behind the non-acceleration theorem
+$\partial_t(\bar u+A)=0$, verified against a full nonlinear packet-on-shear
+run in the tests (residual < 1%).
+
+### `shallowwater` addition (ch. 24)
+`divergence(state, grid)` — the spectral $\delta=u_x+v_y$ used as the
+slow-manifold distance meter in the balanced-initialization demo (zero to
+machine precision on a geostrophic state).
+
 ## Adding a primitive
 
 1. Implement it in the right module (or a new `gfdlib/<topic>.py`) — pure

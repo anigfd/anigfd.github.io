@@ -493,6 +493,71 @@ for the geostrophically balanced height field carrying that PV.
 > signature of a genuine singularity in linear ray theory, not a numerical
 > artifact.
 
+## Point vortices (Kirchhoff Hamiltonian system)
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $\Gamma_i$ | circulation of vortex $i$ | signed |
+| $H=-\frac{1}{4\pi}\sum_{i<j}\Gamma_i\Gamma_j\ln r_{ij}^2$ | interaction Hamiltonian | $\Gamma_i\dot x_i=\partial H/\partial y_i$, $\Gamma_i\dot y_i=-\partial H/\partial x_i$ |
+| $Q,P,L$ | $\sum\Gamma_ix_i$, $\sum\Gamma_iy_i$, $\sum\Gamma_i(x_i^2+y_i^2)$ | Noether charges of translation & rotation |
+
+> **Positions are the conjugate pair — phase space is physical space.**
+> `gfdlib.vortex` implements the mutual Biot-Savart RHS, the Hamiltonian
+> and invariants, the symplectic implicit-midpoint step (`step_midpoint`,
+> fixed-point iteration — leapfrog is unavailable because Kirchhoff's $H$
+> is non-separable) and a same-order non-symplectic control (`step_heun`).
+> Verified against exact solutions: co-rotating pair period
+> $T=2\pi^2d^2/\Gamma$ to $10^{-8}$ and dipole speed $\Gamma/(2\pi d)$ to
+> $10^{-6}$ (both derived by hand, not fitted). The chapter's punchline is
+> a measured fact, not an assertion: over a 20,000-step chaotic 4-vortex
+> run at the same $\Delta t$, Heun's energy error drifts secularly to
+> $\sim10^{-3}$ while midpoint's stays bounded at $\sim5\times10^{-6}$
+> (tests enforce a 30x separation). Finer structure verified too: linear
+> invariants $Q,P$ are conserved to machine precision by EVERY
+> Runge-Kutta method, while the quadratic $L$ drifts under RK4
+> ($\sim10^{-8}$) but is exact under implicit midpoint (a Gauss method)
+> up to the fixed-point iteration tolerance — $3\times10^{-14}$ at 12
+> sweeps, measured.
+
+## Wave activity & non-acceleration (barotropic)
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $A=\overline{q'^2}/(2\bar q_y)$ | small-amplitude pseudomomentum density | $q'$ = deviation from zonal mean; $\bar q_y=\beta-\bar U''$ |
+| non-acceleration | $\partial_t(\bar u+A)=0$ | conservative, small-amplitude waves; pointwise in $y$ |
+
+> **The theorem is three one-line derivations chained** (linearized PV
+> conservation $\Rightarrow A_t=-\overline{v'q'}$; the Taylor identity
+> $\overline{v'q'}=-\partial_y\overline{u'v'}$; the zonal-mean momentum
+> equation $\bar u_t=-\partial_y\overline{u'v'}$) — see ch. 23.
+> `gfdlib.wavemean.wave_activity` computes $(\bar u, A, \bar q_y)$ from a
+> vorticity snapshot; $A$ requires $\bar q_y$ bounded away from zero
+> (design experiments with $\beta>\max|\bar U''|$). Verified against the
+> FULL nonlinear solver, not the linear theory it comes from: a small
+> packet on $U_0\cos y$ shear produces $\Delta\bar u$ and $\Delta A$ each
+> $\sim10^{-5}$ that cancel to $<1\%$ of themselves, pointwise in $y$
+> (0.5% measured at $a=0.05$, $n=128$; the residual is the expected
+> $O(a^3)$ correction, and switching on hyperviscosity breaks the
+> cancellation for the stated physical reason — dissipation destroys
+> pseudomomentum without repaying the mean flow).
+
+## Slow manifold & balanced initialization (shallow water)
+| Symbol | Meaning | Convention |
+|---|---|---|
+| $\delta=u_x+v_y$ | horizontal divergence | slow (geostrophic) mode: $\delta\equiv0$; IG waves are made of it |
+| $\alpha$ | balance fraction of initial winds | $(u,v)_0=\alpha(-\eta_{0y},\eta_{0x})$ |
+
+> **RMS divergence meters the distance from the slow manifold.**
+> `gfdlib.shallowwater.divergence` is the one-line spectral diagnostic;
+> verified against an analytic case to $10^{-10}$ and exactly zero (to
+> $10^{-12}$) on a geostrophically balanced state. Ch. 24's measured
+> facts: a fully balanced initialization holds RMS $\delta$ at machine
+> zero for the whole run (the linear slow subspace is exactly invariant
+> on the $f$-plane); partial balance rings with amplitude exactly
+> $\propto(1-\alpha)$ (measured: $\alpha=0.5$ gives precisely half the
+> $\alpha=0$ ringing — linearity, not coincidence); and pointwise PV
+> drift is at machine precision in every run regardless of $\alpha$ —
+> balance is entirely about not exciting the fast modes; the slow (PV)
+> content was never at risk.
+
 ## Dimensionless numbers
 | Number | Definition | Regime |
 |---|---|---|
