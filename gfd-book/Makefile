@@ -18,6 +18,9 @@ notebooks: $(WHEEL) $(NOTEBOOKS)
 		name=$$(basename $$nb .py); \
 		echo "exporting $$name"; \
 		marimo export html-wasm $$nb -o $(OUT_DIR)/$$name --mode run || exit 1; \
+		if [ -f $(NB_DIR)/data/$$name.npz ]; then \
+			cp $(NB_DIR)/data/$$name.npz $(OUT_DIR)/$$name/public/; \
+		fi; \
 	done
 	@echo "done -> $(OUT_DIR)"
 

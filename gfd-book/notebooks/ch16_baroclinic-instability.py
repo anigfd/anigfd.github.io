@@ -237,11 +237,11 @@ async def _(mo, np):
         import pyodide.http
         import io
         _resp = await pyodide.http.pyfetch(
-            str(mo.notebook_location() / "public" / "ch16_lifecycle.npz")
+            str(mo.notebook_location() / "public" / "ch16_baroclinic-instability.npz")
         )
         lifecycle = np.load(io.BytesIO(await _resp.bytes()))
     else:
-        lifecycle = np.load(mo.notebook_dir() / "public" / "ch16_lifecycle.npz")
+        lifecycle = np.load(mo.notebook_dir() / "data" / "ch16_baroclinic-instability.npz")
     return (lifecycle,)
 
 
