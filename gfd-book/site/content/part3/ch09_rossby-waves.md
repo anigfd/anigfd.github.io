@@ -34,6 +34,33 @@ independent, coordinate-free geometric criterion — no PDE, no time-stepping
 in the usual sense, just `gfdlib.timestep.rk4` on a 3-variable ray. Cheap
 enough that the whole notebook is reactive, with no Run button.
 
+## What to look for
+
+1. **The arc, not the straight line.** Launch a fan of rays from
+   $\phi_0=20°$: each one climbs poleward, turns at its own **turning
+   latitude** (where its meridional wavenumber passes through zero), and
+   arcs back toward the equator. No ray crosses its turning latitude —
+   refraction by the planetary vorticity gradient bends it back, exactly
+   as a lens bends light back toward the dense medium.
+2. **Great circles, verified.** The `great_circle_deviation` readout stays
+   at machine precision for solid-body rotation — the Hoskins–Karoly
+   theorem holding *exactly*, not approximately, in front of you. (Then
+   see exercise 2 for how quickly it breaks when the background flow isn't
+   solid-body.)
+3. **Rotation strength sets the reach.** Increase $\Omega_s$: the
+   stationary wavenumber $K_s$ falls everywhere (stronger westerlies can
+   hold longer waves stationary), and since a ray turns where $K_s(\phi)$
+   has dropped to its own zonal wavenumber, lowering the whole $K_s$
+   profile slides each turning latitude *equatorward*. Confirm it in the
+   fan: the same rays that grazed the pole at small $\Omega_s$ turn low
+   at large $\Omega_s$.
+4. **Where rays bunch, anomalies live.** Notice the rays launched at
+   slightly different angles converge near their turning latitudes (the
+   ray density is highest there). Ray theory says wave amplitude
+   accumulates where rays crowd — one reason observed teleconnection
+   centers of action sit at preferred latitudes rather than smearing along
+   the whole path.
+
 {{< marimo src="/nb/ch09_rossby-waves/" >}}
 
 ## Both fluids

@@ -46,6 +46,35 @@ heavy to integrate live in the browser — so it's precomputed offline and
 shipped as data for Part B's widget to scrub; a second, smaller live panel
 lets you test parameter changes yourself over the growth phase.
 
+## What to look for
+
+1. **The Eady curve's shape is the forecast.** In the Eady panel, note
+   three features: growth peaks at $\mu\approx1.61$ (so the preferred
+   wavelength is a fixed multiple, $\sim3.9$, of the deformation radius —
+   1000-km storms in the atmosphere, 100-km eddies in the ocean, from one
+   dimensionless number), the shortwave cutoff at $\mu_c\approx2.399$
+   (disturbances much smaller than $L_R$ cannot tap the APE), and *no*
+   longwave cutoff.
+2. **The full life cycle, scrubbed.** Drag through the precomputed run
+   while watching the eddy-energetics panel: on its log axis the growth
+   phase is a clean straight line with slope $2\sigma$ (energy is
+   quadratic in amplitude — the factor of two is a classic trap), then
+   the curve peaks, breaks, and equilibrates under the drag. During the
+   linear phase EKE and EPE grow in lockstep at a fixed ratio — the
+   growing mode's fingerprint — with every joule drawn from the *mean*
+   state's APE, the energy pathway Ch. 15's barotropic problem doesn't
+   have.
+3. **Phillips' criterion, live.** In the interactive panel, raise $\beta$
+   at fixed $F\,\Delta U$: growth weakens and shuts off entirely near
+   $\beta=F\,\Delta U$, where the lower layer's PV gradient
+   $\beta-F\Delta U$ stops changing sign. The sign-change logic is
+   Ch. 15's Rayleigh-Kuo criterion again, wearing vertical-shear clothes.
+4. **Drag sets the equilibrium, not the growth.** Vary the Ekman drag $r$:
+   the initial growth rate barely moves (the instability is an inviscid,
+   interior mechanism), but the amplitude the life cycle equilibrates at
+   changes dramatically — and at $r=0$ it doesn't equilibrate at all,
+   the failure mode "The model" section describes.
+
 {{< marimo src="/nb/ch16_baroclinic-instability/" >}}
 
 ## Both fluids

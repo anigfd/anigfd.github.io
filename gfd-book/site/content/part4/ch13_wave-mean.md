@@ -33,6 +33,32 @@ Ch. 1's machinery); `ray_rhs_shear` extends Ch. 9's ray tracing to a
 Doppler-shifted background shear, verified to conserve $\omega$ exactly
 along the ray.
 
+## What to look for
+
+1. **The drift is real, and it is quadratic.** In Part A, watch a particle
+   ride the wave: it oscillates, but each cycle ends slightly downstream
+   of where it began. Read off the measured drift and check it against
+   $u_S=A^2k/2\omega$; then double the amplitude $A$ and confirm the drift
+   *quadruples*. A linear wave produces a mean effect only at second
+   order — this factor of four is that statement made tangible.
+2. **The Eulerian mean is exactly zero.** The wave is
+   $u'=A\cos(kx-\omega t)$, which averages to nothing at every fixed
+   point over a period — yet the particle undeniably moves. The entire drift lives in the
+   correlation between where the parcel *is* and what the wave is doing
+   *there*. Lagrangian and Eulerian means are different animals.
+3. **The ray runs out of road.** In Part B, launch a ray into the shear:
+   $l$ grows linearly (at the rate $-k\,dU/dy$ — check the slope), the
+   group velocity collapses as $1/l^3$, and the ray asymptotes to its
+   critical latitude $y_c$ without ever arriving. Move $\Lambda$ and watch
+   $y_c$ move with it: the wall sits exactly where the intrinsic frequency
+   $\omega-U(y)k$ is Doppler-shifted to zero.
+4. **Same wall, both directions.** Launch with $l_0>0$ and $l_0<0$ from
+   the same point (exercise 3 continues this): rays can leave a shear
+   region freely but approach their critical layer only asymptotically —
+   which is why, once dissipation acts, the momentum they carry is
+   deposited *there* and nowhere else. That one-way delivery is the QBO
+   mechanism in the "Both fluids" section below.
+
 {{< marimo src="/nb/ch13_wave-mean/" >}}
 
 ## Both fluids

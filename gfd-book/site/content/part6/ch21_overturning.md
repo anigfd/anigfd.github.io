@@ -39,6 +39,35 @@ convection" mechanism — and was verified to produce exactly the expected
 circulation sense: rising motion under the heated column, sinking under
 the cooled one, in every configuration tested.
 
+## What to look for
+
+1. **One ratio controls the profile.** In Part A, only $w/\kappa$
+   matters (verify: doubling both leaves the curve unchanged). Crank the
+   ratio up and the exponential's e-folding depth $\kappa/w$ shrinks:
+   a nearly uniform abyss capped by a thin thermocline — the observed
+   shape of essentially every mid-ocean temperature profile. Munk's
+   famous move was to run this logic backwards: from the *observed*
+   thermocline depth and an estimate of $w$, infer the ocean's interior
+   mixing rate $\kappa\sim10^{-4}\,$m$^2\,$s$^{-1}$.
+2. **One cell, not many.** Run Part B: differential heating along one
+   boundary produces a single domain-filling overturning cell — rising
+   over the heated end, sinking over the cooled end — rather than Ch. 14's
+   array of counter-rotating rolls. The forcing's own asymmetry organizes
+   the flow at the largest available scale.
+3. **No threshold this time.** Sweep $Ra$ downward: unlike Ch. 14, the
+   circulation never switches off — it just weakens smoothly. Horizontal
+   convection has no conduction-only rest state to bifurcate from,
+   because a horizontal temperature gradient along a boundary *cannot*
+   be balanced by pure conduction (exercise 3 makes you say why).
+4. **Hunt the asymmetry.** Horizontal-convection theory predicts the two
+   branches of the cell are not mirror images: the surface-*cooled* end is
+   convectively destabilized and should concentrate into a narrower,
+   faster sinking branch as you raise $Ra$, while the heated end stays
+   broad and gentle. Test it across the $Ra$ slider's range. The real
+   counterparts are extreme versions of this fingerprint — the MOC's few
+   localized deep-water-formation sites versus basin-wide diffuse
+   upwelling.
+
 {{< marimo src="/nb/ch21_overturning/" >}}
 
 ## Both fluids

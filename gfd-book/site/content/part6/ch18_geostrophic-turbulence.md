@@ -32,6 +32,32 @@ dissipation *and* the Rossby-wave propagator exactly
 (`gfdlib.timestep.ifrk4_step`). Presets: decaying McWilliams (1984)
 turbulence, a hyperviscous variant, and a $\beta$-plane jet run.
 
+## What to look for
+
+1. **Merger all the way up.** Run the *decaying (McWilliams 1984)* preset
+   and scrub: a fine-grained random field organizes itself into a
+   handful of large, long-lived vortices through repeated mergers —
+   Ch. 7's two-vortex merger applied recursively. This is the inverse
+   cascade in physical space.
+2. **The two invariants part ways.** Watch the energy and enstrophy
+   curves together: energy stays nearly flat while enstrophy collapses.
+   That asymmetry is the entire logic of 2D turbulence — dissipation
+   (which acts at small scales) can reach the enstrophy but barely
+   touches the energy, so the energy has nowhere to go but up-scale.
+   Fjørtoft's theorem (exercise 1) is this plot, proved.
+3. **The spectrum migrates.** In the spectral panel, follow the energy
+   peak: it marches steadily toward lower $k$ while a power-law tail
+   feeds enstrophy toward the dissipation range. Compare the tail's slope
+   with the $k^{-3}$ enstrophy-cascade prediction — and note where (and
+   why) coherent vortices make it steeper.
+4. **Jets from a knob.** Switch to the *β-plane* preset: the isotropic
+   inverse cascade proceeds until eddies reach the Rhines scale, then
+   anisotropizes into east-west bands — watch the Hovmöller panel of
+   $\bar u(y,t)$ develop persistent stripes. Sweep $\beta$ and check the
+   jet spacing against $\pi\sqrt{2U/\beta}$ (exercise 3 makes this
+   quantitative). Zero knobs were labeled "make jets"; $\beta$ plus an
+   arrested cascade is sufficient.
+
 {{< marimo src="/nb/ch18_geostrophic-turbulence/" >}}
 
 ## Both fluids

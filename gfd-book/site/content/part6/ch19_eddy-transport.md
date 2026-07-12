@@ -37,6 +37,34 @@ machine precision) rather than assumed, alongside a control run with the
 velocity field set identically to zero, which gives $K_{eff}=0$ exactly (no
 possible eddy flux without a flow).
 
+## What to look for
+
+1. **Stirring before mixing.** Watch the tracer field in the first
+   hundreds of steps: the turbulence doesn't blur the tracer, it *folds*
+   it — drawing $c'$ into ever-thinner filaments that wrap around the
+   vortices. Only at filament scale does the (tiny) molecular $\kappa$
+   finally act. Stirring cascades tracer variance downscale; mixing
+   destroys it there — two distinct processes, visible as two stages.
+2. **The flux finds the down-gradient direction on its own.** Nothing in
+   the equations tells $\overline{v'c'}$ which way to point, yet the
+   $K_{eff}$ time series rises from zero as the filaments develop and
+   then fluctuates about a clearly positive value: eddies move tracer
+   from high mean concentration toward low. Note that it never settles
+   to a perfectly flat plateau — it tracks the turbulence's own slow
+   evolution — a warning about diagnosing eddy diffusivities from short
+   records.
+3. **Linearity, exploited.** Double $\Gamma$ and rerun with the same
+   seed: the tracer field doubles but $K_{eff}$ lands on the *same*
+   number — the closure's one honest free parameter is a property of the
+   flow, not the gradient (the test suite checks this to machine
+   precision). This independence is precisely what licenses coarse models
+   to use one $K$ for heat, salt, and carbon alike.
+4. **A mixing-length reality check.** Compare the measured $K_{eff}$
+   against the eyeball estimate $u_{rms}\times\ell$ with $\ell$ the
+   dominant eddy size in the vorticity panel. Prandtl's argument usually
+   lands within a factor of two — exercise 2 turns this comparison into a
+   habit.
+
 {{< marimo src="/nb/ch19_eddy-transport/" >}}
 
 ## Both fluids

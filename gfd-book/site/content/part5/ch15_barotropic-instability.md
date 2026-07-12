@@ -35,6 +35,32 @@ every wavenumber tested, and the classical $\tanh(y/\delta)$ shear layer's
 growth-rate peak lands at $k\delta\approx0.445$, matching the published
 value (Michalke 1964, $k\delta\approx0.4446$).
 
+## What to look for
+
+1. **A theorem you can poke.** In Part A, select the *cosine bump*
+   profile: no inflection point, and the growth-rate curve is *exactly*
+   zero at every wavenumber — not small, zero. Rayleigh's criterion is a
+   hard prohibition. Switch to the $\tanh$ shear layer and the curve
+   lifts off, peaking at $k\delta\approx0.445$ (Michalke's classical
+   value, reproduced live).
+2. **$\beta$ as a stabilizer.** With the $\mathrm{sech}^2$ jet selected,
+   raise $\beta$: the necessary condition involves $\beta-U''$, so a
+   large enough planetary vorticity gradient removes the sign change and
+   the growth-rate curve collapses. Find the threshold — that number is
+   exercise 3.
+3. **The growth-rate curve knows the answer first.** Part A's curve
+   marks its peak wavenumber; that wavelength sets how many vortices the
+   roll-up will produce per shear layer. Run Part B with the *seeded
+   wavenumber* $n$ matched to that prediction, then deliberately
+   mismatched — the flow finds its preferred scale either way, but watch
+   how much longer the mismatched seed takes, and by what route (the
+   seeded mode grows first, then hands over).
+4. **Linear birth, nonlinear life.** In Part B's snapshot browser, mark
+   the transition: exponential growth of a wiggle (linear theory's
+   domain), then braid roll-up into discrete vortices, then vortex
+   pairing/merger (Ch. 7's physics taking over). Linear theory predicts
+   only the beginning — but it *chooses* which beginning.
+
 {{< marimo src="/nb/ch15_barotropic-instability/" >}}
 
 ## Both fluids

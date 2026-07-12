@@ -40,6 +40,29 @@ PV). Three presets: a small-scale burst ($\sigma\ll L_R$), a large-scale surge
 ($\sigma\gg L_R$), and a $\beta$-plane run that shows the balanced remnant
 drift westward as a Rossby wave.
 
+## What to look for
+
+1. **Waves win at small scales.** Run the *small-scale burst* preset and
+   scrub the frame slider from the start: rings of inertia-gravity waves
+   carry essentially the whole height anomaly away (at the nondimensional
+   wave speed $c=1$ — check the ring radius against elapsed time), and the
+   final $\eta$ is nearly flat. The overlay of $\eta_{bal}=$
+   `invert_pv`$(q_0)$ predicted that end state *before the run started* —
+   compare them at the last frame.
+2. **Balance wins at large scales.** Switch to the *large-scale surge*
+   preset: now most of the height anomaly survives, and what changes
+   instead is the wind field, which spins up into a rim current around the
+   anomaly. Same equations, same initial shape — only $\sigma/L_R$
+   differs.
+3. **Energetics of the remnant.** Watch the energy panel in the
+   large-scale case: even when balance "wins," at most one third of the
+   released potential energy ends up in the balanced flow — the rest
+   radiates. Rossby's classic result, visible as the gap between the
+   curves.
+4. **The remnant is not stuck.** In the *β-plane* preset the balanced
+   remnant itself drifts westward — adjustment hands the disturbance off
+   to Rossby-wave dynamics (Ch. 8–9), which is where its story continues.
+
 {{< marimo src="/nb/ch06_geostrophic-adjustment/" >}}
 
 ## Both fluids

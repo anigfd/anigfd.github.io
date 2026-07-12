@@ -33,6 +33,29 @@ staircase. A fully reactive "invert, don't integrate" panel shows the balance
 step alone (no time-stepping); a second, Run-gated panel evolves the same
 field forward to show the resulting dynamics.
 
+## What to look for
+
+1. **Inversion is instant — use it first.** The upper panel needs no Run
+   button: it takes the PV field you built and solves for $\psi$ and the
+   winds. Drag the separation slider and watch the velocity field between
+   two like-signed vortices reorganize — everything you see is *diagnosed*
+   from $q$ alone, which is the invertibility principle doing its work.
+2. **Find the merger threshold.** In the *merger* preset, run the
+   evolution at a few separations: well-separated vortices orbit each
+   other essentially forever, while below a critical separation (a few
+   core radii) they wrap around each other and merge into one core,
+   throwing off filament arms. The transition is surprisingly sharp — this
+   is the same vortex-merger physics that drives Ch. 18's inverse cascade.
+3. **The dipole travels.** The *opposite-signed pair* preset produces the
+   one configuration that self-propels: each vortex advects the other in
+   the same direction. Confirm the speed falls as you increase the
+   separation.
+4. **Jets live at the risers.** In the *staircase* preset, look at the
+   zonal-mean wind: it peaks exactly at the sharp PV jumps between the
+   flat, well-mixed bands, not inside the plateaus. Then use the reactive
+   panel (no Run needed) to vary the number of bands and watch exercise 3's
+   question take shape.
+
 {{< marimo src="/nb/ch07_vorticity-pv/" >}}
 
 ## Both fluids
