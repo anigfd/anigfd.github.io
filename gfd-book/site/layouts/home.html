@@ -1,12 +1,43 @@
 {{ define "main" }}
-<h1>{{ site.Title }}</h1>
-{{ .Content }}
-{{ range site.Sections.ByWeight }}
-  <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-  <ol>
-  {{ range .Pages.ByWeight }}
-    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+{{ $part1 := index site.Sections.ByWeight 0 }}
+{{ $ch1 := index $part1.Pages.ByWeight 0 }}
+<section class="hero">
+  <div class="hero-motif" aria-hidden="true">
+    <svg viewBox="0 0 480 240" preserveAspectRatio="xMidYMid meet">
+      <path d="M0,40 C130,40 150,14 240,14 C330,14 350,40 480,40" fill="none" stroke="var(--accent)" stroke-width="2" opacity="0.12"/>
+      <path d="M0,80 C130,80 155,45 240,45 C325,45 350,80 480,80" fill="none" stroke="var(--accent)" stroke-width="2" opacity="0.18"/>
+      <path d="M0,120 C160,120 180,120 240,120 C300,120 320,120 480,120" fill="none" stroke="var(--accent)" stroke-width="2" opacity="0.22"/>
+      <path d="M0,160 C130,160 155,195 240,195 C325,195 350,160 480,160" fill="none" stroke="var(--accent)" stroke-width="2" opacity="0.18"/>
+      <path d="M0,200 C130,200 150,226 240,226 C330,226 350,200 480,200" fill="none" stroke="var(--accent)" stroke-width="2" opacity="0.12"/>
+      <circle cx="240" cy="120" r="5" fill="var(--accent)" opacity="0.4"/>
+    </svg>
+  </div>
+  <div class="hero-text">
+    <h1>{{ site.Title }}</h1>
+    {{ .Content }}
+    <div class="cta-row">
+      {{ with $ch1 }}<a class="btn btn-primary" href="{{ .RelPermalink }}">Start reading — Ch. 1 →</a>{{ end }}
+      <a class="btn btn-secondary" href="{{ "how-to-run" | relURL }}/">How these notebooks work</a>
+    </div>
+  </div>
+</section>
+
+<section class="part-grid">
+  {{ range site.Sections.ByWeight }}
+  <article class="part-card">
+    <h2>
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+      {{ if .Params.optional }}<span class="badge">optional</span>{{ end }}
+    </h2>
+    <p class="part-desc">{{ .Description }}</p>
+    <ol class="chapter-list">
+      {{ range .Pages.ByWeight }}
+      <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+      {{ end }}
+    </ol>
+  </article>
   {{ end }}
-  </ol>
-{{ end }}
+</section>
+
+<p class="map-link"><a href="{{ "dependencies" | relURL }}/">Not sure where to start? See the full chapter dependency map →</a></p>
 {{ end }}
