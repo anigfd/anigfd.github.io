@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <!-- Preload is necessary because we show these images when we disconnect from the server,
+    but at that point we cannot load these images from the server -->
+    <link rel="preload" href="./assets/gradient-yHQUC_QB.png" as="image" />
+    <link rel="preload" href="./assets/noise-60BoTA8O.png" as="image" />
+    <!-- Preload the fonts -->
+    <link rel="preload" href="./assets/Lora-VariableFont_wght-CZceb_kH.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Regular-Bam3NpBI.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Bold-C_DwAp7Z.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Regular-CEsLFVD9.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Medium-D5MAsWEG.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Bold-C6PDArdf.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="a marimo app" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.json" />
+
+    <script data-marimo="true">
+      function __resizeIframe(obj) {
+        const scrollbarHeight = 20; // Max between windows, mac, and linux
+
+        function setHeight() {
+          // Guard against race condition where iframe isn't ready
+          if (!obj.contentWindow?.document?.documentElement) {
+            return;
+          }
+          const element = obj.contentWindow.document.documentElement;
+          // If there is no vertical scrollbar, we don't need to resize the iframe
+          if (element.scrollHeight === element.clientHeight) {
+            return;
+          }
+
+          // Create a new height that includes the scrollbar height if it's visible
+          const hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
+          const newHeight = element.scrollHeight + (hasHorizontalScrollbar ? scrollbarHeight : 0);
+
+          // Only update the height if it's different from the current height
+          if (obj.style.height !== `${newHeight}px`) {
+            obj.style.height = `${newHeight}px`;
+          }
+        }
+
+        // Resize the iframe to the height of the content and bottom scrollbar height
+        setHeight();
+
+        // Resize the iframe when the content changes
+        const resizeObserver = new ResizeObserver((_entries) => {
+          setHeight();
+        });
+        // Only observe if iframe content is ready
+        if (obj.contentWindow?.document?.body) {
+          resizeObserver.observe(obj.contentWindow.document.body);
+        }
+      }
+    </script>
+    <marimo-filename hidden>notebook.py</marimo-filename>
+    <!-- TODO(Trevor): Legacy, required by VS Code plugin. Remove when plugin is updated (see marimo/server/_templates/template.py) -->
+    <marimo-version data-version="{{ version }}" hidden></marimo-version>
+    <marimo-user-config data-config="{{ user_config }}" hidden></marimo-user-config>
+    <marimo-server-token data-token="{{ server_token }}" hidden></marimo-server-token>
+    <!-- /TODO -->
+    <title>ch21 overturning</title>
+    <script type="module" crossorigin src="./assets/index-awsLWRjZ.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/preload-helper-BPPi7vOr.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-LvLJmgfZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-Bj1aDYRI.js">
+    <link rel="modulepreload" crossorigin href="./assets/compiler-runtime-B3qBwwSJ.js">
+    <link rel="modulepreload" crossorigin href="./assets/jsx-runtime-BqBOg78p.js">
+    <link rel="modulepreload" crossorigin href="./assets/useEventListener-DvoEXWke.js">
+    <link rel="modulepreload" crossorigin href="./assets/defaultLocale-BLUna9fQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/precisionRound-Cl9k9ZmS.js">
+    <link rel="modulepreload" crossorigin href="./assets/defaultLocale-DzliDDTm.js">
+    <link rel="modulepreload" crossorigin href="./assets/vega-loader.browser-C8wT63Va.js">
+    <link rel="modulepreload" crossorigin href="./assets/utils-DCL4n9wx.js">
+    <link rel="modulepreload" crossorigin href="./assets/clsx-Dz_KRrWq.js">
+    <link rel="modulepreload" crossorigin href="./assets/cn-DCUzRj2J.js">
+    <link rel="modulepreload" crossorigin href="./assets/badge-j3NGjqhR.js">
+    <link rel="modulepreload" crossorigin href="./assets/button-BbCh-29a.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-dom-CSu739Rf.js">
+    <link rel="modulepreload" crossorigin href="./assets/fullscreen-eipL3i3Y.js">
+    <link rel="modulepreload" crossorigin href="./assets/menu-items-DcP01QzW.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-BdyjRhEt.js">
+    <link rel="modulepreload" crossorigin href="./assets/createLucideIcon-D5guW7EU.js">
+    <link rel="modulepreload" crossorigin href="./assets/check-BH35Ndha.js">
+    <link rel="modulepreload" crossorigin href="./assets/x-C-6liIBr.js">
+    <link rel="modulepreload" crossorigin href="./assets/select-DZcFyKFQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/tooltip-DTV9tlSr.js">
+    <link rel="modulepreload" crossorigin href="./assets/use-toast-IPAtJGea.js">
+    <link rel="modulepreload" crossorigin href="./assets/useEvent-D91BmmQi.js">
+    <link rel="modulepreload" crossorigin href="./assets/invariant-BUdrueMv.js">
+    <link rel="modulepreload" crossorigin href="./assets/isObject-DvLSfCY5.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseFor-DKD1r8uL.js">
+    <link rel="modulepreload" crossorigin href="./assets/merge-_9WLTEyt.js">
+    <link rel="modulepreload" crossorigin href="./assets/zod-H_cgTO0M.js">
+    <link rel="modulepreload" crossorigin href="./assets/utils-CvI-39U6.js">
+    <link rel="modulepreload" crossorigin href="./assets/Deferred-CP7vq682.js">
+    <link rel="modulepreload" crossorigin href="./assets/uuid-e9lSomwA.js">
+    <link rel="modulepreload" crossorigin href="./assets/DeferredRequestRegistry-CNldVcrP.js">
+    <link rel="modulepreload" crossorigin href="./assets/constants-DMpttj8Q.js">
+    <link rel="modulepreload" crossorigin href="./assets/session-0B5NBztP.js">
+    <link rel="modulepreload" crossorigin href="./assets/config-ClMcu_sV.js">
+    <link rel="modulepreload" crossorigin href="./assets/requests-DIwGYs0l.js">
+    <link rel="modulepreload" crossorigin href="./assets/useLifecycle-DieWOfXE.js">
+    <link rel="modulepreload" crossorigin href="./assets/useNonce-DfoVjkkH.js">
+    <link rel="modulepreload" crossorigin href="./assets/useTheme-CI2eq4XN.js">
+    <link rel="modulepreload" crossorigin href="./assets/arrays-DYDL-3-i.js">
+    <link rel="modulepreload" crossorigin href="./assets/strings-wdPMRf6Z.js">
+    <link rel="modulepreload" crossorigin href="./assets/once-DRroIaBz.js">
+    <link rel="modulepreload" crossorigin href="./assets/capabilities-A_KhFcGV.js">
+    <link rel="modulepreload" crossorigin href="./assets/createReducer-CI9qeK_X.js">
+    <link rel="modulepreload" crossorigin href="./assets/paths-D5zczhUD.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-BrR4M-k3.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-HlsDto3K.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CHcznzB-.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-B1U1kGCR.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-ChF5Ln9c.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CpTFpfm_.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CBSMxaO_.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CPczQFlJ.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-C9ZB41s2.js">
+    <link rel="modulepreload" crossorigin href="./assets/stex-BGrE-q7N.js">
+    <link rel="modulepreload" crossorigin href="./assets/toDate-B5A0DFEz.js">
+    <link rel="modulepreload" crossorigin href="./assets/purify.es-B9KxLTTS.js">
+    <link rel="modulepreload" crossorigin href="./assets/cjs-BRGiG41H.js">
+    <link rel="modulepreload" crossorigin href="./assets/isSymbol-BT6B8Bon.js">
+    <link rel="modulepreload" crossorigin href="./assets/now-CsYTPAhW.js">
+    <link rel="modulepreload" crossorigin href="./assets/debounce-DhnxH9Rh.js">
+    <link rel="modulepreload" crossorigin href="./assets/database-zap-kIkTfzTX.js">
+    <link rel="modulepreload" crossorigin href="./assets/main-B0OX4z33.js">
+    <link rel="modulepreload" crossorigin href="./assets/cells-BsaJrRWi.js">
+    <link rel="modulepreload" crossorigin href="./assets/ErrorBoundary-DyYDV0HI.js">
+    <link rel="modulepreload" crossorigin href="./assets/kbd-CTUAEnEx.js">
+    <link rel="modulepreload" crossorigin href="./assets/useInstallPackage-DUF4IRRI.js">
+    <link rel="modulepreload" crossorigin href="./assets/alert-dialog-BqFLkbUc.js">
+    <link rel="modulepreload" crossorigin href="./assets/dialog-DzC_QCtT.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDebounce-7xZwVnnu.js">
+    <link rel="modulepreload" crossorigin href="./assets/numbers-C3BAdHZE.js">
+    <link rel="modulepreload" crossorigin href="./assets/SSRProvider-CkFAAHXw.js">
+    <link rel="modulepreload" crossorigin href="./assets/context-QkTujrKn.js">
+    <link rel="modulepreload" crossorigin href="./assets/useNumberFormatter-ByUv-u9o.js">
+    <link rel="modulepreload" crossorigin href="./assets/usePress-DQ_tAz5W.js">
+    <link rel="modulepreload" crossorigin href="./assets/input-C3Hrdlqq.js">
+    <link rel="modulepreload" crossorigin href="./assets/ImperativeModal-B3Th7k4R.js">
+    <link rel="modulepreload" crossorigin href="./assets/cell-link-B1pHtGWp.js">
+    <link rel="modulepreload" crossorigin href="./assets/multi-map-CUuNtzHt.js">
+    <link rel="modulepreload" crossorigin href="./assets/alert-yTS3WpF4.js">
+    <link rel="modulepreload" crossorigin href="./assets/chevron-right-CG5QYXYk.js">
+    <link rel="modulepreload" crossorigin href="./assets/dropdown-menu-CR7cnzLX.js">
+    <link rel="modulepreload" crossorigin href="./assets/links-D1JoyKTt.js">
+    <link rel="modulepreload" crossorigin href="./assets/useRunCells-BiCBGyeW.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-LK56fFow.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-BwrPA9zQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-icon-OjtDb4gO.js">
+    <link rel="modulepreload" crossorigin href="./assets/RenderHTML-ChwPJgPd.js">
+    <link rel="modulepreload" crossorigin href="./assets/datasource-DjDpJnbt.js">
+    <link rel="modulepreload" crossorigin href="./assets/state-D-2KaAHK.js">
+    <link rel="modulepreload" crossorigin href="./assets/package-Tv6ztuzw.js">
+    <link rel="modulepreload" crossorigin href="./assets/sparkles-lWUAsPhp.js">
+    <link rel="modulepreload" crossorigin href="./assets/MarimoErrorOutput-B0h5OVW9.js">
+    <link rel="modulepreload" crossorigin href="./assets/spinner-Bhir8k53.js">
+    <link rel="modulepreload" crossorigin href="./assets/html-to-image-BWL3Ct4n.js">
+    <link rel="modulepreload" crossorigin href="./assets/focus-q38vUCl-.js">
+    <link rel="modulepreload" crossorigin href="./assets/useAsyncData-bgszE9F0.js">
+    <link rel="modulepreload" crossorigin href="./assets/LazyAnyLanguageCodeMirror-BEvXb3VX.js">
+    <link rel="modulepreload" crossorigin href="./assets/micromark-factory-space-BygYYKhs.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-5FQGJX7Z-D9iBG0F7.js">
+    <link rel="modulepreload" crossorigin href="./assets/markdown-renderer-CU5Lbyax.js">
+    <link rel="modulepreload" crossorigin href="./assets/command-KARR7KMq.js">
+    <link rel="modulepreload" crossorigin href="./assets/field-zLmMOSA4.js">
+    <link rel="modulepreload" crossorigin href="./assets/popover-Bz_0Vkyf.js">
+    <link rel="modulepreload" crossorigin href="./assets/errors-vr57w7Ul.js">
+    <link rel="modulepreload" crossorigin href="./assets/download-DT8gf0PL.js">
+    <link rel="modulepreload" crossorigin href="./assets/table-BGPSHfig.js">
+    <link rel="modulepreload" crossorigin href="./assets/useIframeCapabilities-CcI1zSdn.js">
+    <link rel="modulepreload" crossorigin href="./assets/error-banner-LdWZDbqd.js">
+    <link rel="modulepreload" crossorigin href="./assets/formats-b7Sf6DAK.js">
+    <link rel="modulepreload" crossorigin href="./assets/en-US-Cb8rIK52.js">
+    <link rel="modulepreload" crossorigin href="./assets/isValid-CklTTytn.js">
+    <link rel="modulepreload" crossorigin href="./assets/dates-CTxr0EqQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/maps-n3GaPJwv.js">
+    <link rel="modulepreload" crossorigin href="./assets/extends-BiFDv3jB.js">
+    <link rel="modulepreload" crossorigin href="./assets/emotion-is-prop-valid.esm-C59xfSYt.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDateFormatter-ICIDGgHf.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-icons.esm-BNzu6e7h.js">
+    <link rel="modulepreload" crossorigin href="./assets/RSPContexts-CdN1NyAt.js">
+    <link rel="modulepreload" crossorigin href="./assets/table-6NxtGaCm.js">
+    <link rel="modulepreload" crossorigin href="./assets/ellipsis-KAhMaCIV.js">
+    <link rel="modulepreload" crossorigin href="./assets/external-link-BTNxSavU.js">
+    <link rel="modulepreload" crossorigin href="./assets/message-circle-CWm2KnSx.js">
+    <link rel="modulepreload" crossorigin href="./assets/plus-BgB18UzY.js">
+    <link rel="modulepreload" crossorigin href="./assets/trash-2-rVklqqFF.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-resizable-panels.browser.esm-CV8-hvjx.js">
+    <link rel="modulepreload" crossorigin href="./assets/JsonOutput-BJaeXQim.js">
+    <link rel="modulepreload" crossorigin href="./assets/chart-no-axes-column-nqk474t8.js">
+    <link rel="modulepreload" crossorigin href="./assets/square-function-uY_yJr5g.js">
+    <link rel="modulepreload" crossorigin href="./assets/spec-CPQR_o92.js">
+    <link rel="modulepreload" crossorigin href="./assets/ellipsis-vertical-CkwWkOQL.js">
+    <link rel="modulepreload" crossorigin href="./assets/refresh-cw-DHwG4Mac.js">
+    <link rel="modulepreload" crossorigin href="./assets/tree-actions-BM_EJr3E.js">
+    <link rel="modulepreload" crossorigin href="./assets/components-BzBUxUz0.js">
+    <link rel="modulepreload" crossorigin href="./assets/column-preview-BPismotx.js">
+    <link rel="modulepreload" crossorigin href="./assets/icons-Ol38nIbL.js">
+    <link rel="modulepreload" crossorigin href="./assets/radio-group-DlVSuZ_1.js">
+    <link rel="modulepreload" crossorigin href="./assets/floating-outline-BN9sAcQ0.js">
+    <link rel="modulepreload" crossorigin href="./assets/objectWithoutPropertiesLoose-DfWeGRFv.js">
+    <link rel="modulepreload" crossorigin href="./assets/esm-CqWdmSnV.js">
+    <link rel="modulepreload" crossorigin href="./assets/readonly-python-code-D3_kHsDx.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-headphone-BrQspHac.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-BrdxGLRX.js">
+    <link rel="modulepreload" crossorigin href="./assets/image-DQHXdEQn.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-icons-BiMOJy0r.js">
+    <link rel="modulepreload" crossorigin href="./assets/switch-BiU_sAcn.js">
+    <link rel="modulepreload" crossorigin href="./assets/events-CPoJAfgx.js">
+    <link rel="modulepreload" crossorigin href="./assets/globals-7JnRMGd4.js">
+    <link rel="modulepreload" crossorigin href="./assets/share-DMwTZOTH.js">
+    <link rel="modulepreload" crossorigin href="./assets/blob-Bgnx1kuY.js">
+    <link rel="modulepreload" crossorigin href="./assets/memoize-Tp7rARFe.js">
+    <link rel="modulepreload" crossorigin href="./assets/get-C-qh_et5.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseSet-CxV9N1bc.js">
+    <link rel="modulepreload" crossorigin href="./assets/state-BTTshiKq.js">
+    <link rel="modulepreload" crossorigin href="./assets/label-xHqFtfdz.js">
+    <link rel="modulepreload" crossorigin href="./assets/textarea-DwltG8V6.js">
+    <link rel="modulepreload" crossorigin href="./assets/refresh-ccw-C-n2VFP5.js">
+    <link rel="modulepreload" crossorigin href="./assets/form-BtBTvVVd.js">
+    <link rel="modulepreload" crossorigin href="./assets/renderShortcut-CcFk3m01.js">
+    <link rel="modulepreload" crossorigin href="./assets/useBoolean-Bp18o6XG.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDeepCompareMemoize-zUHU--0D.js">
+    <link rel="modulepreload" crossorigin href="./assets/types-W8WWuumF.js">
+    <link rel="modulepreload" crossorigin href="./assets/semaphore-FlZezxaf.js">
+    <link rel="modulepreload" crossorigin href="./assets/fileToBase64-DZfwJMrG.js">
+    <link rel="modulepreload" crossorigin href="./assets/pathUtils-CJjndqMI.js">
+    <link rel="modulepreload" crossorigin href="./assets/prop-types-DaaA-ptl.js">
+    <link rel="modulepreload" crossorigin href="./assets/es-DGgq-Wes.js">
+    <link rel="modulepreload" crossorigin href="./assets/hasIn-DiS_ryrS.js">
+    <link rel="modulepreload" crossorigin href="./assets/flatten-Dl4V1ub3.js">
+    <link rel="modulepreload" crossorigin href="./assets/pick-DqWUNly1.js">
+    <link rel="modulepreload" crossorigin href="./assets/code-xml-CZN6vNxu.js">
+    <link rel="modulepreload" crossorigin href="./assets/house-mGK3v0Mm.js">
+    <link rel="modulepreload" crossorigin href="./assets/square-B5xWCt0a.js">
+    <link rel="modulepreload" crossorigin href="./assets/triangle-alert-D2p96PEF.js">
+    <link rel="modulepreload" crossorigin href="./assets/bundle.esm-DjhGJy4I.js">
+    <link rel="stylesheet" crossorigin href="./assets/cells-jmgGt1lS.css">
+    <link rel="stylesheet" crossorigin href="./assets/markdown-renderer-DdDKmWlR.css">
+    <link rel="stylesheet" crossorigin href="./assets/JsonOutput-B7vuddcd.css">
+    <link rel="stylesheet" crossorigin href="./assets/index-BIw7BKLH.css">
+  <marimo-wasm hidden=""></marimo-wasm>
+    <script>
+        if (window.location.protocol === 'file:') {
+            alert('Warning: This file must be served by an HTTP server to function correctly.');
+        }
+    </script>
+    
+    <style>
+        #save-button {
+            display: none !important;
+        }
+        #filename-input {
+            display: none !important;
+        }
+    </style>
+    
+<script data-marimo="true">
+    Object.defineProperty(window, "__MARIMO_EXPORT_CONTEXT__", {
+        value: Object.freeze({
+            trusted: true,
+            notebookCode: "import marimo\n\n__generated_with = \"0.23.9\"\napp = marimo.App(width=\"medium\")\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    # Chapter 21 \u2014 Buoyancy-Driven / Overturning Circulation\n\n    **Physical question.** The Hadley cell and the ocean's meridional\n    overturning circulation look nothing alike on a map, but they're\n    driven by the same mechanism: heat a fluid unevenly along one\n    boundary and it organizes into a single overturning cell \u2014 rising\n    where it's heated, sinking where it's cooled. After this chapter\n    you should be able to explain why that single-cell structure is\n    the generic outcome (not convective rolls), and derive the classic\n    \"abyssal recipe\" balance that sets the deep ocean's stratification.\n    \"\"\")\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    ## Governing equations\n\n    ### Abyssal recipes (Munk 1966)\n\n    Deep water sinks at a few high-latitude spots and slowly upwells\n    everywhere else. In the vast interior, a steady 1D balance between\n    that upwelling $w$ and diapycnal (across-density-surface) diffusion\n    $\\kappa$ sets the stratification (symbols as in\n    [NOTATION](../notation)):\n\n    $$w\\frac{\\partial T}{\\partial z}=\\kappa\\frac{\\partial^2T}{\\partial z^2}.$$\n\n    Read it as a tug-of-war: upwelling drags cold bottom water upward,\n    trying to fill the whole column with abyssal properties; diffusion\n    leaks warmth downward from the surface, resisting. The general\n    solution is $T=A+Be^{wz/\\kappa}$, so the contest is settled by one\n    number, $w H/\\kappa$ (a **P\u00e9clet number**): large $wH/\\kappa$\n    confines the warm water to a thin exponential boundary layer of\n    thickness $\\kappa/w$ at the top \u2014 the **thermocline** \u2014 above a\n    nearly uniform abyss. That is, to first order, the observed\n    structure of every ocean basin.\n\n    The audacity of Munk's 1966 paper was to run this in reverse: from\n    the *observed* thermocline shape and tracer-derived $\\kappa$\n    ($\\sim10^{-4}\\,$m\u00b2/s \u2014 and note that is $10^3$ times molecular,\n    i.e. it is Ch. 17's breaking internal waves in disguise), infer\n    $w\\sim10^{-7}$ m/s \u2014 about 4 meters per *year* \u2014 and hence the\n    first quantitative estimate of the global overturning rate,\n    $\\sim$25 Sverdrups, from a napkin-sized ODE.\n\n    ### The overturning cell: horizontal convection\n\n    Part A assumed the upwelling; Part B builds the machine that makes\n    it. Apply *differential* heating along one boundary of a 2D\n    Boussinesq fluid \u2014 warm at one end, cool at the other \u2014 and the\n    buoyancy torque $\\partial\\theta/\\partial x$ drives circulation\n    exactly as in Ch. 14, except the forcing's sign now varies\n    *horizontally* instead of only vertically:\n\n    $$\\frac{\\partial\\zeta}{\\partial t}+J(\\psi,\\zeta)=Pr\\nabla^2\\zeta+Pr\\!\\cdot\\!Ra\\,\n      \\frac{\\partial\\theta}{\\partial x},\\qquad\n      \\frac{\\partial\\theta}{\\partial t}+J(\\psi,\\theta)=\\nabla^2\\theta+Q(x,z),\n      \\qquad \\nabla^2\\psi=\\zeta.$$\n\n    The distinction matters more than it looks. Rayleigh\u2013B\u00e9nard heating\n    (Ch. 14) is a *battle at every column* \u2014 heavy over light\n    everywhere \u2014 so it fragments into many rolls and has a critical\n    $Ra_c$ below which nothing moves. Heating that varies *along* the\n    boundary creates one basin-scale pressure contrast, so the response\n    is a single cell spanning the domain, and there is **no threshold**:\n    any nonzero contrast drives some circulation (nothing must be\n    overturned to get started \u2014 the torque\n    $\\partial\\theta/\\partial x\\neq0$ exists immediately). This\n    \"horizontal convection\" (Rossby 1965) is the laboratory version of\n    both the Hadley cell and the MOC.\n    \"\"\")\n    return\n\n\n@app.cell\nasync def _(mo):\n    # --- vetted primitives from gfdlib (see CLAUDE.md) -------------------\n    import sys\n\n    if sys.platform == \"emscripten\":\n        import micropip\n        await micropip.install(\n            str(mo.notebook_location() / \"public\" / \"gfdlib-0.1.0-py3-none-any.whl\")\n        )\n    else:\n        sys.path.insert(0, str(mo.notebook_dir().parent))  # repo root\n\n    import numpy as np\n    import matplotlib.pyplot as plt\n    from gfdlib import convection, timestep, overturning\n\n    return convection, np, overturning, plt, timestep\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    ## Numerical scheme\n\n    **Part A** is a small linear ODE with constant coefficients,\n    solved exactly (`gfdlib.overturning.abyssal_profile`) via a 2\u00d72\n    `numpy.linalg.solve` for the boundary-condition constants \u2014 cheap\n    enough to be fully reactive. **Part B** reuses\n    `gfdlib.convection.ChannelGrid`'s already-validated Boussinesq\n    vorticity-streamfunction machinery unchanged (periodic $x$,\n    Dirichlet-zero $z$, tridiagonal Poisson solve), but replaces\n    Rayleigh-B\u00e9nard's uniform bottom heating with a differential,\n    surface-concentrated heating field\n    (`gfdlib.overturning.surface_heating`) \u2014 warm at one end of the\n    domain, cool at the other \u2014 the classic \"horizontal convection\"\n    mechanism (Rossby 1965) for a single overturning cell.\n    \"\"\")\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    ## Part A \u2014 Abyssal recipes: the deep-ocean balance\n    \"\"\")\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    w_ui = mo.ui.slider(0.05, 5.0, step=0.05, value=1.0, label=\"upwelling $w$\", show_value=True)\n    kappa_ui = mo.ui.slider(0.05, 1.0, step=0.05, value=0.3, label=\"diffusivity $\\\\kappa$\",\n                            show_value=True)\n    mo.vstack([\n        mo.hstack([w_ui, kappa_ui], justify=\"start\"),\n        mo.md(r\"\u003E $T(0)=0$ (deep/bottom water), $T(1)=1$ (surface water). \"\n              r\"The ratio $w/\\kappa$ is the only thing that matters \u2014 it's \"\n              r\"the inverse of a **P\u00e9clet number** comparing advection to \"\n              r\"diffusion.\"),\n    ])\n    return kappa_ui, w_ui\n\n\n@app.cell(hide_code=True)\ndef _(kappa_ui, np, overturning, plt, w_ui):\n    _z = np.linspace(0, 1, 200)\n    _T = overturning.abyssal_profile(_z, w_ui.value, kappa_ui.value, H=1.0)\n    _T_diffusive = overturning.abyssal_profile(_z, 1e-6, kappa_ui.value, H=1.0)\n\n    fig0, ax0 = plt.subplots(figsize=(5, 5), constrained_layout=True)\n    ax0.plot(_T_diffusive, _z, \"k--\", lw=1.2, label=\"pure diffusion ($w\\\\to0$)\")\n    ax0.plot(_T, _z, lw=2.5, color=\"crimson\",\n             label=f\"$w/\\\\kappa$={w_ui.value / kappa_ui.value:.2f}\")\n    ax0.set_xlabel(\"$T(z)$\"); ax0.set_ylabel(\"$z$ (0=bottom, 1=surface)\")\n    ax0.set_title(\"Munk's abyssal-recipe profile\"); ax0.legend(fontsize=9); ax0.grid(alpha=0.3)\n    fig0\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    Push $w/\\kappa$ up: the profile stays close to the **bottom**\n    value through most of the water column, with the transition to\n    surface properties compressed into a thin layer near $z=1$ \u2014 the\n    real deep ocean's near-uniform abyssal temperature, capped by a\n    thin thermocline. Munk (1966) ran this argument in reverse: given\n    an *observed* stratification and a $\\kappa$ measured from tracer-\n    release experiments, the balance above tells you $w$ \u2014 the\n    globally-averaged upwelling rate needed to close the ocean's mass\n    budget, one of the first quantitative constraints on the deep MOC.\n    \"\"\")\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    ## Part B \u2014 A minimal overturning cell\n    \"\"\")\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    Ra_ui = mo.ui.slider(1e4, 5e5, step=1e4, value=2e5, label=\"$Ra$\", show_value=True)\n    Q0_ui = mo.ui.slider(0.5, 10.0, step=0.5, value=5.0, label=\"heating amplitude $Q_0$\",\n                         show_value=True)\n    nx_ui = mo.ui.dropdown(options={\"32\": 32, \"48\": 48}, value=\"32\", label=\"resolution $n_x$\")\n    T_ui = mo.ui.slider(0.05, 0.5, step=0.05, value=0.2, label=\"run time $T$\", show_value=True)\n    mo.vstack([\n        mo.hstack([Ra_ui, Q0_ui], justify=\"start\"),\n        mo.hstack([nx_ui, T_ui], justify=\"start\"),\n    ])\n    return Q0_ui, Ra_ui, T_ui, nx_ui\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    get_ot, set_ot = mo.state(None)\n    return get_ot, set_ot\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    run_btn = mo.ui.run_button(label=\"\u25b6 Run overturning simulation\")\n    run_btn\n    return (run_btn,)\n\n\n@app.cell\ndef _(\n    Q0_ui,\n    Ra_ui,\n    T_ui,\n    convection,\n    mo,\n    np,\n    nx_ui,\n    overturning,\n    run_btn,\n    set_ot,\n    timestep,\n):\n    mo.stop(not run_btn.value, mo.callout(\n        mo.md(\"Press **\u25b6 Run overturning simulation** above to start.\"), kind=\"info\"\n    ))\n\n    _nx = nx_ui.value\n    _nz = _nx // 2\n    _Lx = 2.0\n    _Ra, _Q0, _T, _Pr = Ra_ui.value, Q0_ui.value, T_ui.value, 1.0\n\n    grid = convection.ChannelGrid(_nx, _nz, _Lx)\n    Q = overturning.surface_heating(grid, _Q0)\n\n    _rng = np.random.default_rng(0)\n    _zeta = np.zeros((_nx, _nz))\n    _theta = 1e-3 * _rng.standard_normal((_nx, _nz))\n    _state = np.stack([_zeta, _theta])\n\n    _dt = 0.15 * min(grid.dx, grid.dz) ** 2\n    _nsteps = max(20, int(_T / _dt))\n    _nsub = max(1, _nsteps // 60)\n\n    def _rhs(t, s):\n        return overturning.rhs_overturning(s, grid, _Ra, _Pr, Q)\n\n    _snaps_th, _snaps_psi, _t_hist = [], [], []\n    _t = 0.0\n    for _s in range(_nsteps + 1):\n        if _s % _nsub == 0:\n            _snaps_th.append(_state[1].copy())\n            _snaps_psi.append(grid.poisson_solve(_state[0]).copy())\n            _t_hist.append(_t)\n        if _s \u003C _nsteps:\n            _state = timestep.rk4(_rhs, _state, _dt)\n            _t += _dt\n\n    set_ot({\n        \"snaps_th\": _snaps_th, \"snaps_psi\": _snaps_psi,\n        \"t\": np.array(_t_hist), \"grid\": grid, \"Ra\": _Ra, \"Q0\": _Q0,\n    })\n\n    mo.callout(mo.md(\n        f\"**Done.** $Ra={_Ra:.0f}$, $Q_0={_Q0}$, grid {_nx}\u00d7{_nz}, {_nsteps} steps \"\n        f\"\u2192 {len(_snaps_th)} frames.\"\n    ), kind=\"success\")\n    return\n\n\n@app.cell\ndef _(get_ot, mo):\n    ot_sim = get_ot()\n    mo.stop(ot_sim is None, mo.callout(\n        mo.md(\"Results will appear here once the simulation has run.\"), kind=\"warn\"\n    ))\n    return (ot_sim,)\n\n\n@app.cell(hide_code=True)\ndef _(mo, ot_sim):\n    ot_frame = mo.ui.slider(0, len(ot_sim[\"snaps_th\"]) - 1, step=1,\n                            value=len(ot_sim[\"snaps_th\"]) - 1, label=\"frame\", show_value=True)\n    return (ot_frame,)\n\n\n@app.cell(hide_code=True)\ndef _(mo, np, ot_frame, ot_sim, plt):\n    _i = ot_frame.value\n    _g = ot_sim[\"grid\"]\n    _th = ot_sim[\"snaps_th\"][_i]; _psi = ot_sim[\"snaps_psi\"][_i]\n    _XX, _ZZ = np.meshgrid(_g.x, _g.z, indexing=\"ij\")\n\n    fig1, axs1 = plt.subplots(1, 2, figsize=(10, 4), constrained_layout=True)\n    _vm = max(float(np.abs(_th).max()), 1e-10)\n    _im0 = axs1[0].pcolormesh(_XX, _ZZ, _th, cmap=\"RdBu_r\", vmin=-_vm, vmax=_vm, shading=\"auto\")\n    plt.colorbar(_im0, ax=axs1[0], fraction=0.046, label=r\"$\\theta$\")\n    axs1[0].set_title(f\"buoyancy  $t={ot_sim['t'][_i]:.3f}$\")\n    axs1[0].set_xlabel(\"$x$ (heated $\\\\to$ cooled $\\\\to$ heated)\"); axs1[0].set_ylabel(\"$z$\")\n\n    _vm2 = max(float(np.abs(_psi).max()), 1e-10)\n    _im1 = axs1[1].pcolormesh(_XX, _ZZ, _psi, cmap=\"PuOr\", vmin=-_vm2, vmax=_vm2, shading=\"auto\")\n    plt.colorbar(_im1, ax=axs1[1], fraction=0.046, label=r\"$\\psi$\")\n    axs1[1].set_title(f\"streamfunction  $t={ot_sim['t'][_i]:.3f}$\")\n    axs1[1].set_xlabel(\"$x$\"); axs1[1].set_ylabel(\"$z$\")\n    mo.vstack([ot_frame, fig1])\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    A single, coherent overturning cell \u2014 not the small convective\n    rolls of Ch. 14 \u2014 rising over the heated column and sinking over\n    the cooled one, exactly as in the abyssal-recipe intuition of\n    Part A: warm, light fluid rises; cold, dense fluid sinks; the\n    return flow closes the loop along the surface and the bottom.\n    \"\"\")\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    ### Try this\n\n    - **Confirm the circulation sense.** At the frame slider's final\n      position, the streamfunction's sign should show rising motion\n      ($\\partial\\psi/\\partial x\u003E0$) directly under the heated column\n      and sinking ($\\partial\\psi/\\partial x\u003C0$) under the cooled one \u2014\n      the same check `gfdlib`'s test suite makes automatically.\n    - **Push $Q_0$.** Stronger differential heating drives a stronger\n      cell (larger $|\\psi|$) \u2014 does the RELATIONSHIP look linear, or\n      does it saturate? This connects to the long-standing \"does MOC\n      strength scale linearly with the pole-to-equator buoyancy\n      contrast\" question in real ocean circulation theory.\n    - **Connect Part A to Part B.** In Part A, larger $w/\\kappa$ meant\n      a thinner surface transition layer. In Part B's temperature\n      field, does a stronger cell (larger $Q_0$ or $Ra$) similarly\n      compress the buoyancy anomaly into a thinner layer near the\n      surface?\n\n    ### What you should have seen\n\n    Two versions of the same idea: a 1D balance (Part A) showing that\n    upwelling against diffusion sets a boundary-layer-like\n    stratification, and a fully 2D, self-consistent circulation\n    (Part B) showing WHY that upwelling exists in the first place \u2014\n    differential heating along a boundary organizes into one\n    overturning cell, not many small ones, because the domain only\n    has ONE large-scale buoyancy contrast to respond to. The same\n    mechanism, at utterly different scales, drives the atmosphere's\n    Hadley cell and the ocean's meridional overturning circulation \u2014\n    the two phenomena that, together with wind-driven gyres (Ch. 20),\n    set the shape of the entire general circulation.\n\n    **Where this leaves you.** This chapter closes the book's main\n    physical arc, and it is worth seeing how much of the book it\n    quietly used: the Boussinesq solver came from Ch. 14, the $\\kappa$\n    in the abyssal recipe is made by Ch. 17's shear instabilities and\n    Ch. 12's breaking internal waves, the deep circulation's pathways\n    are steered by Ch. 20's vorticity balance (deep western boundary\n    currents!), and the whole enterprise of inferring circulation from\n    stratification rests on Ch. 5's idea that balanced fields encode\n    the flow. Part VII, if you continue, revisits this same machinery\n    from the variational/Hamiltonian side \u2014 optional, but the \"why\n    behind the why.\"\n    \"\"\")\n    return\n\n\n@app.cell\ndef _():\n    import marimo as mo\n\n    return (mo,)\n\n\nif __name__ == \"__main__\":\n    app.run()\n",
+        }),
+        writable: false,
+        configurable: false,
+    });
+</script>
+<marimo-code hidden="">import%20marimo%0A%0A__generated_with%20%3D%20%220.23.9%22%0Aapp%20%3D%20marimo.App(width%3D%22medium%22)%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%20Chapter%2021%20%E2%80%94%20Buoyancy-Driven%20%2F%20Overturning%20Circulation%0A%0A%20%20%20%20**Physical%20question.**%20The%20Hadley%20cell%20and%20the%20ocean's%20meridional%0A%20%20%20%20overturning%20circulation%20look%20nothing%20alike%20on%20a%20map%2C%20but%20they're%0A%20%20%20%20driven%20by%20the%20same%20mechanism%3A%20heat%20a%20fluid%20unevenly%20along%20one%0A%20%20%20%20boundary%20and%20it%20organizes%20into%20a%20single%20overturning%20cell%20%E2%80%94%20rising%0A%20%20%20%20where%20it's%20heated%2C%20sinking%20where%20it's%20cooled.%20After%20this%20chapter%0A%20%20%20%20you%20should%20be%20able%20to%20explain%20why%20that%20single-cell%20structure%20is%0A%20%20%20%20the%20generic%20outcome%20(not%20convective%20rolls)%2C%20and%20derive%20the%20classic%0A%20%20%20%20%22abyssal%20recipe%22%20balance%20that%20sets%20the%20deep%20ocean's%20stratification.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%23%20Governing%20equations%0A%0A%20%20%20%20%23%23%23%20Abyssal%20recipes%20(Munk%201966)%0A%0A%20%20%20%20Deep%20water%20sinks%20at%20a%20few%20high-latitude%20spots%20and%20slowly%20upwells%0A%20%20%20%20everywhere%20else.%20In%20the%20vast%20interior%2C%20a%20steady%201D%20balance%20between%0A%20%20%20%20that%20upwelling%20%24w%24%20and%20diapycnal%20(across-density-surface)%20diffusion%0A%20%20%20%20%24%5Ckappa%24%20sets%20the%20stratification%20(symbols%20as%20in%0A%20%20%20%20%5BNOTATION%5D(..%2Fnotation))%3A%0A%0A%20%20%20%20%24%24w%5Cfrac%7B%5Cpartial%20T%7D%7B%5Cpartial%20z%7D%3D%5Ckappa%5Cfrac%7B%5Cpartial%5E2T%7D%7B%5Cpartial%20z%5E2%7D.%24%24%0A%0A%20%20%20%20Read%20it%20as%20a%20tug-of-war%3A%20upwelling%20drags%20cold%20bottom%20water%20upward%2C%0A%20%20%20%20trying%20to%20fill%20the%20whole%20column%20with%20abyssal%20properties%3B%20diffusion%0A%20%20%20%20leaks%20warmth%20downward%20from%20the%20surface%2C%20resisting.%20The%20general%0A%20%20%20%20solution%20is%20%24T%3DA%2BBe%5E%7Bwz%2F%5Ckappa%7D%24%2C%20so%20the%20contest%20is%20settled%20by%20one%0A%20%20%20%20number%2C%20%24w%20H%2F%5Ckappa%24%20(a%20**P%C3%A9clet%20number**)%3A%20large%20%24wH%2F%5Ckappa%24%0A%20%20%20%20confines%20the%20warm%20water%20to%20a%20thin%20exponential%20boundary%20layer%20of%0A%20%20%20%20thickness%20%24%5Ckappa%2Fw%24%20at%20the%20top%20%E2%80%94%20the%20**thermocline**%20%E2%80%94%20above%20a%0A%20%20%20%20nearly%20uniform%20abyss.%20That%20is%2C%20to%20first%20order%2C%20the%20observed%0A%20%20%20%20structure%20of%20every%20ocean%20basin.%0A%0A%20%20%20%20The%20audacity%20of%20Munk's%201966%20paper%20was%20to%20run%20this%20in%20reverse%3A%20from%0A%20%20%20%20the%20*observed*%20thermocline%20shape%20and%20tracer-derived%20%24%5Ckappa%24%0A%20%20%20%20(%24%5Csim10%5E%7B-4%7D%5C%2C%24m%C2%B2%2Fs%20%E2%80%94%20and%20note%20that%20is%20%2410%5E3%24%20times%20molecular%2C%0A%20%20%20%20i.e.%20it%20is%20Ch.%2017's%20breaking%20internal%20waves%20in%20disguise)%2C%20infer%0A%20%20%20%20%24w%5Csim10%5E%7B-7%7D%24%20m%2Fs%20%E2%80%94%20about%204%20meters%20per%20*year*%20%E2%80%94%20and%20hence%20the%0A%20%20%20%20first%20quantitative%20estimate%20of%20the%20global%20overturning%20rate%2C%0A%20%20%20%20%24%5Csim%2425%20Sverdrups%2C%20from%20a%20napkin-sized%20ODE.%0A%0A%20%20%20%20%23%23%23%20The%20overturning%20cell%3A%20horizontal%20convection%0A%0A%20%20%20%20Part%20A%20assumed%20the%20upwelling%3B%20Part%20B%20builds%20the%20machine%20that%20makes%0A%20%20%20%20it.%20Apply%20*differential*%20heating%20along%20one%20boundary%20of%20a%202D%0A%20%20%20%20Boussinesq%20fluid%20%E2%80%94%20warm%20at%20one%20end%2C%20cool%20at%20the%20other%20%E2%80%94%20and%20the%0A%20%20%20%20buoyancy%20torque%20%24%5Cpartial%5Ctheta%2F%5Cpartial%20x%24%20drives%20circulation%0A%20%20%20%20exactly%20as%20in%20Ch.%2014%2C%20except%20the%20forcing's%20sign%20now%20varies%0A%20%20%20%20*horizontally*%20instead%20of%20only%20vertically%3A%0A%0A%20%20%20%20%24%24%5Cfrac%7B%5Cpartial%5Czeta%7D%7B%5Cpartial%20t%7D%2BJ(%5Cpsi%2C%5Czeta)%3DPr%5Cnabla%5E2%5Czeta%2BPr%5C!%5Ccdot%5C!Ra%5C%2C%0A%20%20%20%20%20%20%5Cfrac%7B%5Cpartial%5Ctheta%7D%7B%5Cpartial%20x%7D%2C%5Cqquad%0A%20%20%20%20%20%20%5Cfrac%7B%5Cpartial%5Ctheta%7D%7B%5Cpartial%20t%7D%2BJ(%5Cpsi%2C%5Ctheta)%3D%5Cnabla%5E2%5Ctheta%2BQ(x%2Cz)%2C%0A%20%20%20%20%20%20%5Cqquad%20%5Cnabla%5E2%5Cpsi%3D%5Czeta.%24%24%0A%0A%20%20%20%20The%20distinction%20matters%20more%20than%20it%20looks.%20Rayleigh%E2%80%93B%C3%A9nard%20heating%0A%20%20%20%20(Ch.%2014)%20is%20a%20*battle%20at%20every%20column*%20%E2%80%94%20heavy%20over%20light%0A%20%20%20%20everywhere%20%E2%80%94%20so%20it%20fragments%20into%20many%20rolls%20and%20has%20a%20critical%0A%20%20%20%20%24Ra_c%24%20below%20which%20nothing%20moves.%20Heating%20that%20varies%20*along*%20the%0A%20%20%20%20boundary%20creates%20one%20basin-scale%20pressure%20contrast%2C%20so%20the%20response%0A%20%20%20%20is%20a%20single%20cell%20spanning%20the%20domain%2C%20and%20there%20is%20**no%20threshold**%3A%0A%20%20%20%20any%20nonzero%20contrast%20drives%20some%20circulation%20(nothing%20must%20be%0A%20%20%20%20overturned%20to%20get%20started%20%E2%80%94%20the%20torque%0A%20%20%20%20%24%5Cpartial%5Ctheta%2F%5Cpartial%20x%5Cneq0%24%20exists%20immediately).%20This%0A%20%20%20%20%22horizontal%20convection%22%20(Rossby%201965)%20is%20the%20laboratory%20version%20of%0A%20%20%20%20both%20the%20Hadley%20cell%20and%20the%20MOC.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Aasync%20def%20_(mo)%3A%0A%20%20%20%20%23%20---%20vetted%20primitives%20from%20gfdlib%20(see%20CLAUDE.md)%20-------------------%0A%20%20%20%20import%20sys%0A%0A%20%20%20%20if%20sys.platform%20%3D%3D%20%22emscripten%22%3A%0A%20%20%20%20%20%20%20%20import%20micropip%0A%20%20%20%20%20%20%20%20await%20micropip.install(%0A%20%20%20%20%20%20%20%20%20%20%20%20str(mo.notebook_location()%20%2F%20%22public%22%20%2F%20%22gfdlib-0.1.0-py3-none-any.whl%22)%0A%20%20%20%20%20%20%20%20)%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20sys.path.insert(0%2C%20str(mo.notebook_dir().parent))%20%20%23%20repo%20root%0A%0A%20%20%20%20import%20numpy%20as%20np%0A%20%20%20%20import%20matplotlib.pyplot%20as%20plt%0A%20%20%20%20from%20gfdlib%20import%20convection%2C%20timestep%2C%20overturning%0A%0A%20%20%20%20return%20convection%2C%20np%2C%20overturning%2C%20plt%2C%20timestep%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%23%20Numerical%20scheme%0A%0A%20%20%20%20**Part%20A**%20is%20a%20small%20linear%20ODE%20with%20constant%20coefficients%2C%0A%20%20%20%20solved%20exactly%20(%60gfdlib.overturning.abyssal_profile%60)%20via%20a%202%C3%972%0A%20%20%20%20%60numpy.linalg.solve%60%20for%20the%20boundary-condition%20constants%20%E2%80%94%20cheap%0A%20%20%20%20enough%20to%20be%20fully%20reactive.%20**Part%20B**%20reuses%0A%20%20%20%20%60gfdlib.convection.ChannelGrid%60's%20already-validated%20Boussinesq%0A%20%20%20%20vorticity-streamfunction%20machinery%20unchanged%20(periodic%20%24x%24%2C%0A%20%20%20%20Dirichlet-zero%20%24z%24%2C%20tridiagonal%20Poisson%20solve)%2C%20but%20replaces%0A%20%20%20%20Rayleigh-B%C3%A9nard's%20uniform%20bottom%20heating%20with%20a%20differential%2C%0A%20%20%20%20surface-concentrated%20heating%20field%0A%20%20%20%20(%60gfdlib.overturning.surface_heating%60)%20%E2%80%94%20warm%20at%20one%20end%20of%20the%0A%20%20%20%20domain%2C%20cool%20at%20the%20other%20%E2%80%94%20the%20classic%20%22horizontal%20convection%22%0A%20%20%20%20mechanism%20(Rossby%201965)%20for%20a%20single%20overturning%20cell.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%23%20Part%20A%20%E2%80%94%20Abyssal%20recipes%3A%20the%20deep-ocean%20balance%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20w_ui%20%3D%20mo.ui.slider(0.05%2C%205.0%2C%20step%3D0.05%2C%20value%3D1.0%2C%20label%3D%22upwelling%20%24w%24%22%2C%20show_value%3DTrue)%0A%20%20%20%20kappa_ui%20%3D%20mo.ui.slider(0.05%2C%201.0%2C%20step%3D0.05%2C%20value%3D0.3%2C%20label%3D%22diffusivity%20%24%5C%5Ckappa%24%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20show_value%3DTrue)%0A%20%20%20%20mo.vstack(%5B%0A%20%20%20%20%20%20%20%20mo.hstack(%5Bw_ui%2C%20kappa_ui%5D%2C%20justify%3D%22start%22)%2C%0A%20%20%20%20%20%20%20%20mo.md(r%22%3E%20%24T(0)%3D0%24%20(deep%2Fbottom%20water)%2C%20%24T(1)%3D1%24%20(surface%20water).%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20r%22The%20ratio%20%24w%2F%5Ckappa%24%20is%20the%20only%20thing%20that%20matters%20%E2%80%94%20it's%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20r%22the%20inverse%20of%20a%20**P%C3%A9clet%20number**%20comparing%20advection%20to%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20r%22diffusion.%22)%2C%0A%20%20%20%20%5D)%0A%20%20%20%20return%20kappa_ui%2C%20w_ui%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(kappa_ui%2C%20np%2C%20overturning%2C%20plt%2C%20w_ui)%3A%0A%20%20%20%20_z%20%3D%20np.linspace(0%2C%201%2C%20200)%0A%20%20%20%20_T%20%3D%20overturning.abyssal_profile(_z%2C%20w_ui.value%2C%20kappa_ui.value%2C%20H%3D1.0)%0A%20%20%20%20_T_diffusive%20%3D%20overturning.abyssal_profile(_z%2C%201e-6%2C%20kappa_ui.value%2C%20H%3D1.0)%0A%0A%20%20%20%20fig0%2C%20ax0%20%3D%20plt.subplots(figsize%3D(5%2C%205)%2C%20constrained_layout%3DTrue)%0A%20%20%20%20ax0.plot(_T_diffusive%2C%20_z%2C%20%22k--%22%2C%20lw%3D1.2%2C%20label%3D%22pure%20diffusion%20(%24w%5C%5Cto0%24)%22)%0A%20%20%20%20ax0.plot(_T%2C%20_z%2C%20lw%3D2.5%2C%20color%3D%22crimson%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20label%3Df%22%24w%2F%5C%5Ckappa%24%3D%7Bw_ui.value%20%2F%20kappa_ui.value%3A.2f%7D%22)%0A%20%20%20%20ax0.set_xlabel(%22%24T(z)%24%22)%3B%20ax0.set_ylabel(%22%24z%24%20(0%3Dbottom%2C%201%3Dsurface)%22)%0A%20%20%20%20ax0.set_title(%22Munk's%20abyssal-recipe%20profile%22)%3B%20ax0.legend(fontsize%3D9)%3B%20ax0.grid(alpha%3D0.3)%0A%20%20%20%20fig0%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20Push%20%24w%2F%5Ckappa%24%20up%3A%20the%20profile%20stays%20close%20to%20the%20**bottom**%0A%20%20%20%20value%20through%20most%20of%20the%20water%20column%2C%20with%20the%20transition%20to%0A%20%20%20%20surface%20properties%20compressed%20into%20a%20thin%20layer%20near%20%24z%3D1%24%20%E2%80%94%20the%0A%20%20%20%20real%20deep%20ocean's%20near-uniform%20abyssal%20temperature%2C%20capped%20by%20a%0A%20%20%20%20thin%20thermocline.%20Munk%20(1966)%20ran%20this%20argument%20in%20reverse%3A%20given%0A%20%20%20%20an%20*observed*%20stratification%20and%20a%20%24%5Ckappa%24%20measured%20from%20tracer-%0A%20%20%20%20release%20experiments%2C%20the%20balance%20above%20tells%20you%20%24w%24%20%E2%80%94%20the%0A%20%20%20%20globally-averaged%20upwelling%20rate%20needed%20to%20close%20the%20ocean's%20mass%0A%20%20%20%20budget%2C%20one%20of%20the%20first%20quantitative%20constraints%20on%20the%20deep%20MOC.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%23%20Part%20B%20%E2%80%94%20A%20minimal%20overturning%20cell%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20Ra_ui%20%3D%20mo.ui.slider(1e4%2C%205e5%2C%20step%3D1e4%2C%20value%3D2e5%2C%20label%3D%22%24Ra%24%22%2C%20show_value%3DTrue)%0A%20%20%20%20Q0_ui%20%3D%20mo.ui.slider(0.5%2C%2010.0%2C%20step%3D0.5%2C%20value%3D5.0%2C%20label%3D%22heating%20amplitude%20%24Q_0%24%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20show_value%3DTrue)%0A%20%20%20%20nx_ui%20%3D%20mo.ui.dropdown(options%3D%7B%2232%22%3A%2032%2C%20%2248%22%3A%2048%7D%2C%20value%3D%2232%22%2C%20label%3D%22resolution%20%24n_x%24%22)%0A%20%20%20%20T_ui%20%3D%20mo.ui.slider(0.05%2C%200.5%2C%20step%3D0.05%2C%20value%3D0.2%2C%20label%3D%22run%20time%20%24T%24%22%2C%20show_value%3DTrue)%0A%20%20%20%20mo.vstack(%5B%0A%20%20%20%20%20%20%20%20mo.hstack(%5BRa_ui%2C%20Q0_ui%5D%2C%20justify%3D%22start%22)%2C%0A%20%20%20%20%20%20%20%20mo.hstack(%5Bnx_ui%2C%20T_ui%5D%2C%20justify%3D%22start%22)%2C%0A%20%20%20%20%5D)%0A%20%20%20%20return%20Q0_ui%2C%20Ra_ui%2C%20T_ui%2C%20nx_ui%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20get_ot%2C%20set_ot%20%3D%20mo.state(None)%0A%20%20%20%20return%20get_ot%2C%20set_ot%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20run_btn%20%3D%20mo.ui.run_button(label%3D%22%E2%96%B6%20Run%20overturning%20simulation%22)%0A%20%20%20%20run_btn%0A%20%20%20%20return%20(run_btn%2C)%0A%0A%0A%40app.cell%0Adef%20_(%0A%20%20%20%20Q0_ui%2C%0A%20%20%20%20Ra_ui%2C%0A%20%20%20%20T_ui%2C%0A%20%20%20%20convection%2C%0A%20%20%20%20mo%2C%0A%20%20%20%20np%2C%0A%20%20%20%20nx_ui%2C%0A%20%20%20%20overturning%2C%0A%20%20%20%20run_btn%2C%0A%20%20%20%20set_ot%2C%0A%20%20%20%20timestep%2C%0A)%3A%0A%20%20%20%20mo.stop(not%20run_btn.value%2C%20mo.callout(%0A%20%20%20%20%20%20%20%20mo.md(%22Press%20**%E2%96%B6%20Run%20overturning%20simulation**%20above%20to%20start.%22)%2C%20kind%3D%22info%22%0A%20%20%20%20))%0A%0A%20%20%20%20_nx%20%3D%20nx_ui.value%0A%20%20%20%20_nz%20%3D%20_nx%20%2F%2F%202%0A%20%20%20%20_Lx%20%3D%202.0%0A%20%20%20%20_Ra%2C%20_Q0%2C%20_T%2C%20_Pr%20%3D%20Ra_ui.value%2C%20Q0_ui.value%2C%20T_ui.value%2C%201.0%0A%0A%20%20%20%20grid%20%3D%20convection.ChannelGrid(_nx%2C%20_nz%2C%20_Lx)%0A%20%20%20%20Q%20%3D%20overturning.surface_heating(grid%2C%20_Q0)%0A%0A%20%20%20%20_rng%20%3D%20np.random.default_rng(0)%0A%20%20%20%20_zeta%20%3D%20np.zeros((_nx%2C%20_nz))%0A%20%20%20%20_theta%20%3D%201e-3%20*%20_rng.standard_normal((_nx%2C%20_nz))%0A%20%20%20%20_state%20%3D%20np.stack(%5B_zeta%2C%20_theta%5D)%0A%0A%20%20%20%20_dt%20%3D%200.15%20*%20min(grid.dx%2C%20grid.dz)%20**%202%0A%20%20%20%20_nsteps%20%3D%20max(20%2C%20int(_T%20%2F%20_dt))%0A%20%20%20%20_nsub%20%3D%20max(1%2C%20_nsteps%20%2F%2F%2060)%0A%0A%20%20%20%20def%20_rhs(t%2C%20s)%3A%0A%20%20%20%20%20%20%20%20return%20overturning.rhs_overturning(s%2C%20grid%2C%20_Ra%2C%20_Pr%2C%20Q)%0A%0A%20%20%20%20_snaps_th%2C%20_snaps_psi%2C%20_t_hist%20%3D%20%5B%5D%2C%20%5B%5D%2C%20%5B%5D%0A%20%20%20%20_t%20%3D%200.0%0A%20%20%20%20for%20_s%20in%20range(_nsteps%20%2B%201)%3A%0A%20%20%20%20%20%20%20%20if%20_s%20%25%20_nsub%20%3D%3D%200%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20_snaps_th.append(_state%5B1%5D.copy())%0A%20%20%20%20%20%20%20%20%20%20%20%20_snaps_psi.append(grid.poisson_solve(_state%5B0%5D).copy())%0A%20%20%20%20%20%20%20%20%20%20%20%20_t_hist.append(_t)%0A%20%20%20%20%20%20%20%20if%20_s%20%3C%20_nsteps%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20_state%20%3D%20timestep.rk4(_rhs%2C%20_state%2C%20_dt)%0A%20%20%20%20%20%20%20%20%20%20%20%20_t%20%2B%3D%20_dt%0A%0A%20%20%20%20set_ot(%7B%0A%20%20%20%20%20%20%20%20%22snaps_th%22%3A%20_snaps_th%2C%20%22snaps_psi%22%3A%20_snaps_psi%2C%0A%20%20%20%20%20%20%20%20%22t%22%3A%20np.array(_t_hist)%2C%20%22grid%22%3A%20grid%2C%20%22Ra%22%3A%20_Ra%2C%20%22Q0%22%3A%20_Q0%2C%0A%20%20%20%20%7D)%0A%0A%20%20%20%20mo.callout(mo.md(%0A%20%20%20%20%20%20%20%20f%22**Done.**%20%24Ra%3D%7B_Ra%3A.0f%7D%24%2C%20%24Q_0%3D%7B_Q0%7D%24%2C%20grid%20%7B_nx%7D%C3%97%7B_nz%7D%2C%20%7B_nsteps%7D%20steps%20%22%0A%20%20%20%20%20%20%20%20f%22%E2%86%92%20%7Blen(_snaps_th)%7D%20frames.%22%0A%20%20%20%20)%2C%20kind%3D%22success%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(get_ot%2C%20mo)%3A%0A%20%20%20%20ot_sim%20%3D%20get_ot()%0A%20%20%20%20mo.stop(ot_sim%20is%20None%2C%20mo.callout(%0A%20%20%20%20%20%20%20%20mo.md(%22Results%20will%20appear%20here%20once%20the%20simulation%20has%20run.%22)%2C%20kind%3D%22warn%22%0A%20%20%20%20))%0A%20%20%20%20return%20(ot_sim%2C)%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo%2C%20ot_sim)%3A%0A%20%20%20%20ot_frame%20%3D%20mo.ui.slider(0%2C%20len(ot_sim%5B%22snaps_th%22%5D)%20-%201%2C%20step%3D1%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20value%3Dlen(ot_sim%5B%22snaps_th%22%5D)%20-%201%2C%20label%3D%22frame%22%2C%20show_value%3DTrue)%0A%20%20%20%20return%20(ot_frame%2C)%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo%2C%20np%2C%20ot_frame%2C%20ot_sim%2C%20plt)%3A%0A%20%20%20%20_i%20%3D%20ot_frame.value%0A%20%20%20%20_g%20%3D%20ot_sim%5B%22grid%22%5D%0A%20%20%20%20_th%20%3D%20ot_sim%5B%22snaps_th%22%5D%5B_i%5D%3B%20_psi%20%3D%20ot_sim%5B%22snaps_psi%22%5D%5B_i%5D%0A%20%20%20%20_XX%2C%20_ZZ%20%3D%20np.meshgrid(_g.x%2C%20_g.z%2C%20indexing%3D%22ij%22)%0A%0A%20%20%20%20fig1%2C%20axs1%20%3D%20plt.subplots(1%2C%202%2C%20figsize%3D(10%2C%204)%2C%20constrained_layout%3DTrue)%0A%20%20%20%20_vm%20%3D%20max(float(np.abs(_th).max())%2C%201e-10)%0A%20%20%20%20_im0%20%3D%20axs1%5B0%5D.pcolormesh(_XX%2C%20_ZZ%2C%20_th%2C%20cmap%3D%22RdBu_r%22%2C%20vmin%3D-_vm%2C%20vmax%3D_vm%2C%20shading%3D%22auto%22)%0A%20%20%20%20plt.colorbar(_im0%2C%20ax%3Daxs1%5B0%5D%2C%20fraction%3D0.046%2C%20label%3Dr%22%24%5Ctheta%24%22)%0A%20%20%20%20axs1%5B0%5D.set_title(f%22buoyancy%20%20%24t%3D%7Bot_sim%5B't'%5D%5B_i%5D%3A.3f%7D%24%22)%0A%20%20%20%20axs1%5B0%5D.set_xlabel(%22%24x%24%20(heated%20%24%5C%5Cto%24%20cooled%20%24%5C%5Cto%24%20heated)%22)%3B%20axs1%5B0%5D.set_ylabel(%22%24z%24%22)%0A%0A%20%20%20%20_vm2%20%3D%20max(float(np.abs(_psi).max())%2C%201e-10)%0A%20%20%20%20_im1%20%3D%20axs1%5B1%5D.pcolormesh(_XX%2C%20_ZZ%2C%20_psi%2C%20cmap%3D%22PuOr%22%2C%20vmin%3D-_vm2%2C%20vmax%3D_vm2%2C%20shading%3D%22auto%22)%0A%20%20%20%20plt.colorbar(_im1%2C%20ax%3Daxs1%5B1%5D%2C%20fraction%3D0.046%2C%20label%3Dr%22%24%5Cpsi%24%22)%0A%20%20%20%20axs1%5B1%5D.set_title(f%22streamfunction%20%20%24t%3D%7Bot_sim%5B't'%5D%5B_i%5D%3A.3f%7D%24%22)%0A%20%20%20%20axs1%5B1%5D.set_xlabel(%22%24x%24%22)%3B%20axs1%5B1%5D.set_ylabel(%22%24z%24%22)%0A%20%20%20%20mo.vstack(%5Bot_frame%2C%20fig1%5D)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20A%20single%2C%20coherent%20overturning%20cell%20%E2%80%94%20not%20the%20small%20convective%0A%20%20%20%20rolls%20of%20Ch.%2014%20%E2%80%94%20rising%20over%20the%20heated%20column%20and%20sinking%20over%0A%20%20%20%20the%20cooled%20one%2C%20exactly%20as%20in%20the%20abyssal-recipe%20intuition%20of%0A%20%20%20%20Part%20A%3A%20warm%2C%20light%20fluid%20rises%3B%20cold%2C%20dense%20fluid%20sinks%3B%20the%0A%20%20%20%20return%20flow%20closes%20the%20loop%20along%20the%20surface%20and%20the%20bottom.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%23%23%20Try%20this%0A%0A%20%20%20%20-%20**Confirm%20the%20circulation%20sense.**%20At%20the%20frame%20slider's%20final%0A%20%20%20%20%20%20position%2C%20the%20streamfunction's%20sign%20should%20show%20rising%20motion%0A%20%20%20%20%20%20(%24%5Cpartial%5Cpsi%2F%5Cpartial%20x%3E0%24)%20directly%20under%20the%20heated%20column%0A%20%20%20%20%20%20and%20sinking%20(%24%5Cpartial%5Cpsi%2F%5Cpartial%20x%3C0%24)%20under%20the%20cooled%20one%20%E2%80%94%0A%20%20%20%20%20%20the%20same%20check%20%60gfdlib%60's%20test%20suite%20makes%20automatically.%0A%20%20%20%20-%20**Push%20%24Q_0%24.**%20Stronger%20differential%20heating%20drives%20a%20stronger%0A%20%20%20%20%20%20cell%20(larger%20%24%7C%5Cpsi%7C%24)%20%E2%80%94%20does%20the%20RELATIONSHIP%20look%20linear%2C%20or%0A%20%20%20%20%20%20does%20it%20saturate%3F%20This%20connects%20to%20the%20long-standing%20%22does%20MOC%0A%20%20%20%20%20%20strength%20scale%20linearly%20with%20the%20pole-to-equator%20buoyancy%0A%20%20%20%20%20%20contrast%22%20question%20in%20real%20ocean%20circulation%20theory.%0A%20%20%20%20-%20**Connect%20Part%20A%20to%20Part%20B.**%20In%20Part%20A%2C%20larger%20%24w%2F%5Ckappa%24%20meant%0A%20%20%20%20%20%20a%20thinner%20surface%20transition%20layer.%20In%20Part%20B's%20temperature%0A%20%20%20%20%20%20field%2C%20does%20a%20stronger%20cell%20(larger%20%24Q_0%24%20or%20%24Ra%24)%20similarly%0A%20%20%20%20%20%20compress%20the%20buoyancy%20anomaly%20into%20a%20thinner%20layer%20near%20the%0A%20%20%20%20%20%20surface%3F%0A%0A%20%20%20%20%23%23%23%20What%20you%20should%20have%20seen%0A%0A%20%20%20%20Two%20versions%20of%20the%20same%20idea%3A%20a%201D%20balance%20(Part%20A)%20showing%20that%0A%20%20%20%20upwelling%20against%20diffusion%20sets%20a%20boundary-layer-like%0A%20%20%20%20stratification%2C%20and%20a%20fully%202D%2C%20self-consistent%20circulation%0A%20%20%20%20(Part%20B)%20showing%20WHY%20that%20upwelling%20exists%20in%20the%20first%20place%20%E2%80%94%0A%20%20%20%20differential%20heating%20along%20a%20boundary%20organizes%20into%20one%0A%20%20%20%20overturning%20cell%2C%20not%20many%20small%20ones%2C%20because%20the%20domain%20only%0A%20%20%20%20has%20ONE%20large-scale%20buoyancy%20contrast%20to%20respond%20to.%20The%20same%0A%20%20%20%20mechanism%2C%20at%20utterly%20different%20scales%2C%20drives%20the%20atmosphere's%0A%20%20%20%20Hadley%20cell%20and%20the%20ocean's%20meridional%20overturning%20circulation%20%E2%80%94%0A%20%20%20%20the%20two%20phenomena%20that%2C%20together%20with%20wind-driven%20gyres%20(Ch.%2020)%2C%0A%20%20%20%20set%20the%20shape%20of%20the%20entire%20general%20circulation.%0A%0A%20%20%20%20**Where%20this%20leaves%20you.**%20This%20chapter%20closes%20the%20book's%20main%0A%20%20%20%20physical%20arc%2C%20and%20it%20is%20worth%20seeing%20how%20much%20of%20the%20book%20it%0A%20%20%20%20quietly%20used%3A%20the%20Boussinesq%20solver%20came%20from%20Ch.%2014%2C%20the%20%24%5Ckappa%24%0A%20%20%20%20in%20the%20abyssal%20recipe%20is%20made%20by%20Ch.%2017's%20shear%20instabilities%20and%0A%20%20%20%20Ch.%2012's%20breaking%20internal%20waves%2C%20the%20deep%20circulation's%20pathways%0A%20%20%20%20are%20steered%20by%20Ch.%2020's%20vorticity%20balance%20(deep%20western%20boundary%0A%20%20%20%20currents!)%2C%20and%20the%20whole%20enterprise%20of%20inferring%20circulation%20from%0A%20%20%20%20stratification%20rests%20on%20Ch.%205's%20idea%20that%20balanced%20fields%20encode%0A%20%20%20%20the%20flow.%20Part%20VII%2C%20if%20you%20continue%2C%20revisits%20this%20same%20machinery%0A%20%20%20%20from%20the%20variational%2FHamiltonian%20side%20%E2%80%94%20optional%2C%20but%20the%20%22why%0A%20%20%20%20behind%20the%20why.%22%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_()%3A%0A%20%20%20%20import%20marimo%20as%20mo%0A%0A%20%20%20%20return%20(mo%2C)%0A%0A%0Aif%20__name__%20%3D%3D%20%22__main__%22%3A%0A%20%20%20%20app.run()%0A</marimo-code></head>
+  <body>
+    <div id="root"></div>
+    <!-- This is a portal for the data editor to render in -->
+    <div id="portal" data-testid="glide-portal" style="position: fixed; left: 0; top: 0; z-index: 9999"></div>
+    <script data-marimo="true">
+      Object.defineProperty(window, "__MARIMO_MOUNT_CONFIG__", {
+        value: Object.freeze({
+            "filename": "notebook.py",
+            "cwd": "",
+            "lspWorkspace": null,
+            "mode": "read",
+            "version": "0.23.9",
+            "serverToken": "unused",
+            "config": {"ai": {"custom_providers": {}, "enabled": true, "models": {"custom_models": [], "displayed_models": []}}, "completion": {"activate_on_typing": true, "auto_close_pairs": true, "copilot": false, "signature_hint_on_typing": false}, "diagnostics": {"sql_linter": true}, "display": {"cell_output": "below", "code_editor_font_size": 14, "dataframes": "rich", "default_table_max_columns": 50, "default_table_page_size": 10, "default_width": "medium", "reference_highlighting": true, "theme": "light"}, "formatting": {"line_length": 79}, "keymap": {"overrides": {}, "preset": "default"}, "language_servers": {"pylsp": {"enable_flake8": false, "enable_mypy": true, "enable_pydocstyle": false, "enable_pyflakes": false, "enable_pylint": false, "enable_ruff": true, "enabled": false}}, "mcp": {"mcpServers": {}, "presets": []}, "package_management": {"manager": "pip"}, "runtime": {"auto_instantiate": false, "auto_reload": "off", "default_csv_encoding": "utf-8", "default_sql_output": "auto", "on_cell_change": "autorun", "output_max_bytes": 8000000, "reactive_tests": true, "show_tracebacks": false, "std_stream_max_bytes": 1000000, "watcher_on_save": "lazy"}, "save": {"autosave": "off", "autosave_delay": 1000, "format_on_save": false}, "server": {"browser": "default", "follow_symlink": false}, "snippets": {"custom_paths": [], "include_default_snippets": true}},
+            "configOverrides": {},
+            "appConfig": {"sql_output": "auto", "width": "medium"},
+            "view": {"showAppCode": false},
+            "notebook": null,
+            "session": null,
+            "runtimeConfig": null,
+        }),
+        writable: false,
+        configurable: false,
+      });
+    </script>
+  </body>
+</html>

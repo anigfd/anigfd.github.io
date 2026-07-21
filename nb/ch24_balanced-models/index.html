@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <!-- Preload is necessary because we show these images when we disconnect from the server,
+    but at that point we cannot load these images from the server -->
+    <link rel="preload" href="./assets/gradient-yHQUC_QB.png" as="image" />
+    <link rel="preload" href="./assets/noise-60BoTA8O.png" as="image" />
+    <!-- Preload the fonts -->
+    <link rel="preload" href="./assets/Lora-VariableFont_wght-CZceb_kH.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Regular-Bam3NpBI.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Bold-C_DwAp7Z.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Regular-CEsLFVD9.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Medium-D5MAsWEG.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Bold-C6PDArdf.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="a marimo app" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.json" />
+
+    <script data-marimo="true">
+      function __resizeIframe(obj) {
+        const scrollbarHeight = 20; // Max between windows, mac, and linux
+
+        function setHeight() {
+          // Guard against race condition where iframe isn't ready
+          if (!obj.contentWindow?.document?.documentElement) {
+            return;
+          }
+          const element = obj.contentWindow.document.documentElement;
+          // If there is no vertical scrollbar, we don't need to resize the iframe
+          if (element.scrollHeight === element.clientHeight) {
+            return;
+          }
+
+          // Create a new height that includes the scrollbar height if it's visible
+          const hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
+          const newHeight = element.scrollHeight + (hasHorizontalScrollbar ? scrollbarHeight : 0);
+
+          // Only update the height if it's different from the current height
+          if (obj.style.height !== `${newHeight}px`) {
+            obj.style.height = `${newHeight}px`;
+          }
+        }
+
+        // Resize the iframe to the height of the content and bottom scrollbar height
+        setHeight();
+
+        // Resize the iframe when the content changes
+        const resizeObserver = new ResizeObserver((_entries) => {
+          setHeight();
+        });
+        // Only observe if iframe content is ready
+        if (obj.contentWindow?.document?.body) {
+          resizeObserver.observe(obj.contentWindow.document.body);
+        }
+      }
+    </script>
+    <marimo-filename hidden>notebook.py</marimo-filename>
+    <!-- TODO(Trevor): Legacy, required by VS Code plugin. Remove when plugin is updated (see marimo/server/_templates/template.py) -->
+    <marimo-version data-version="{{ version }}" hidden></marimo-version>
+    <marimo-user-config data-config="{{ user_config }}" hidden></marimo-user-config>
+    <marimo-server-token data-token="{{ server_token }}" hidden></marimo-server-token>
+    <!-- /TODO -->
+    <title>ch24 balanced-models</title>
+    <script type="module" crossorigin src="./assets/index-awsLWRjZ.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/preload-helper-BPPi7vOr.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-LvLJmgfZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-Bj1aDYRI.js">
+    <link rel="modulepreload" crossorigin href="./assets/compiler-runtime-B3qBwwSJ.js">
+    <link rel="modulepreload" crossorigin href="./assets/jsx-runtime-BqBOg78p.js">
+    <link rel="modulepreload" crossorigin href="./assets/useEventListener-DvoEXWke.js">
+    <link rel="modulepreload" crossorigin href="./assets/defaultLocale-BLUna9fQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/precisionRound-Cl9k9ZmS.js">
+    <link rel="modulepreload" crossorigin href="./assets/defaultLocale-DzliDDTm.js">
+    <link rel="modulepreload" crossorigin href="./assets/vega-loader.browser-C8wT63Va.js">
+    <link rel="modulepreload" crossorigin href="./assets/utils-DCL4n9wx.js">
+    <link rel="modulepreload" crossorigin href="./assets/clsx-Dz_KRrWq.js">
+    <link rel="modulepreload" crossorigin href="./assets/cn-DCUzRj2J.js">
+    <link rel="modulepreload" crossorigin href="./assets/badge-j3NGjqhR.js">
+    <link rel="modulepreload" crossorigin href="./assets/button-BbCh-29a.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-dom-CSu739Rf.js">
+    <link rel="modulepreload" crossorigin href="./assets/fullscreen-eipL3i3Y.js">
+    <link rel="modulepreload" crossorigin href="./assets/menu-items-DcP01QzW.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-BdyjRhEt.js">
+    <link rel="modulepreload" crossorigin href="./assets/createLucideIcon-D5guW7EU.js">
+    <link rel="modulepreload" crossorigin href="./assets/check-BH35Ndha.js">
+    <link rel="modulepreload" crossorigin href="./assets/x-C-6liIBr.js">
+    <link rel="modulepreload" crossorigin href="./assets/select-DZcFyKFQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/tooltip-DTV9tlSr.js">
+    <link rel="modulepreload" crossorigin href="./assets/use-toast-IPAtJGea.js">
+    <link rel="modulepreload" crossorigin href="./assets/useEvent-D91BmmQi.js">
+    <link rel="modulepreload" crossorigin href="./assets/invariant-BUdrueMv.js">
+    <link rel="modulepreload" crossorigin href="./assets/isObject-DvLSfCY5.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseFor-DKD1r8uL.js">
+    <link rel="modulepreload" crossorigin href="./assets/merge-_9WLTEyt.js">
+    <link rel="modulepreload" crossorigin href="./assets/zod-H_cgTO0M.js">
+    <link rel="modulepreload" crossorigin href="./assets/utils-CvI-39U6.js">
+    <link rel="modulepreload" crossorigin href="./assets/Deferred-CP7vq682.js">
+    <link rel="modulepreload" crossorigin href="./assets/uuid-e9lSomwA.js">
+    <link rel="modulepreload" crossorigin href="./assets/DeferredRequestRegistry-CNldVcrP.js">
+    <link rel="modulepreload" crossorigin href="./assets/constants-DMpttj8Q.js">
+    <link rel="modulepreload" crossorigin href="./assets/session-0B5NBztP.js">
+    <link rel="modulepreload" crossorigin href="./assets/config-ClMcu_sV.js">
+    <link rel="modulepreload" crossorigin href="./assets/requests-DIwGYs0l.js">
+    <link rel="modulepreload" crossorigin href="./assets/useLifecycle-DieWOfXE.js">
+    <link rel="modulepreload" crossorigin href="./assets/useNonce-DfoVjkkH.js">
+    <link rel="modulepreload" crossorigin href="./assets/useTheme-CI2eq4XN.js">
+    <link rel="modulepreload" crossorigin href="./assets/arrays-DYDL-3-i.js">
+    <link rel="modulepreload" crossorigin href="./assets/strings-wdPMRf6Z.js">
+    <link rel="modulepreload" crossorigin href="./assets/once-DRroIaBz.js">
+    <link rel="modulepreload" crossorigin href="./assets/capabilities-A_KhFcGV.js">
+    <link rel="modulepreload" crossorigin href="./assets/createReducer-CI9qeK_X.js">
+    <link rel="modulepreload" crossorigin href="./assets/paths-D5zczhUD.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-BrR4M-k3.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-HlsDto3K.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CHcznzB-.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-B1U1kGCR.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-ChF5Ln9c.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CpTFpfm_.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CBSMxaO_.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CPczQFlJ.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-C9ZB41s2.js">
+    <link rel="modulepreload" crossorigin href="./assets/stex-BGrE-q7N.js">
+    <link rel="modulepreload" crossorigin href="./assets/toDate-B5A0DFEz.js">
+    <link rel="modulepreload" crossorigin href="./assets/purify.es-B9KxLTTS.js">
+    <link rel="modulepreload" crossorigin href="./assets/cjs-BRGiG41H.js">
+    <link rel="modulepreload" crossorigin href="./assets/isSymbol-BT6B8Bon.js">
+    <link rel="modulepreload" crossorigin href="./assets/now-CsYTPAhW.js">
+    <link rel="modulepreload" crossorigin href="./assets/debounce-DhnxH9Rh.js">
+    <link rel="modulepreload" crossorigin href="./assets/database-zap-kIkTfzTX.js">
+    <link rel="modulepreload" crossorigin href="./assets/main-B0OX4z33.js">
+    <link rel="modulepreload" crossorigin href="./assets/cells-BsaJrRWi.js">
+    <link rel="modulepreload" crossorigin href="./assets/ErrorBoundary-DyYDV0HI.js">
+    <link rel="modulepreload" crossorigin href="./assets/kbd-CTUAEnEx.js">
+    <link rel="modulepreload" crossorigin href="./assets/useInstallPackage-DUF4IRRI.js">
+    <link rel="modulepreload" crossorigin href="./assets/alert-dialog-BqFLkbUc.js">
+    <link rel="modulepreload" crossorigin href="./assets/dialog-DzC_QCtT.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDebounce-7xZwVnnu.js">
+    <link rel="modulepreload" crossorigin href="./assets/numbers-C3BAdHZE.js">
+    <link rel="modulepreload" crossorigin href="./assets/SSRProvider-CkFAAHXw.js">
+    <link rel="modulepreload" crossorigin href="./assets/context-QkTujrKn.js">
+    <link rel="modulepreload" crossorigin href="./assets/useNumberFormatter-ByUv-u9o.js">
+    <link rel="modulepreload" crossorigin href="./assets/usePress-DQ_tAz5W.js">
+    <link rel="modulepreload" crossorigin href="./assets/input-C3Hrdlqq.js">
+    <link rel="modulepreload" crossorigin href="./assets/ImperativeModal-B3Th7k4R.js">
+    <link rel="modulepreload" crossorigin href="./assets/cell-link-B1pHtGWp.js">
+    <link rel="modulepreload" crossorigin href="./assets/multi-map-CUuNtzHt.js">
+    <link rel="modulepreload" crossorigin href="./assets/alert-yTS3WpF4.js">
+    <link rel="modulepreload" crossorigin href="./assets/chevron-right-CG5QYXYk.js">
+    <link rel="modulepreload" crossorigin href="./assets/dropdown-menu-CR7cnzLX.js">
+    <link rel="modulepreload" crossorigin href="./assets/links-D1JoyKTt.js">
+    <link rel="modulepreload" crossorigin href="./assets/useRunCells-BiCBGyeW.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-LK56fFow.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-BwrPA9zQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-icon-OjtDb4gO.js">
+    <link rel="modulepreload" crossorigin href="./assets/RenderHTML-ChwPJgPd.js">
+    <link rel="modulepreload" crossorigin href="./assets/datasource-DjDpJnbt.js">
+    <link rel="modulepreload" crossorigin href="./assets/state-D-2KaAHK.js">
+    <link rel="modulepreload" crossorigin href="./assets/package-Tv6ztuzw.js">
+    <link rel="modulepreload" crossorigin href="./assets/sparkles-lWUAsPhp.js">
+    <link rel="modulepreload" crossorigin href="./assets/MarimoErrorOutput-B0h5OVW9.js">
+    <link rel="modulepreload" crossorigin href="./assets/spinner-Bhir8k53.js">
+    <link rel="modulepreload" crossorigin href="./assets/html-to-image-BWL3Ct4n.js">
+    <link rel="modulepreload" crossorigin href="./assets/focus-q38vUCl-.js">
+    <link rel="modulepreload" crossorigin href="./assets/useAsyncData-bgszE9F0.js">
+    <link rel="modulepreload" crossorigin href="./assets/LazyAnyLanguageCodeMirror-BEvXb3VX.js">
+    <link rel="modulepreload" crossorigin href="./assets/micromark-factory-space-BygYYKhs.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-5FQGJX7Z-D9iBG0F7.js">
+    <link rel="modulepreload" crossorigin href="./assets/markdown-renderer-CU5Lbyax.js">
+    <link rel="modulepreload" crossorigin href="./assets/command-KARR7KMq.js">
+    <link rel="modulepreload" crossorigin href="./assets/field-zLmMOSA4.js">
+    <link rel="modulepreload" crossorigin href="./assets/popover-Bz_0Vkyf.js">
+    <link rel="modulepreload" crossorigin href="./assets/errors-vr57w7Ul.js">
+    <link rel="modulepreload" crossorigin href="./assets/download-DT8gf0PL.js">
+    <link rel="modulepreload" crossorigin href="./assets/table-BGPSHfig.js">
+    <link rel="modulepreload" crossorigin href="./assets/useIframeCapabilities-CcI1zSdn.js">
+    <link rel="modulepreload" crossorigin href="./assets/error-banner-LdWZDbqd.js">
+    <link rel="modulepreload" crossorigin href="./assets/formats-b7Sf6DAK.js">
+    <link rel="modulepreload" crossorigin href="./assets/en-US-Cb8rIK52.js">
+    <link rel="modulepreload" crossorigin href="./assets/isValid-CklTTytn.js">
+    <link rel="modulepreload" crossorigin href="./assets/dates-CTxr0EqQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/maps-n3GaPJwv.js">
+    <link rel="modulepreload" crossorigin href="./assets/extends-BiFDv3jB.js">
+    <link rel="modulepreload" crossorigin href="./assets/emotion-is-prop-valid.esm-C59xfSYt.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDateFormatter-ICIDGgHf.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-icons.esm-BNzu6e7h.js">
+    <link rel="modulepreload" crossorigin href="./assets/RSPContexts-CdN1NyAt.js">
+    <link rel="modulepreload" crossorigin href="./assets/table-6NxtGaCm.js">
+    <link rel="modulepreload" crossorigin href="./assets/ellipsis-KAhMaCIV.js">
+    <link rel="modulepreload" crossorigin href="./assets/external-link-BTNxSavU.js">
+    <link rel="modulepreload" crossorigin href="./assets/message-circle-CWm2KnSx.js">
+    <link rel="modulepreload" crossorigin href="./assets/plus-BgB18UzY.js">
+    <link rel="modulepreload" crossorigin href="./assets/trash-2-rVklqqFF.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-resizable-panels.browser.esm-CV8-hvjx.js">
+    <link rel="modulepreload" crossorigin href="./assets/JsonOutput-BJaeXQim.js">
+    <link rel="modulepreload" crossorigin href="./assets/chart-no-axes-column-nqk474t8.js">
+    <link rel="modulepreload" crossorigin href="./assets/square-function-uY_yJr5g.js">
+    <link rel="modulepreload" crossorigin href="./assets/spec-CPQR_o92.js">
+    <link rel="modulepreload" crossorigin href="./assets/ellipsis-vertical-CkwWkOQL.js">
+    <link rel="modulepreload" crossorigin href="./assets/refresh-cw-DHwG4Mac.js">
+    <link rel="modulepreload" crossorigin href="./assets/tree-actions-BM_EJr3E.js">
+    <link rel="modulepreload" crossorigin href="./assets/components-BzBUxUz0.js">
+    <link rel="modulepreload" crossorigin href="./assets/column-preview-BPismotx.js">
+    <link rel="modulepreload" crossorigin href="./assets/icons-Ol38nIbL.js">
+    <link rel="modulepreload" crossorigin href="./assets/radio-group-DlVSuZ_1.js">
+    <link rel="modulepreload" crossorigin href="./assets/floating-outline-BN9sAcQ0.js">
+    <link rel="modulepreload" crossorigin href="./assets/objectWithoutPropertiesLoose-DfWeGRFv.js">
+    <link rel="modulepreload" crossorigin href="./assets/esm-CqWdmSnV.js">
+    <link rel="modulepreload" crossorigin href="./assets/readonly-python-code-D3_kHsDx.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-headphone-BrQspHac.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-BrdxGLRX.js">
+    <link rel="modulepreload" crossorigin href="./assets/image-DQHXdEQn.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-icons-BiMOJy0r.js">
+    <link rel="modulepreload" crossorigin href="./assets/switch-BiU_sAcn.js">
+    <link rel="modulepreload" crossorigin href="./assets/events-CPoJAfgx.js">
+    <link rel="modulepreload" crossorigin href="./assets/globals-7JnRMGd4.js">
+    <link rel="modulepreload" crossorigin href="./assets/share-DMwTZOTH.js">
+    <link rel="modulepreload" crossorigin href="./assets/blob-Bgnx1kuY.js">
+    <link rel="modulepreload" crossorigin href="./assets/memoize-Tp7rARFe.js">
+    <link rel="modulepreload" crossorigin href="./assets/get-C-qh_et5.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseSet-CxV9N1bc.js">
+    <link rel="modulepreload" crossorigin href="./assets/state-BTTshiKq.js">
+    <link rel="modulepreload" crossorigin href="./assets/label-xHqFtfdz.js">
+    <link rel="modulepreload" crossorigin href="./assets/textarea-DwltG8V6.js">
+    <link rel="modulepreload" crossorigin href="./assets/refresh-ccw-C-n2VFP5.js">
+    <link rel="modulepreload" crossorigin href="./assets/form-BtBTvVVd.js">
+    <link rel="modulepreload" crossorigin href="./assets/renderShortcut-CcFk3m01.js">
+    <link rel="modulepreload" crossorigin href="./assets/useBoolean-Bp18o6XG.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDeepCompareMemoize-zUHU--0D.js">
+    <link rel="modulepreload" crossorigin href="./assets/types-W8WWuumF.js">
+    <link rel="modulepreload" crossorigin href="./assets/semaphore-FlZezxaf.js">
+    <link rel="modulepreload" crossorigin href="./assets/fileToBase64-DZfwJMrG.js">
+    <link rel="modulepreload" crossorigin href="./assets/pathUtils-CJjndqMI.js">
+    <link rel="modulepreload" crossorigin href="./assets/prop-types-DaaA-ptl.js">
+    <link rel="modulepreload" crossorigin href="./assets/es-DGgq-Wes.js">
+    <link rel="modulepreload" crossorigin href="./assets/hasIn-DiS_ryrS.js">
+    <link rel="modulepreload" crossorigin href="./assets/flatten-Dl4V1ub3.js">
+    <link rel="modulepreload" crossorigin href="./assets/pick-DqWUNly1.js">
+    <link rel="modulepreload" crossorigin href="./assets/code-xml-CZN6vNxu.js">
+    <link rel="modulepreload" crossorigin href="./assets/house-mGK3v0Mm.js">
+    <link rel="modulepreload" crossorigin href="./assets/square-B5xWCt0a.js">
+    <link rel="modulepreload" crossorigin href="./assets/triangle-alert-D2p96PEF.js">
+    <link rel="modulepreload" crossorigin href="./assets/bundle.esm-DjhGJy4I.js">
+    <link rel="stylesheet" crossorigin href="./assets/cells-jmgGt1lS.css">
+    <link rel="stylesheet" crossorigin href="./assets/markdown-renderer-DdDKmWlR.css">
+    <link rel="stylesheet" crossorigin href="./assets/JsonOutput-B7vuddcd.css">
+    <link rel="stylesheet" crossorigin href="./assets/index-BIw7BKLH.css">
+  <marimo-wasm hidden=""></marimo-wasm>
+    <script>
+        if (window.location.protocol === 'file:') {
+            alert('Warning: This file must be served by an HTTP server to function correctly.');
+        }
+    </script>
+    
+    <style>
+        #save-button {
+            display: none !important;
+        }
+        #filename-input {
+            display: none !important;
+        }
+    </style>
+    
+<script data-marimo="true">
+    Object.defineProperty(window, "__MARIMO_EXPORT_CONTEXT__", {
+        value: Object.freeze({
+            trusted: true,
+            notebookCode: "import marimo\n\n__generated_with = \"0.23.9\"\napp = marimo.App(width=\"medium\")\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    # Chapter 24 \u2014 Balanced Models \u0026 the Slow Manifold\n\n    **Physical question.** This book has spent 23 chapters solving\n    *reduced* equations \u2014 geostrophy, QG, two-layer, planetary-scale\n    balances \u2014 while the fluid itself obeys none of them exactly. Why\n    did that ever work? Because rotating, stratified flow segregates\n    into **fast** motions (inertia-gravity waves, Chs. 6 and 12) and\n    **slow** ones (everything PV controls), and a state prepared with\n    *zero fast content* stays \u2014 very nearly \u2014 fast-free: it lives on\n    the **slow manifold**, and the balanced models are simply the\n    dynamics restricted to it. After this final chapter you should be\n    able to say what the slow manifold is, demonstrate with two runs\n    of the same model why initialization onto it matters, and place\n    every reduced model in this book on the same map.\n    \"\"\")\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    ## Governing equations\n\n    ### The split, one more time \u2014 now as geometry\n\n    Ch. 6 diagonalized linear rotating shallow water at each\n    wavenumber into three modes: one **slow** ($\\omega=0$, the\n    geostrophic mode) and two **fast**\n    ($\\omega=\\pm\\sqrt{1+k^2+l^2}\\ge1$: inertia-gravity waves). Read\n    that as geometry rather than as a wave census: state space splits\n    into a *slow subspace* (all fast amplitudes zero \u2014 exactly the\n    geostrophically balanced states $u=-\\eta_y$, $v=\\eta_x$) and its\n    fast complement. In the **linear** system the split is exact and\n    invariant: a state that starts on the slow subspace stays on it\n    *forever* \u2014 it is an exact steady state on the $f$-plane (the\n    book's test suite literally asserts this) \u2014 while any fast\n    content rings at $\\omega\\ge1$, forever, without touching the slow\n    part. And crucially, the frequency **gap** ($0$ versus $\\ge f$)\n    means the two families cannot resonate at small amplitude.\n\n    ### Balanced initialization: projecting onto the manifold\n\n    The practical consequence is the oldest problem in numerical\n    weather prediction. Observations give you $\\eta$ (pressure) far\n    better than winds; initialize a model with observed $\\eta$ and\n    naive winds and the error is not merely a wrong forecast \u2014 it is\n    a **fast one**: the projection of your error onto the fast modes\n    rings through the model at gravity-wave frequency, swamping the\n    meteorology (Richardson's famous 1922 hand-computed forecast\n    failed exactly this way, predicting a 145 hPa pressure change in\n    6 hours). The cure is to *project the initial state onto the slow\n    manifold*: set the winds to their balanced values. In the linear\n    model that projection is exact; the notebook below performs it\n    with one slider.\n\n    ### From subspace to manifold \u2014 and how fuzzy it really is\n\n    Nonlinearity bends the slow *subspace* into a slow *manifold*:\n    the balanced winds acquire $O(Ro)$ corrections (gradient-wind,\n    Ch. 5; the QG ageostrophic circulation, Ch. 8), computable order\n    by order in $Ro$ \u2014 and each of this book's reduced models is\n    precisely the dynamics on this manifold, truncated at some order:\n\n    | Model | Where it lives |\n    |---|---|\n    | geostrophy (Ch. 5) | the manifold at $O(1)$ \u2014 diagnostic only |\n    | QG (Chs. 8, 10, 16, 18) | dynamics on the manifold at $O(Ro)$ |\n    | planetary/Sverdrup balances (Chs. 20, 21) | the manifold at large scale, friction added |\n    | full equations (Chs. 6, 12) | the whole space, fast modes included |\n\n    One honest caveat closes the book. Lorenz asked whether the\n    exactly-invariant slow manifold survives nonlinearity, and the\n    answer is: *not quite*. Balanced motion generates a whisper of\n    gravity waves \u2014 **spontaneous imbalance** \u2014 but the leak is\n    *exponentially* small in Rossby number, $\\sim e^{-c/Ro}$ (Vanneste\n    \u0026 Yavneh 2004), which is why balance is such an unreasonably good\n    approximation at $Ro\\sim0.1$ even though no exact slow manifold\n    exists. \"Balance\" is not a fact about the fluid; it is an\n    asymptotic property of where you chose to start it \u2014 maintained,\n    at small $Ro$, to all orders.\n    \"\"\")\n    return\n\n\n@app.cell\nasync def _(mo):\n    # --- vetted primitives from gfdlib (see CLAUDE.md) -------------------\n    import sys\n\n    if sys.platform == \"emscripten\":\n        import micropip\n        await micropip.install(\n            str(mo.notebook_location() / \"public\" / \"gfdlib-0.1.0-py3-none-any.whl\")\n        )\n    else:\n        sys.path.insert(0, str(mo.notebook_dir().parent))  # repo root\n\n    import numpy as np\n    import matplotlib.pyplot as plt\n    from gfdlib import spectral, timestep, shallowwater\n\n    return np, plt, shallowwater, spectral, timestep\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    ## Numerical scheme\n\n    Ch. 6's exact machinery, unchanged (`gfdlib.spectral.Grid`,\n    `gfdlib.shallowwater.rhs`, RK4 at the same CFL) on an $f$-plane,\n    plus one new one-line diagnostic: `gfdlib.shallowwater.divergence`\n    ($\\delta=u_x+v_y$, spectral). Divergence is the sharpest possible\n    slow/fast meter here \u2014 the slow mode has $\\delta=0$ *identically*,\n    while inertia-gravity waves are made of it \u2014 so RMS $\\delta$\n    measures the distance from the slow manifold directly. Three runs\n    share the identical height field $\\eta_0$ and differ only in\n    initial winds: $(u,v)=\\alpha\\,(-\\eta_{0y},\\ \\eta_{0x})$ with\n    $\\alpha=1$ (balanced), your slider's $\\alpha$, and $\\alpha=0$\n    (Richardson's mistake).\n    \"\"\")\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    alpha_ui = mo.ui.slider(0.0, 1.0, step=0.05, value=0.7,\n                            label=\"balance fraction $\\\\alpha$\", show_value=True)\n    sigma_ui = mo.ui.slider(0.5, 4.0, step=0.25, value=2.0,\n                            label=\"bump width $\\\\sigma/L_R$\", show_value=True)\n    T_ui = mo.ui.slider(5.0, 25.0, step=2.5, value=15.0,\n                        label=\"run time $T$ ($f_0^{-1}$)\", show_value=True)\n    n_ui = mo.ui.dropdown(options={\"64\": 64, \"96\": 96}, value=\"64\",\n                          label=\"resolution $n$\")\n    mo.vstack([\n        mo.hstack([alpha_ui, sigma_ui], justify=\"start\"),\n        mo.hstack([T_ui, n_ui], justify=\"start\"),\n        mo.md(r\"\u003E $\\alpha=1$: winds exactly geostrophic (on the slow \"\n              r\"subspace). $\\alpha=0$: same height field, no winds at all \"\n              r\"\u2014 Ch. 6's adjustment problem, now reread as an \"\n              r\"initialization *error*.\"),\n    ])\n    return T_ui, alpha_ui, n_ui, sigma_ui\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    get_sim, set_sim = mo.state(None)   # results survive the run button resetting\n    return get_sim, set_sim\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    run_btn = mo.ui.run_button(label=\"\u25b6 Run all three initializations\")\n    run_btn\n    return (run_btn,)\n\n\n@app.cell\ndef _(\n    T_ui,\n    alpha_ui,\n    mo,\n    n_ui,\n    np,\n    run_btn,\n    set_sim,\n    shallowwater,\n    sigma_ui,\n    spectral,\n    timestep,\n):\n    mo.stop(not run_btn.value, mo.callout(\n        mo.md(\"Press **\u25b6 Run all three initializations** above to start.\"),\n        kind=\"info\",\n    ))\n\n    _n, _alpha, _sigma, _T = n_ui.value, alpha_ui.value, sigma_ui.value, T_ui.value\n    _L = 20.0\n    _grid = spectral.Grid(_n, L=_L)\n    _f = shallowwater.coriolis(_grid, beta=0.0)\n\n    _eta0 = 0.5 * np.exp(\n        -((_grid.x - _L / 2) ** 2 + (_grid.y - _L / 2) ** 2) / (2 * _sigma ** 2)\n    )\n    _eta_hat = _grid.fft(_eta0)\n    _ug = _grid.ifft(-_grid.ddy(_eta_hat))\n    _vg = _grid.ifft(_grid.ddx(_eta_hat))\n\n    _dt = 0.4 * _grid.dx\n    _nsteps = max(50, int(_T / _dt))\n    _nsub = max(1, _nsteps // 300)\n    _ic = _grid.n // 2\n\n    def _run(_a):\n        _state = np.stack([_eta0, _a * _ug, _a * _vg])\n        _q0 = shallowwater.potential_vorticity(_state, _grid)\n        _divs, _etas, _ts = [], [], []\n        _t = 0.0\n        for _s in range(_nsteps + 1):\n            if _s % _nsub == 0:\n                _delta = shallowwater.divergence(_state, _grid)\n                _divs.append(float(np.sqrt((_delta ** 2).mean())))\n                _etas.append(float(_state[0][_ic, _ic]))\n                _ts.append(_t)\n            if _s \u003C _nsteps:\n                _state = timestep.rk4(lambda t, s: shallowwater.rhs(s, _grid, _f),\n                                      _state, _dt)\n                _t += _dt\n        _dq = float(np.abs(shallowwater.potential_vorticity(_state, _grid) - _q0).max())\n        return np.array(_ts), np.array(_divs), np.array(_etas), _dq\n\n    _t1, _d1, _e1, _dq1 = _run(1.0)\n    _ta, _da, _ea, _dqa = _run(_alpha)\n    _t0, _d0, _e0, _dq0 = _run(0.0)\n\n    set_sim({\n        \"t\": _t1,\n        \"div1\": _d1, \"diva\": _da, \"div0\": _d0,\n        \"eta1\": _e1, \"etaa\": _ea, \"eta0s\": _e0,\n        \"dq\": (_dq1, _dqa, _dq0), \"alpha\": _alpha,\n    })\n    mo.callout(mo.md(\n        f\"**Done.** 3 runs \u00d7 {_nsteps} steps. Max pointwise PV drift over \"\n        f\"the entire run, per run: {_dq1:.1e} / {_dqa:.1e} / {_dq0:.1e} \u2014 \"\n        f\"machine precision in all three.\"\n    ), kind=\"success\")\n    return\n\n\n@app.cell\ndef _(get_sim, mo):\n    sim = get_sim()\n    mo.stop(sim is None, mo.callout(\n        mo.md(\"Results will appear here once the runs have completed.\"), kind=\"warn\"\n    ))\n    return (sim,)\n\n\n@app.cell(hide_code=True)\ndef _(plt, sim):\n    fig1, axs1 = plt.subplots(1, 2, figsize=(11, 4.2), constrained_layout=True)\n\n    axs1[0].plot(sim[\"t\"], sim[\"div0\"], lw=1.5, color=\"crimson\",\n                 label=\"$\\\\alpha=0$ (no winds)\")\n    axs1[0].plot(sim[\"t\"], sim[\"diva\"], lw=1.5, color=\"#d97706\",\n                 label=f\"$\\\\alpha={sim['alpha']:.2f}$\")\n    axs1[0].plot(sim[\"t\"], sim[\"div1\"] + 1e-18, lw=1.5, color=\"#2563eb\",\n                 label=\"$\\\\alpha=1$ (balanced)\")\n    axs1[0].set_yscale(\"log\")\n    axs1[0].set_xlabel(\"$t\\\\ (f_0^{-1})$\"); axs1[0].set_ylabel(\"RMS divergence\")\n    axs1[0].set_title(\"distance from the slow manifold\")\n    axs1[0].legend(fontsize=8); axs1[0].grid(alpha=0.3, which=\"both\")\n\n    axs1[1].plot(sim[\"t\"], sim[\"eta0s\"], lw=1.2, color=\"crimson\")\n    axs1[1].plot(sim[\"t\"], sim[\"etaa\"], lw=1.2, color=\"#d97706\")\n    axs1[1].plot(sim[\"t\"], sim[\"eta1\"], lw=1.8, color=\"#2563eb\")\n    axs1[1].set_xlabel(\"$t\\\\ (f_0^{-1})$\"); axs1[1].set_ylabel(\"$\\\\eta$ at bump center\")\n    axs1[1].set_title(\"the 'forecast' at one station\")\n    axs1[1].grid(alpha=0.3)\n    fig1\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    **How to read it:** the balanced run's divergence sits at machine\n    zero \u2014 it is *on* the slow subspace and stays there, an exact\n    steady state. Every other $\\alpha$ rings at inertia-gravity\n    frequencies, and the ringing amplitude scales exactly as\n    $(1-\\alpha)$ \u2014 the fast-mode content of the initialization error,\n    nothing else (the dynamics is linear, so the fast and slow parts\n    evolve in strict parallel). The right panel is Richardson's story\n    at one grid point: the same \"observations\" ($\\eta_0$), and either\n    a quiet, meteorologically meaningful record or one buried under\n    gravity-wave noise, depending purely on whether the winds were\n    initialized on the manifold. Meanwhile the success message above\n    reports the PV drift in every run: machine precision regardless\n    of $\\alpha$ \u2014 the slow content was never in danger; *balance is\n    entirely about not exciting the fast modes*.\n    \"\"\")\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    ### Try this\n\n    - **Verify the $(1-\\alpha)$ law.** Read the plateau RMS divergence\n      off the log plot at $\\alpha=0.5$ and $\\alpha=0$: the ratio\n      should be exactly 2. Why exactly? (Linearity: the fast-mode\n      amplitude is a linear projection of the initialization error,\n      which is proportional to $1-\\alpha$.)\n    - **Change what \"small\" means.** Shrink $\\sigma/L_R$ toward 0.5:\n      Ch. 6 taught that small-scale height bumps are mostly fast\n      content \u2014 so even the *balanced* winds now protect a state\n      that holds little slow signal. Compare the $\\alpha=0$ ringing\n      amplitude across $\\sigma$: initialization matters most exactly\n      where there is slow signal worth protecting.\n    - **Where the analogy stops.** This linear model's slow subspace\n      is exactly invariant, so $\\alpha=1$ gives *zero* ringing\n      forever. In the real (nonlinear) primitive equations, an\n      identically-balanced start still leaks gravity waves \u2014\n      spontaneously, at $\\sim e^{-c/Ro}$. Nothing in this notebook\n      can show that (it is exponentially beyond a linear model);\n      knowing which of your conclusions survive nonlinearity is the\n      course's parting skill.\n\n    ### What you should have seen \u2014 and where the book ends\n\n    One height field, three wind initializations: identical slow\n    (PV) content to machine precision, and utterly different fast\n    content \u2014 from silence at $\\alpha=1$ to full-volume ringing at\n    $\\alpha=0$, in exact proportion to the projection off the slow\n    manifold. That is the entire logic of this book run in reverse.\n    Chs. 5\u201321 built models by *assuming* the fast modes away \u2014\n    geostrophy at $O(1)$, QG at $O(Ro)$, Sverdrup at basin scale \u2014\n    and they worked because rotating stratified flow, initialized\n    with even minimal care, genuinely keeps its fast and slow lives\n    separate: the frequency gap protects the split, PV anchors the\n    slow side (Ch. 7), waves carry the fast side (Chs. 6, 12), and\n    the two meet only through the slow, patient couplings of\n    Chs. 13 and 23. The reduced models are not approximations that\n    happen to work; they are the dynamics of the manifold the\n    atmosphere and ocean actually live near \u2014 which is why a\n    24-chapter book about two fluids could be, most of the time, a\n    book about one idea.\n    \"\"\")\n    return\n\n\n@app.cell\ndef _():\n    import marimo as mo\n\n    return (mo,)\n\n\nif __name__ == \"__main__\":\n    app.run()\n",
+        }),
+        writable: false,
+        configurable: false,
+    });
+</script>
+<marimo-code hidden="">import%20marimo%0A%0A__generated_with%20%3D%20%220.23.9%22%0Aapp%20%3D%20marimo.App(width%3D%22medium%22)%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%20Chapter%2024%20%E2%80%94%20Balanced%20Models%20%26%20the%20Slow%20Manifold%0A%0A%20%20%20%20**Physical%20question.**%20This%20book%20has%20spent%2023%20chapters%20solving%0A%20%20%20%20*reduced*%20equations%20%E2%80%94%20geostrophy%2C%20QG%2C%20two-layer%2C%20planetary-scale%0A%20%20%20%20balances%20%E2%80%94%20while%20the%20fluid%20itself%20obeys%20none%20of%20them%20exactly.%20Why%0A%20%20%20%20did%20that%20ever%20work%3F%20Because%20rotating%2C%20stratified%20flow%20segregates%0A%20%20%20%20into%20**fast**%20motions%20(inertia-gravity%20waves%2C%20Chs.%206%20and%2012)%20and%0A%20%20%20%20**slow**%20ones%20(everything%20PV%20controls)%2C%20and%20a%20state%20prepared%20with%0A%20%20%20%20*zero%20fast%20content*%20stays%20%E2%80%94%20very%20nearly%20%E2%80%94%20fast-free%3A%20it%20lives%20on%0A%20%20%20%20the%20**slow%20manifold**%2C%20and%20the%20balanced%20models%20are%20simply%20the%0A%20%20%20%20dynamics%20restricted%20to%20it.%20After%20this%20final%20chapter%20you%20should%20be%0A%20%20%20%20able%20to%20say%20what%20the%20slow%20manifold%20is%2C%20demonstrate%20with%20two%20runs%0A%20%20%20%20of%20the%20same%20model%20why%20initialization%20onto%20it%20matters%2C%20and%20place%0A%20%20%20%20every%20reduced%20model%20in%20this%20book%20on%20the%20same%20map.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%23%20Governing%20equations%0A%0A%20%20%20%20%23%23%23%20The%20split%2C%20one%20more%20time%20%E2%80%94%20now%20as%20geometry%0A%0A%20%20%20%20Ch.%206%20diagonalized%20linear%20rotating%20shallow%20water%20at%20each%0A%20%20%20%20wavenumber%20into%20three%20modes%3A%20one%20**slow**%20(%24%5Comega%3D0%24%2C%20the%0A%20%20%20%20geostrophic%20mode)%20and%20two%20**fast**%0A%20%20%20%20(%24%5Comega%3D%5Cpm%5Csqrt%7B1%2Bk%5E2%2Bl%5E2%7D%5Cge1%24%3A%20inertia-gravity%20waves).%20Read%0A%20%20%20%20that%20as%20geometry%20rather%20than%20as%20a%20wave%20census%3A%20state%20space%20splits%0A%20%20%20%20into%20a%20*slow%20subspace*%20(all%20fast%20amplitudes%20zero%20%E2%80%94%20exactly%20the%0A%20%20%20%20geostrophically%20balanced%20states%20%24u%3D-%5Ceta_y%24%2C%20%24v%3D%5Ceta_x%24)%20and%20its%0A%20%20%20%20fast%20complement.%20In%20the%20**linear**%20system%20the%20split%20is%20exact%20and%0A%20%20%20%20invariant%3A%20a%20state%20that%20starts%20on%20the%20slow%20subspace%20stays%20on%20it%0A%20%20%20%20*forever*%20%E2%80%94%20it%20is%20an%20exact%20steady%20state%20on%20the%20%24f%24-plane%20(the%0A%20%20%20%20book's%20test%20suite%20literally%20asserts%20this)%20%E2%80%94%20while%20any%20fast%0A%20%20%20%20content%20rings%20at%20%24%5Comega%5Cge1%24%2C%20forever%2C%20without%20touching%20the%20slow%0A%20%20%20%20part.%20And%20crucially%2C%20the%20frequency%20**gap**%20(%240%24%20versus%20%24%5Cge%20f%24)%0A%20%20%20%20means%20the%20two%20families%20cannot%20resonate%20at%20small%20amplitude.%0A%0A%20%20%20%20%23%23%23%20Balanced%20initialization%3A%20projecting%20onto%20the%20manifold%0A%0A%20%20%20%20The%20practical%20consequence%20is%20the%20oldest%20problem%20in%20numerical%0A%20%20%20%20weather%20prediction.%20Observations%20give%20you%20%24%5Ceta%24%20(pressure)%20far%0A%20%20%20%20better%20than%20winds%3B%20initialize%20a%20model%20with%20observed%20%24%5Ceta%24%20and%0A%20%20%20%20naive%20winds%20and%20the%20error%20is%20not%20merely%20a%20wrong%20forecast%20%E2%80%94%20it%20is%0A%20%20%20%20a%20**fast%20one**%3A%20the%20projection%20of%20your%20error%20onto%20the%20fast%20modes%0A%20%20%20%20rings%20through%20the%20model%20at%20gravity-wave%20frequency%2C%20swamping%20the%0A%20%20%20%20meteorology%20(Richardson's%20famous%201922%20hand-computed%20forecast%0A%20%20%20%20failed%20exactly%20this%20way%2C%20predicting%20a%20145%20hPa%20pressure%20change%20in%0A%20%20%20%206%20hours).%20The%20cure%20is%20to%20*project%20the%20initial%20state%20onto%20the%20slow%0A%20%20%20%20manifold*%3A%20set%20the%20winds%20to%20their%20balanced%20values.%20In%20the%20linear%0A%20%20%20%20model%20that%20projection%20is%20exact%3B%20the%20notebook%20below%20performs%20it%0A%20%20%20%20with%20one%20slider.%0A%0A%20%20%20%20%23%23%23%20From%20subspace%20to%20manifold%20%E2%80%94%20and%20how%20fuzzy%20it%20really%20is%0A%0A%20%20%20%20Nonlinearity%20bends%20the%20slow%20*subspace*%20into%20a%20slow%20*manifold*%3A%0A%20%20%20%20the%20balanced%20winds%20acquire%20%24O(Ro)%24%20corrections%20(gradient-wind%2C%0A%20%20%20%20Ch.%205%3B%20the%20QG%20ageostrophic%20circulation%2C%20Ch.%208)%2C%20computable%20order%0A%20%20%20%20by%20order%20in%20%24Ro%24%20%E2%80%94%20and%20each%20of%20this%20book's%20reduced%20models%20is%0A%20%20%20%20precisely%20the%20dynamics%20on%20this%20manifold%2C%20truncated%20at%20some%20order%3A%0A%0A%20%20%20%20%7C%20Model%20%7C%20Where%20it%20lives%20%7C%0A%20%20%20%20%7C---%7C---%7C%0A%20%20%20%20%7C%20geostrophy%20(Ch.%205)%20%7C%20the%20manifold%20at%20%24O(1)%24%20%E2%80%94%20diagnostic%20only%20%7C%0A%20%20%20%20%7C%20QG%20(Chs.%208%2C%2010%2C%2016%2C%2018)%20%7C%20dynamics%20on%20the%20manifold%20at%20%24O(Ro)%24%20%7C%0A%20%20%20%20%7C%20planetary%2FSverdrup%20balances%20(Chs.%2020%2C%2021)%20%7C%20the%20manifold%20at%20large%20scale%2C%20friction%20added%20%7C%0A%20%20%20%20%7C%20full%20equations%20(Chs.%206%2C%2012)%20%7C%20the%20whole%20space%2C%20fast%20modes%20included%20%7C%0A%0A%20%20%20%20One%20honest%20caveat%20closes%20the%20book.%20Lorenz%20asked%20whether%20the%0A%20%20%20%20exactly-invariant%20slow%20manifold%20survives%20nonlinearity%2C%20and%20the%0A%20%20%20%20answer%20is%3A%20*not%20quite*.%20Balanced%20motion%20generates%20a%20whisper%20of%0A%20%20%20%20gravity%20waves%20%E2%80%94%20**spontaneous%20imbalance**%20%E2%80%94%20but%20the%20leak%20is%0A%20%20%20%20*exponentially*%20small%20in%20Rossby%20number%2C%20%24%5Csim%20e%5E%7B-c%2FRo%7D%24%20(Vanneste%0A%20%20%20%20%26%20Yavneh%202004)%2C%20which%20is%20why%20balance%20is%20such%20an%20unreasonably%20good%0A%20%20%20%20approximation%20at%20%24Ro%5Csim0.1%24%20even%20though%20no%20exact%20slow%20manifold%0A%20%20%20%20exists.%20%22Balance%22%20is%20not%20a%20fact%20about%20the%20fluid%3B%20it%20is%20an%0A%20%20%20%20asymptotic%20property%20of%20where%20you%20chose%20to%20start%20it%20%E2%80%94%20maintained%2C%0A%20%20%20%20at%20small%20%24Ro%24%2C%20to%20all%20orders.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Aasync%20def%20_(mo)%3A%0A%20%20%20%20%23%20---%20vetted%20primitives%20from%20gfdlib%20(see%20CLAUDE.md)%20-------------------%0A%20%20%20%20import%20sys%0A%0A%20%20%20%20if%20sys.platform%20%3D%3D%20%22emscripten%22%3A%0A%20%20%20%20%20%20%20%20import%20micropip%0A%20%20%20%20%20%20%20%20await%20micropip.install(%0A%20%20%20%20%20%20%20%20%20%20%20%20str(mo.notebook_location()%20%2F%20%22public%22%20%2F%20%22gfdlib-0.1.0-py3-none-any.whl%22)%0A%20%20%20%20%20%20%20%20)%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20sys.path.insert(0%2C%20str(mo.notebook_dir().parent))%20%20%23%20repo%20root%0A%0A%20%20%20%20import%20numpy%20as%20np%0A%20%20%20%20import%20matplotlib.pyplot%20as%20plt%0A%20%20%20%20from%20gfdlib%20import%20spectral%2C%20timestep%2C%20shallowwater%0A%0A%20%20%20%20return%20np%2C%20plt%2C%20shallowwater%2C%20spectral%2C%20timestep%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%23%20Numerical%20scheme%0A%0A%20%20%20%20Ch.%206's%20exact%20machinery%2C%20unchanged%20(%60gfdlib.spectral.Grid%60%2C%0A%20%20%20%20%60gfdlib.shallowwater.rhs%60%2C%20RK4%20at%20the%20same%20CFL)%20on%20an%20%24f%24-plane%2C%0A%20%20%20%20plus%20one%20new%20one-line%20diagnostic%3A%20%60gfdlib.shallowwater.divergence%60%0A%20%20%20%20(%24%5Cdelta%3Du_x%2Bv_y%24%2C%20spectral).%20Divergence%20is%20the%20sharpest%20possible%0A%20%20%20%20slow%2Ffast%20meter%20here%20%E2%80%94%20the%20slow%20mode%20has%20%24%5Cdelta%3D0%24%20*identically*%2C%0A%20%20%20%20while%20inertia-gravity%20waves%20are%20made%20of%20it%20%E2%80%94%20so%20RMS%20%24%5Cdelta%24%0A%20%20%20%20measures%20the%20distance%20from%20the%20slow%20manifold%20directly.%20Three%20runs%0A%20%20%20%20share%20the%20identical%20height%20field%20%24%5Ceta_0%24%20and%20differ%20only%20in%0A%20%20%20%20initial%20winds%3A%20%24(u%2Cv)%3D%5Calpha%5C%2C(-%5Ceta_%7B0y%7D%2C%5C%20%5Ceta_%7B0x%7D)%24%20with%0A%20%20%20%20%24%5Calpha%3D1%24%20(balanced)%2C%20your%20slider's%20%24%5Calpha%24%2C%20and%20%24%5Calpha%3D0%24%0A%20%20%20%20(Richardson's%20mistake).%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20alpha_ui%20%3D%20mo.ui.slider(0.0%2C%201.0%2C%20step%3D0.05%2C%20value%3D0.7%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3D%22balance%20fraction%20%24%5C%5Calpha%24%22%2C%20show_value%3DTrue)%0A%20%20%20%20sigma_ui%20%3D%20mo.ui.slider(0.5%2C%204.0%2C%20step%3D0.25%2C%20value%3D2.0%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3D%22bump%20width%20%24%5C%5Csigma%2FL_R%24%22%2C%20show_value%3DTrue)%0A%20%20%20%20T_ui%20%3D%20mo.ui.slider(5.0%2C%2025.0%2C%20step%3D2.5%2C%20value%3D15.0%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3D%22run%20time%20%24T%24%20(%24f_0%5E%7B-1%7D%24)%22%2C%20show_value%3DTrue)%0A%20%20%20%20n_ui%20%3D%20mo.ui.dropdown(options%3D%7B%2264%22%3A%2064%2C%20%2296%22%3A%2096%7D%2C%20value%3D%2264%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3D%22resolution%20%24n%24%22)%0A%20%20%20%20mo.vstack(%5B%0A%20%20%20%20%20%20%20%20mo.hstack(%5Balpha_ui%2C%20sigma_ui%5D%2C%20justify%3D%22start%22)%2C%0A%20%20%20%20%20%20%20%20mo.hstack(%5BT_ui%2C%20n_ui%5D%2C%20justify%3D%22start%22)%2C%0A%20%20%20%20%20%20%20%20mo.md(r%22%3E%20%24%5Calpha%3D1%24%3A%20winds%20exactly%20geostrophic%20(on%20the%20slow%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20r%22subspace).%20%24%5Calpha%3D0%24%3A%20same%20height%20field%2C%20no%20winds%20at%20all%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20r%22%E2%80%94%20Ch.%206's%20adjustment%20problem%2C%20now%20reread%20as%20an%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20r%22initialization%20*error*.%22)%2C%0A%20%20%20%20%5D)%0A%20%20%20%20return%20T_ui%2C%20alpha_ui%2C%20n_ui%2C%20sigma_ui%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20get_sim%2C%20set_sim%20%3D%20mo.state(None)%20%20%20%23%20results%20survive%20the%20run%20button%20resetting%0A%20%20%20%20return%20get_sim%2C%20set_sim%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20run_btn%20%3D%20mo.ui.run_button(label%3D%22%E2%96%B6%20Run%20all%20three%20initializations%22)%0A%20%20%20%20run_btn%0A%20%20%20%20return%20(run_btn%2C)%0A%0A%0A%40app.cell%0Adef%20_(%0A%20%20%20%20T_ui%2C%0A%20%20%20%20alpha_ui%2C%0A%20%20%20%20mo%2C%0A%20%20%20%20n_ui%2C%0A%20%20%20%20np%2C%0A%20%20%20%20run_btn%2C%0A%20%20%20%20set_sim%2C%0A%20%20%20%20shallowwater%2C%0A%20%20%20%20sigma_ui%2C%0A%20%20%20%20spectral%2C%0A%20%20%20%20timestep%2C%0A)%3A%0A%20%20%20%20mo.stop(not%20run_btn.value%2C%20mo.callout(%0A%20%20%20%20%20%20%20%20mo.md(%22Press%20**%E2%96%B6%20Run%20all%20three%20initializations**%20above%20to%20start.%22)%2C%0A%20%20%20%20%20%20%20%20kind%3D%22info%22%2C%0A%20%20%20%20))%0A%0A%20%20%20%20_n%2C%20_alpha%2C%20_sigma%2C%20_T%20%3D%20n_ui.value%2C%20alpha_ui.value%2C%20sigma_ui.value%2C%20T_ui.value%0A%20%20%20%20_L%20%3D%2020.0%0A%20%20%20%20_grid%20%3D%20spectral.Grid(_n%2C%20L%3D_L)%0A%20%20%20%20_f%20%3D%20shallowwater.coriolis(_grid%2C%20beta%3D0.0)%0A%0A%20%20%20%20_eta0%20%3D%200.5%20*%20np.exp(%0A%20%20%20%20%20%20%20%20-((_grid.x%20-%20_L%20%2F%202)%20**%202%20%2B%20(_grid.y%20-%20_L%20%2F%202)%20**%202)%20%2F%20(2%20*%20_sigma%20**%202)%0A%20%20%20%20)%0A%20%20%20%20_eta_hat%20%3D%20_grid.fft(_eta0)%0A%20%20%20%20_ug%20%3D%20_grid.ifft(-_grid.ddy(_eta_hat))%0A%20%20%20%20_vg%20%3D%20_grid.ifft(_grid.ddx(_eta_hat))%0A%0A%20%20%20%20_dt%20%3D%200.4%20*%20_grid.dx%0A%20%20%20%20_nsteps%20%3D%20max(50%2C%20int(_T%20%2F%20_dt))%0A%20%20%20%20_nsub%20%3D%20max(1%2C%20_nsteps%20%2F%2F%20300)%0A%20%20%20%20_ic%20%3D%20_grid.n%20%2F%2F%202%0A%0A%20%20%20%20def%20_run(_a)%3A%0A%20%20%20%20%20%20%20%20_state%20%3D%20np.stack(%5B_eta0%2C%20_a%20*%20_ug%2C%20_a%20*%20_vg%5D)%0A%20%20%20%20%20%20%20%20_q0%20%3D%20shallowwater.potential_vorticity(_state%2C%20_grid)%0A%20%20%20%20%20%20%20%20_divs%2C%20_etas%2C%20_ts%20%3D%20%5B%5D%2C%20%5B%5D%2C%20%5B%5D%0A%20%20%20%20%20%20%20%20_t%20%3D%200.0%0A%20%20%20%20%20%20%20%20for%20_s%20in%20range(_nsteps%20%2B%201)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20_s%20%25%20_nsub%20%3D%3D%200%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20_delta%20%3D%20shallowwater.divergence(_state%2C%20_grid)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20_divs.append(float(np.sqrt((_delta%20**%202).mean())))%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20_etas.append(float(_state%5B0%5D%5B_ic%2C%20_ic%5D))%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20_ts.append(_t)%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20_s%20%3C%20_nsteps%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20_state%20%3D%20timestep.rk4(lambda%20t%2C%20s%3A%20shallowwater.rhs(s%2C%20_grid%2C%20_f)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20_state%2C%20_dt)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20_t%20%2B%3D%20_dt%0A%20%20%20%20%20%20%20%20_dq%20%3D%20float(np.abs(shallowwater.potential_vorticity(_state%2C%20_grid)%20-%20_q0).max())%0A%20%20%20%20%20%20%20%20return%20np.array(_ts)%2C%20np.array(_divs)%2C%20np.array(_etas)%2C%20_dq%0A%0A%20%20%20%20_t1%2C%20_d1%2C%20_e1%2C%20_dq1%20%3D%20_run(1.0)%0A%20%20%20%20_ta%2C%20_da%2C%20_ea%2C%20_dqa%20%3D%20_run(_alpha)%0A%20%20%20%20_t0%2C%20_d0%2C%20_e0%2C%20_dq0%20%3D%20_run(0.0)%0A%0A%20%20%20%20set_sim(%7B%0A%20%20%20%20%20%20%20%20%22t%22%3A%20_t1%2C%0A%20%20%20%20%20%20%20%20%22div1%22%3A%20_d1%2C%20%22diva%22%3A%20_da%2C%20%22div0%22%3A%20_d0%2C%0A%20%20%20%20%20%20%20%20%22eta1%22%3A%20_e1%2C%20%22etaa%22%3A%20_ea%2C%20%22eta0s%22%3A%20_e0%2C%0A%20%20%20%20%20%20%20%20%22dq%22%3A%20(_dq1%2C%20_dqa%2C%20_dq0)%2C%20%22alpha%22%3A%20_alpha%2C%0A%20%20%20%20%7D)%0A%20%20%20%20mo.callout(mo.md(%0A%20%20%20%20%20%20%20%20f%22**Done.**%203%20runs%20%C3%97%20%7B_nsteps%7D%20steps.%20Max%20pointwise%20PV%20drift%20over%20%22%0A%20%20%20%20%20%20%20%20f%22the%20entire%20run%2C%20per%20run%3A%20%7B_dq1%3A.1e%7D%20%2F%20%7B_dqa%3A.1e%7D%20%2F%20%7B_dq0%3A.1e%7D%20%E2%80%94%20%22%0A%20%20%20%20%20%20%20%20f%22machine%20precision%20in%20all%20three.%22%0A%20%20%20%20)%2C%20kind%3D%22success%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(get_sim%2C%20mo)%3A%0A%20%20%20%20sim%20%3D%20get_sim()%0A%20%20%20%20mo.stop(sim%20is%20None%2C%20mo.callout(%0A%20%20%20%20%20%20%20%20mo.md(%22Results%20will%20appear%20here%20once%20the%20runs%20have%20completed.%22)%2C%20kind%3D%22warn%22%0A%20%20%20%20))%0A%20%20%20%20return%20(sim%2C)%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(plt%2C%20sim)%3A%0A%20%20%20%20fig1%2C%20axs1%20%3D%20plt.subplots(1%2C%202%2C%20figsize%3D(11%2C%204.2)%2C%20constrained_layout%3DTrue)%0A%0A%20%20%20%20axs1%5B0%5D.plot(sim%5B%22t%22%5D%2C%20sim%5B%22div0%22%5D%2C%20lw%3D1.5%2C%20color%3D%22crimson%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3D%22%24%5C%5Calpha%3D0%24%20(no%20winds)%22)%0A%20%20%20%20axs1%5B0%5D.plot(sim%5B%22t%22%5D%2C%20sim%5B%22diva%22%5D%2C%20lw%3D1.5%2C%20color%3D%22%23d97706%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3Df%22%24%5C%5Calpha%3D%7Bsim%5B'alpha'%5D%3A.2f%7D%24%22)%0A%20%20%20%20axs1%5B0%5D.plot(sim%5B%22t%22%5D%2C%20sim%5B%22div1%22%5D%20%2B%201e-18%2C%20lw%3D1.5%2C%20color%3D%22%232563eb%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3D%22%24%5C%5Calpha%3D1%24%20(balanced)%22)%0A%20%20%20%20axs1%5B0%5D.set_yscale(%22log%22)%0A%20%20%20%20axs1%5B0%5D.set_xlabel(%22%24t%5C%5C%20(f_0%5E%7B-1%7D)%24%22)%3B%20axs1%5B0%5D.set_ylabel(%22RMS%20divergence%22)%0A%20%20%20%20axs1%5B0%5D.set_title(%22distance%20from%20the%20slow%20manifold%22)%0A%20%20%20%20axs1%5B0%5D.legend(fontsize%3D8)%3B%20axs1%5B0%5D.grid(alpha%3D0.3%2C%20which%3D%22both%22)%0A%0A%20%20%20%20axs1%5B1%5D.plot(sim%5B%22t%22%5D%2C%20sim%5B%22eta0s%22%5D%2C%20lw%3D1.2%2C%20color%3D%22crimson%22)%0A%20%20%20%20axs1%5B1%5D.plot(sim%5B%22t%22%5D%2C%20sim%5B%22etaa%22%5D%2C%20lw%3D1.2%2C%20color%3D%22%23d97706%22)%0A%20%20%20%20axs1%5B1%5D.plot(sim%5B%22t%22%5D%2C%20sim%5B%22eta1%22%5D%2C%20lw%3D1.8%2C%20color%3D%22%232563eb%22)%0A%20%20%20%20axs1%5B1%5D.set_xlabel(%22%24t%5C%5C%20(f_0%5E%7B-1%7D)%24%22)%3B%20axs1%5B1%5D.set_ylabel(%22%24%5C%5Ceta%24%20at%20bump%20center%22)%0A%20%20%20%20axs1%5B1%5D.set_title(%22the%20'forecast'%20at%20one%20station%22)%0A%20%20%20%20axs1%5B1%5D.grid(alpha%3D0.3)%0A%20%20%20%20fig1%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20**How%20to%20read%20it%3A**%20the%20balanced%20run's%20divergence%20sits%20at%20machine%0A%20%20%20%20zero%20%E2%80%94%20it%20is%20*on*%20the%20slow%20subspace%20and%20stays%20there%2C%20an%20exact%0A%20%20%20%20steady%20state.%20Every%20other%20%24%5Calpha%24%20rings%20at%20inertia-gravity%0A%20%20%20%20frequencies%2C%20and%20the%20ringing%20amplitude%20scales%20exactly%20as%0A%20%20%20%20%24(1-%5Calpha)%24%20%E2%80%94%20the%20fast-mode%20content%20of%20the%20initialization%20error%2C%0A%20%20%20%20nothing%20else%20(the%20dynamics%20is%20linear%2C%20so%20the%20fast%20and%20slow%20parts%0A%20%20%20%20evolve%20in%20strict%20parallel).%20The%20right%20panel%20is%20Richardson's%20story%0A%20%20%20%20at%20one%20grid%20point%3A%20the%20same%20%22observations%22%20(%24%5Ceta_0%24)%2C%20and%20either%0A%20%20%20%20a%20quiet%2C%20meteorologically%20meaningful%20record%20or%20one%20buried%20under%0A%20%20%20%20gravity-wave%20noise%2C%20depending%20purely%20on%20whether%20the%20winds%20were%0A%20%20%20%20initialized%20on%20the%20manifold.%20Meanwhile%20the%20success%20message%20above%0A%20%20%20%20reports%20the%20PV%20drift%20in%20every%20run%3A%20machine%20precision%20regardless%0A%20%20%20%20of%20%24%5Calpha%24%20%E2%80%94%20the%20slow%20content%20was%20never%20in%20danger%3B%20*balance%20is%0A%20%20%20%20entirely%20about%20not%20exciting%20the%20fast%20modes*.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%23%23%20Try%20this%0A%0A%20%20%20%20-%20**Verify%20the%20%24(1-%5Calpha)%24%20law.**%20Read%20the%20plateau%20RMS%20divergence%0A%20%20%20%20%20%20off%20the%20log%20plot%20at%20%24%5Calpha%3D0.5%24%20and%20%24%5Calpha%3D0%24%3A%20the%20ratio%0A%20%20%20%20%20%20should%20be%20exactly%202.%20Why%20exactly%3F%20(Linearity%3A%20the%20fast-mode%0A%20%20%20%20%20%20amplitude%20is%20a%20linear%20projection%20of%20the%20initialization%20error%2C%0A%20%20%20%20%20%20which%20is%20proportional%20to%20%241-%5Calpha%24.)%0A%20%20%20%20-%20**Change%20what%20%22small%22%20means.**%20Shrink%20%24%5Csigma%2FL_R%24%20toward%200.5%3A%0A%20%20%20%20%20%20Ch.%206%20taught%20that%20small-scale%20height%20bumps%20are%20mostly%20fast%0A%20%20%20%20%20%20content%20%E2%80%94%20so%20even%20the%20*balanced*%20winds%20now%20protect%20a%20state%0A%20%20%20%20%20%20that%20holds%20little%20slow%20signal.%20Compare%20the%20%24%5Calpha%3D0%24%20ringing%0A%20%20%20%20%20%20amplitude%20across%20%24%5Csigma%24%3A%20initialization%20matters%20most%20exactly%0A%20%20%20%20%20%20where%20there%20is%20slow%20signal%20worth%20protecting.%0A%20%20%20%20-%20**Where%20the%20analogy%20stops.**%20This%20linear%20model's%20slow%20subspace%0A%20%20%20%20%20%20is%20exactly%20invariant%2C%20so%20%24%5Calpha%3D1%24%20gives%20*zero*%20ringing%0A%20%20%20%20%20%20forever.%20In%20the%20real%20(nonlinear)%20primitive%20equations%2C%20an%0A%20%20%20%20%20%20identically-balanced%20start%20still%20leaks%20gravity%20waves%20%E2%80%94%0A%20%20%20%20%20%20spontaneously%2C%20at%20%24%5Csim%20e%5E%7B-c%2FRo%7D%24.%20Nothing%20in%20this%20notebook%0A%20%20%20%20%20%20can%20show%20that%20(it%20is%20exponentially%20beyond%20a%20linear%20model)%3B%0A%20%20%20%20%20%20knowing%20which%20of%20your%20conclusions%20survive%20nonlinearity%20is%20the%0A%20%20%20%20%20%20course's%20parting%20skill.%0A%0A%20%20%20%20%23%23%23%20What%20you%20should%20have%20seen%20%E2%80%94%20and%20where%20the%20book%20ends%0A%0A%20%20%20%20One%20height%20field%2C%20three%20wind%20initializations%3A%20identical%20slow%0A%20%20%20%20(PV)%20content%20to%20machine%20precision%2C%20and%20utterly%20different%20fast%0A%20%20%20%20content%20%E2%80%94%20from%20silence%20at%20%24%5Calpha%3D1%24%20to%20full-volume%20ringing%20at%0A%20%20%20%20%24%5Calpha%3D0%24%2C%20in%20exact%20proportion%20to%20the%20projection%20off%20the%20slow%0A%20%20%20%20manifold.%20That%20is%20the%20entire%20logic%20of%20this%20book%20run%20in%20reverse.%0A%20%20%20%20Chs.%205%E2%80%9321%20built%20models%20by%20*assuming*%20the%20fast%20modes%20away%20%E2%80%94%0A%20%20%20%20geostrophy%20at%20%24O(1)%24%2C%20QG%20at%20%24O(Ro)%24%2C%20Sverdrup%20at%20basin%20scale%20%E2%80%94%0A%20%20%20%20and%20they%20worked%20because%20rotating%20stratified%20flow%2C%20initialized%0A%20%20%20%20with%20even%20minimal%20care%2C%20genuinely%20keeps%20its%20fast%20and%20slow%20lives%0A%20%20%20%20separate%3A%20the%20frequency%20gap%20protects%20the%20split%2C%20PV%20anchors%20the%0A%20%20%20%20slow%20side%20(Ch.%207)%2C%20waves%20carry%20the%20fast%20side%20(Chs.%206%2C%2012)%2C%20and%0A%20%20%20%20the%20two%20meet%20only%20through%20the%20slow%2C%20patient%20couplings%20of%0A%20%20%20%20Chs.%2013%20and%2023.%20The%20reduced%20models%20are%20not%20approximations%20that%0A%20%20%20%20happen%20to%20work%3B%20they%20are%20the%20dynamics%20of%20the%20manifold%20the%0A%20%20%20%20atmosphere%20and%20ocean%20actually%20live%20near%20%E2%80%94%20which%20is%20why%20a%0A%20%20%20%2024-chapter%20book%20about%20two%20fluids%20could%20be%2C%20most%20of%20the%20time%2C%20a%0A%20%20%20%20book%20about%20one%20idea.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_()%3A%0A%20%20%20%20import%20marimo%20as%20mo%0A%0A%20%20%20%20return%20(mo%2C)%0A%0A%0Aif%20__name__%20%3D%3D%20%22__main__%22%3A%0A%20%20%20%20app.run()%0A</marimo-code></head>
+  <body>
+    <div id="root"></div>
+    <!-- This is a portal for the data editor to render in -->
+    <div id="portal" data-testid="glide-portal" style="position: fixed; left: 0; top: 0; z-index: 9999"></div>
+    <script data-marimo="true">
+      Object.defineProperty(window, "__MARIMO_MOUNT_CONFIG__", {
+        value: Object.freeze({
+            "filename": "notebook.py",
+            "cwd": "",
+            "lspWorkspace": null,
+            "mode": "read",
+            "version": "0.23.9",
+            "serverToken": "unused",
+            "config": {"ai": {"custom_providers": {}, "enabled": true, "models": {"custom_models": [], "displayed_models": []}}, "completion": {"activate_on_typing": true, "auto_close_pairs": true, "copilot": false, "signature_hint_on_typing": false}, "diagnostics": {"sql_linter": true}, "display": {"cell_output": "below", "code_editor_font_size": 14, "dataframes": "rich", "default_table_max_columns": 50, "default_table_page_size": 10, "default_width": "medium", "reference_highlighting": true, "theme": "light"}, "formatting": {"line_length": 79}, "keymap": {"overrides": {}, "preset": "default"}, "language_servers": {"pylsp": {"enable_flake8": false, "enable_mypy": true, "enable_pydocstyle": false, "enable_pyflakes": false, "enable_pylint": false, "enable_ruff": true, "enabled": false}}, "mcp": {"mcpServers": {}, "presets": []}, "package_management": {"manager": "pip"}, "runtime": {"auto_instantiate": false, "auto_reload": "off", "default_csv_encoding": "utf-8", "default_sql_output": "auto", "on_cell_change": "autorun", "output_max_bytes": 8000000, "reactive_tests": true, "show_tracebacks": false, "std_stream_max_bytes": 1000000, "watcher_on_save": "lazy"}, "save": {"autosave": "off", "autosave_delay": 1000, "format_on_save": false}, "server": {"browser": "default", "follow_symlink": false}, "snippets": {"custom_paths": [], "include_default_snippets": true}},
+            "configOverrides": {},
+            "appConfig": {"sql_output": "auto", "width": "medium"},
+            "view": {"showAppCode": false},
+            "notebook": null,
+            "session": null,
+            "runtimeConfig": null,
+        }),
+        writable: false,
+        configurable: false,
+      });
+    </script>
+  </body>
+</html>

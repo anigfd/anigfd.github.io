@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <!-- Preload is necessary because we show these images when we disconnect from the server,
+    but at that point we cannot load these images from the server -->
+    <link rel="preload" href="./assets/gradient-yHQUC_QB.png" as="image" />
+    <link rel="preload" href="./assets/noise-60BoTA8O.png" as="image" />
+    <!-- Preload the fonts -->
+    <link rel="preload" href="./assets/Lora-VariableFont_wght-CZceb_kH.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Regular-Bam3NpBI.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Bold-C_DwAp7Z.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Regular-CEsLFVD9.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Medium-D5MAsWEG.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Bold-C6PDArdf.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="a marimo app" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.json" />
+
+    <script data-marimo="true">
+      function __resizeIframe(obj) {
+        const scrollbarHeight = 20; // Max between windows, mac, and linux
+
+        function setHeight() {
+          // Guard against race condition where iframe isn't ready
+          if (!obj.contentWindow?.document?.documentElement) {
+            return;
+          }
+          const element = obj.contentWindow.document.documentElement;
+          // If there is no vertical scrollbar, we don't need to resize the iframe
+          if (element.scrollHeight === element.clientHeight) {
+            return;
+          }
+
+          // Create a new height that includes the scrollbar height if it's visible
+          const hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
+          const newHeight = element.scrollHeight + (hasHorizontalScrollbar ? scrollbarHeight : 0);
+
+          // Only update the height if it's different from the current height
+          if (obj.style.height !== `${newHeight}px`) {
+            obj.style.height = `${newHeight}px`;
+          }
+        }
+
+        // Resize the iframe to the height of the content and bottom scrollbar height
+        setHeight();
+
+        // Resize the iframe when the content changes
+        const resizeObserver = new ResizeObserver((_entries) => {
+          setHeight();
+        });
+        // Only observe if iframe content is ready
+        if (obj.contentWindow?.document?.body) {
+          resizeObserver.observe(obj.contentWindow.document.body);
+        }
+      }
+    </script>
+    <marimo-filename hidden>notebook.py</marimo-filename>
+    <!-- TODO(Trevor): Legacy, required by VS Code plugin. Remove when plugin is updated (see marimo/server/_templates/template.py) -->
+    <marimo-version data-version="{{ version }}" hidden></marimo-version>
+    <marimo-user-config data-config="{{ user_config }}" hidden></marimo-user-config>
+    <marimo-server-token data-token="{{ server_token }}" hidden></marimo-server-token>
+    <!-- /TODO -->
+    <title>ch10 two-layer-qg</title>
+    <script type="module" crossorigin src="./assets/index-awsLWRjZ.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/preload-helper-BPPi7vOr.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-LvLJmgfZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-Bj1aDYRI.js">
+    <link rel="modulepreload" crossorigin href="./assets/compiler-runtime-B3qBwwSJ.js">
+    <link rel="modulepreload" crossorigin href="./assets/jsx-runtime-BqBOg78p.js">
+    <link rel="modulepreload" crossorigin href="./assets/useEventListener-DvoEXWke.js">
+    <link rel="modulepreload" crossorigin href="./assets/defaultLocale-BLUna9fQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/precisionRound-Cl9k9ZmS.js">
+    <link rel="modulepreload" crossorigin href="./assets/defaultLocale-DzliDDTm.js">
+    <link rel="modulepreload" crossorigin href="./assets/vega-loader.browser-C8wT63Va.js">
+    <link rel="modulepreload" crossorigin href="./assets/utils-DCL4n9wx.js">
+    <link rel="modulepreload" crossorigin href="./assets/clsx-Dz_KRrWq.js">
+    <link rel="modulepreload" crossorigin href="./assets/cn-DCUzRj2J.js">
+    <link rel="modulepreload" crossorigin href="./assets/badge-j3NGjqhR.js">
+    <link rel="modulepreload" crossorigin href="./assets/button-BbCh-29a.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-dom-CSu739Rf.js">
+    <link rel="modulepreload" crossorigin href="./assets/fullscreen-eipL3i3Y.js">
+    <link rel="modulepreload" crossorigin href="./assets/menu-items-DcP01QzW.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-BdyjRhEt.js">
+    <link rel="modulepreload" crossorigin href="./assets/createLucideIcon-D5guW7EU.js">
+    <link rel="modulepreload" crossorigin href="./assets/check-BH35Ndha.js">
+    <link rel="modulepreload" crossorigin href="./assets/x-C-6liIBr.js">
+    <link rel="modulepreload" crossorigin href="./assets/select-DZcFyKFQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/tooltip-DTV9tlSr.js">
+    <link rel="modulepreload" crossorigin href="./assets/use-toast-IPAtJGea.js">
+    <link rel="modulepreload" crossorigin href="./assets/useEvent-D91BmmQi.js">
+    <link rel="modulepreload" crossorigin href="./assets/invariant-BUdrueMv.js">
+    <link rel="modulepreload" crossorigin href="./assets/isObject-DvLSfCY5.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseFor-DKD1r8uL.js">
+    <link rel="modulepreload" crossorigin href="./assets/merge-_9WLTEyt.js">
+    <link rel="modulepreload" crossorigin href="./assets/zod-H_cgTO0M.js">
+    <link rel="modulepreload" crossorigin href="./assets/utils-CvI-39U6.js">
+    <link rel="modulepreload" crossorigin href="./assets/Deferred-CP7vq682.js">
+    <link rel="modulepreload" crossorigin href="./assets/uuid-e9lSomwA.js">
+    <link rel="modulepreload" crossorigin href="./assets/DeferredRequestRegistry-CNldVcrP.js">
+    <link rel="modulepreload" crossorigin href="./assets/constants-DMpttj8Q.js">
+    <link rel="modulepreload" crossorigin href="./assets/session-0B5NBztP.js">
+    <link rel="modulepreload" crossorigin href="./assets/config-ClMcu_sV.js">
+    <link rel="modulepreload" crossorigin href="./assets/requests-DIwGYs0l.js">
+    <link rel="modulepreload" crossorigin href="./assets/useLifecycle-DieWOfXE.js">
+    <link rel="modulepreload" crossorigin href="./assets/useNonce-DfoVjkkH.js">
+    <link rel="modulepreload" crossorigin href="./assets/useTheme-CI2eq4XN.js">
+    <link rel="modulepreload" crossorigin href="./assets/arrays-DYDL-3-i.js">
+    <link rel="modulepreload" crossorigin href="./assets/strings-wdPMRf6Z.js">
+    <link rel="modulepreload" crossorigin href="./assets/once-DRroIaBz.js">
+    <link rel="modulepreload" crossorigin href="./assets/capabilities-A_KhFcGV.js">
+    <link rel="modulepreload" crossorigin href="./assets/createReducer-CI9qeK_X.js">
+    <link rel="modulepreload" crossorigin href="./assets/paths-D5zczhUD.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-BrR4M-k3.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-HlsDto3K.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CHcznzB-.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-B1U1kGCR.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-ChF5Ln9c.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CpTFpfm_.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CBSMxaO_.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CPczQFlJ.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-C9ZB41s2.js">
+    <link rel="modulepreload" crossorigin href="./assets/stex-BGrE-q7N.js">
+    <link rel="modulepreload" crossorigin href="./assets/toDate-B5A0DFEz.js">
+    <link rel="modulepreload" crossorigin href="./assets/purify.es-B9KxLTTS.js">
+    <link rel="modulepreload" crossorigin href="./assets/cjs-BRGiG41H.js">
+    <link rel="modulepreload" crossorigin href="./assets/isSymbol-BT6B8Bon.js">
+    <link rel="modulepreload" crossorigin href="./assets/now-CsYTPAhW.js">
+    <link rel="modulepreload" crossorigin href="./assets/debounce-DhnxH9Rh.js">
+    <link rel="modulepreload" crossorigin href="./assets/database-zap-kIkTfzTX.js">
+    <link rel="modulepreload" crossorigin href="./assets/main-B0OX4z33.js">
+    <link rel="modulepreload" crossorigin href="./assets/cells-BsaJrRWi.js">
+    <link rel="modulepreload" crossorigin href="./assets/ErrorBoundary-DyYDV0HI.js">
+    <link rel="modulepreload" crossorigin href="./assets/kbd-CTUAEnEx.js">
+    <link rel="modulepreload" crossorigin href="./assets/useInstallPackage-DUF4IRRI.js">
+    <link rel="modulepreload" crossorigin href="./assets/alert-dialog-BqFLkbUc.js">
+    <link rel="modulepreload" crossorigin href="./assets/dialog-DzC_QCtT.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDebounce-7xZwVnnu.js">
+    <link rel="modulepreload" crossorigin href="./assets/numbers-C3BAdHZE.js">
+    <link rel="modulepreload" crossorigin href="./assets/SSRProvider-CkFAAHXw.js">
+    <link rel="modulepreload" crossorigin href="./assets/context-QkTujrKn.js">
+    <link rel="modulepreload" crossorigin href="./assets/useNumberFormatter-ByUv-u9o.js">
+    <link rel="modulepreload" crossorigin href="./assets/usePress-DQ_tAz5W.js">
+    <link rel="modulepreload" crossorigin href="./assets/input-C3Hrdlqq.js">
+    <link rel="modulepreload" crossorigin href="./assets/ImperativeModal-B3Th7k4R.js">
+    <link rel="modulepreload" crossorigin href="./assets/cell-link-B1pHtGWp.js">
+    <link rel="modulepreload" crossorigin href="./assets/multi-map-CUuNtzHt.js">
+    <link rel="modulepreload" crossorigin href="./assets/alert-yTS3WpF4.js">
+    <link rel="modulepreload" crossorigin href="./assets/chevron-right-CG5QYXYk.js">
+    <link rel="modulepreload" crossorigin href="./assets/dropdown-menu-CR7cnzLX.js">
+    <link rel="modulepreload" crossorigin href="./assets/links-D1JoyKTt.js">
+    <link rel="modulepreload" crossorigin href="./assets/useRunCells-BiCBGyeW.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-LK56fFow.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-BwrPA9zQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-icon-OjtDb4gO.js">
+    <link rel="modulepreload" crossorigin href="./assets/RenderHTML-ChwPJgPd.js">
+    <link rel="modulepreload" crossorigin href="./assets/datasource-DjDpJnbt.js">
+    <link rel="modulepreload" crossorigin href="./assets/state-D-2KaAHK.js">
+    <link rel="modulepreload" crossorigin href="./assets/package-Tv6ztuzw.js">
+    <link rel="modulepreload" crossorigin href="./assets/sparkles-lWUAsPhp.js">
+    <link rel="modulepreload" crossorigin href="./assets/MarimoErrorOutput-B0h5OVW9.js">
+    <link rel="modulepreload" crossorigin href="./assets/spinner-Bhir8k53.js">
+    <link rel="modulepreload" crossorigin href="./assets/html-to-image-BWL3Ct4n.js">
+    <link rel="modulepreload" crossorigin href="./assets/focus-q38vUCl-.js">
+    <link rel="modulepreload" crossorigin href="./assets/useAsyncData-bgszE9F0.js">
+    <link rel="modulepreload" crossorigin href="./assets/LazyAnyLanguageCodeMirror-BEvXb3VX.js">
+    <link rel="modulepreload" crossorigin href="./assets/micromark-factory-space-BygYYKhs.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-5FQGJX7Z-D9iBG0F7.js">
+    <link rel="modulepreload" crossorigin href="./assets/markdown-renderer-CU5Lbyax.js">
+    <link rel="modulepreload" crossorigin href="./assets/command-KARR7KMq.js">
+    <link rel="modulepreload" crossorigin href="./assets/field-zLmMOSA4.js">
+    <link rel="modulepreload" crossorigin href="./assets/popover-Bz_0Vkyf.js">
+    <link rel="modulepreload" crossorigin href="./assets/errors-vr57w7Ul.js">
+    <link rel="modulepreload" crossorigin href="./assets/download-DT8gf0PL.js">
+    <link rel="modulepreload" crossorigin href="./assets/table-BGPSHfig.js">
+    <link rel="modulepreload" crossorigin href="./assets/useIframeCapabilities-CcI1zSdn.js">
+    <link rel="modulepreload" crossorigin href="./assets/error-banner-LdWZDbqd.js">
+    <link rel="modulepreload" crossorigin href="./assets/formats-b7Sf6DAK.js">
+    <link rel="modulepreload" crossorigin href="./assets/en-US-Cb8rIK52.js">
+    <link rel="modulepreload" crossorigin href="./assets/isValid-CklTTytn.js">
+    <link rel="modulepreload" crossorigin href="./assets/dates-CTxr0EqQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/maps-n3GaPJwv.js">
+    <link rel="modulepreload" crossorigin href="./assets/extends-BiFDv3jB.js">
+    <link rel="modulepreload" crossorigin href="./assets/emotion-is-prop-valid.esm-C59xfSYt.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDateFormatter-ICIDGgHf.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-icons.esm-BNzu6e7h.js">
+    <link rel="modulepreload" crossorigin href="./assets/RSPContexts-CdN1NyAt.js">
+    <link rel="modulepreload" crossorigin href="./assets/table-6NxtGaCm.js">
+    <link rel="modulepreload" crossorigin href="./assets/ellipsis-KAhMaCIV.js">
+    <link rel="modulepreload" crossorigin href="./assets/external-link-BTNxSavU.js">
+    <link rel="modulepreload" crossorigin href="./assets/message-circle-CWm2KnSx.js">
+    <link rel="modulepreload" crossorigin href="./assets/plus-BgB18UzY.js">
+    <link rel="modulepreload" crossorigin href="./assets/trash-2-rVklqqFF.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-resizable-panels.browser.esm-CV8-hvjx.js">
+    <link rel="modulepreload" crossorigin href="./assets/JsonOutput-BJaeXQim.js">
+    <link rel="modulepreload" crossorigin href="./assets/chart-no-axes-column-nqk474t8.js">
+    <link rel="modulepreload" crossorigin href="./assets/square-function-uY_yJr5g.js">
+    <link rel="modulepreload" crossorigin href="./assets/spec-CPQR_o92.js">
+    <link rel="modulepreload" crossorigin href="./assets/ellipsis-vertical-CkwWkOQL.js">
+    <link rel="modulepreload" crossorigin href="./assets/refresh-cw-DHwG4Mac.js">
+    <link rel="modulepreload" crossorigin href="./assets/tree-actions-BM_EJr3E.js">
+    <link rel="modulepreload" crossorigin href="./assets/components-BzBUxUz0.js">
+    <link rel="modulepreload" crossorigin href="./assets/column-preview-BPismotx.js">
+    <link rel="modulepreload" crossorigin href="./assets/icons-Ol38nIbL.js">
+    <link rel="modulepreload" crossorigin href="./assets/radio-group-DlVSuZ_1.js">
+    <link rel="modulepreload" crossorigin href="./assets/floating-outline-BN9sAcQ0.js">
+    <link rel="modulepreload" crossorigin href="./assets/objectWithoutPropertiesLoose-DfWeGRFv.js">
+    <link rel="modulepreload" crossorigin href="./assets/esm-CqWdmSnV.js">
+    <link rel="modulepreload" crossorigin href="./assets/readonly-python-code-D3_kHsDx.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-headphone-BrQspHac.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-BrdxGLRX.js">
+    <link rel="modulepreload" crossorigin href="./assets/image-DQHXdEQn.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-icons-BiMOJy0r.js">
+    <link rel="modulepreload" crossorigin href="./assets/switch-BiU_sAcn.js">
+    <link rel="modulepreload" crossorigin href="./assets/events-CPoJAfgx.js">
+    <link rel="modulepreload" crossorigin href="./assets/globals-7JnRMGd4.js">
+    <link rel="modulepreload" crossorigin href="./assets/share-DMwTZOTH.js">
+    <link rel="modulepreload" crossorigin href="./assets/blob-Bgnx1kuY.js">
+    <link rel="modulepreload" crossorigin href="./assets/memoize-Tp7rARFe.js">
+    <link rel="modulepreload" crossorigin href="./assets/get-C-qh_et5.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseSet-CxV9N1bc.js">
+    <link rel="modulepreload" crossorigin href="./assets/state-BTTshiKq.js">
+    <link rel="modulepreload" crossorigin href="./assets/label-xHqFtfdz.js">
+    <link rel="modulepreload" crossorigin href="./assets/textarea-DwltG8V6.js">
+    <link rel="modulepreload" crossorigin href="./assets/refresh-ccw-C-n2VFP5.js">
+    <link rel="modulepreload" crossorigin href="./assets/form-BtBTvVVd.js">
+    <link rel="modulepreload" crossorigin href="./assets/renderShortcut-CcFk3m01.js">
+    <link rel="modulepreload" crossorigin href="./assets/useBoolean-Bp18o6XG.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDeepCompareMemoize-zUHU--0D.js">
+    <link rel="modulepreload" crossorigin href="./assets/types-W8WWuumF.js">
+    <link rel="modulepreload" crossorigin href="./assets/semaphore-FlZezxaf.js">
+    <link rel="modulepreload" crossorigin href="./assets/fileToBase64-DZfwJMrG.js">
+    <link rel="modulepreload" crossorigin href="./assets/pathUtils-CJjndqMI.js">
+    <link rel="modulepreload" crossorigin href="./assets/prop-types-DaaA-ptl.js">
+    <link rel="modulepreload" crossorigin href="./assets/es-DGgq-Wes.js">
+    <link rel="modulepreload" crossorigin href="./assets/hasIn-DiS_ryrS.js">
+    <link rel="modulepreload" crossorigin href="./assets/flatten-Dl4V1ub3.js">
+    <link rel="modulepreload" crossorigin href="./assets/pick-DqWUNly1.js">
+    <link rel="modulepreload" crossorigin href="./assets/code-xml-CZN6vNxu.js">
+    <link rel="modulepreload" crossorigin href="./assets/house-mGK3v0Mm.js">
+    <link rel="modulepreload" crossorigin href="./assets/square-B5xWCt0a.js">
+    <link rel="modulepreload" crossorigin href="./assets/triangle-alert-D2p96PEF.js">
+    <link rel="modulepreload" crossorigin href="./assets/bundle.esm-DjhGJy4I.js">
+    <link rel="stylesheet" crossorigin href="./assets/cells-jmgGt1lS.css">
+    <link rel="stylesheet" crossorigin href="./assets/markdown-renderer-DdDKmWlR.css">
+    <link rel="stylesheet" crossorigin href="./assets/JsonOutput-B7vuddcd.css">
+    <link rel="stylesheet" crossorigin href="./assets/index-BIw7BKLH.css">
+  <marimo-wasm hidden=""></marimo-wasm>
+    <script>
+        if (window.location.protocol === 'file:') {
+            alert('Warning: This file must be served by an HTTP server to function correctly.');
+        }
+    </script>
+    
+    <style>
+        #save-button {
+            display: none !important;
+        }
+        #filename-input {
+            display: none !important;
+        }
+    </style>
+    
+<script data-marimo="true">
+    Object.defineProperty(window, "__MARIMO_EXPORT_CONTEXT__", {
+        value: Object.freeze({
+            trusted: true,
+            notebookCode: "import marimo\n\n__generated_with = \"0.23.9\"\napp = marimo.App(width=\"medium\")\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    # Chapter 10 \u2014 Two-Layer QG \u0026 Available Potential Energy\n\n    **Physical question.** Ch. 3 split a flow into \"columnar\" and\n    \"sheared\" parts to talk about Taylor-Proudman. A two-layer ocean or\n    atmosphere lets you make that split *exact*: every flow decomposes\n    uniquely into a **barotropic mode** (the depth-mean, which behaves\n    like Ch. 18's ordinary 2D turbulence) and a **baroclinic mode** (the\n    inter-layer difference, which carries all the available potential\n    energy and behaves like Ch. 8's single-layer QG). After this chapter\n    you should be able to derive that decoupling, and watch what\n    happens when a nonlinear disturbance starts purely in one mode: it\n    does not stay there.\n    \"\"\")\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    ## Governing equations\n\n    ### The exact mode split\n\n    Ch. 16 wrote the 2-layer QGPV as (equal-thickness layers, symbols as\n    in [NOTATION](../notation)):\n\n    $$q_1=\\nabla^2\\psi_1+F(\\psi_2-\\psi_1),\\qquad\n      q_2=\\nabla^2\\psi_2+F(\\psi_1-\\psi_2)$$\n\n    (perturbation PV; the mean $\\beta y$ is carried separately). Define\n    the **barotropic** and **baroclinic** modes\n\n    $$\\psi_{bt}=\\frac{\\psi_1+\\psi_2}{2}\\ \\text{(depth mean)},\\qquad\n      \\psi_{bc}=\\frac{\\psi_1-\\psi_2}{2}\\ \\text{(half the shear)}.$$\n\n    Add and subtract the two PV equations. The $F$ terms are\n    antisymmetric ($F(\\psi_2-\\psi_1)$ vs. $F(\\psi_1-\\psi_2)$, exactly\n    opposite), so they **cancel** in the sum and **double** in the\n    difference:\n\n    $$q_{bt}=\\frac{q_1+q_2}{2}=\\nabla^2\\psi_{bt},\n      \\qquad\n      q_{bc}=\\frac{q_1-q_2}{2}=\\nabla^2\\psi_{bc}-2F\\psi_{bc}.$$\n\n    Read these literally: $q_{bt}$ is **exactly** Ch. 7/18's barotropic\n    PV \u2014 no $F$, no memory of layering at all \u2014 and $q_{bc}$ is\n    **exactly** Ch. 8's single-layer QGPV, with deformation-radius\n    parameter $2F$ in place of $1$. The two-layer ocean, split this way,\n    is *literally two decoupled copies of chapters you have already\n    built* \u2014 verified directly in `gfdlib.baroclinic.to_modes`\n    (not just asserted; see `tests/test_gfdlib.py`).\n\n    ### Available potential energy: derived, not defined\n\n    Why should $\\tfrac12F\\langle(\\psi_1-\\psi_2)^2\\rangle$ deserve the\n    name \"potential energy\" at all? Trace it to the interface. In a\n    two-layer fluid, each layer's pressure is geostrophically tied to\n    its streamfunction ($\\phi_i=f_0\\psi_i$, Ch. 5), and the interface\n    displacement $\\eta_I$ is what supports the pressure *difference*\n    between the layers \u2014 hydrostatically,\n\n    $$\\eta_I=\\frac{f_0}{g'}\\,(\\psi_2-\\psi_1)=-\\frac{2f_0}{g'}\\,\\psi_{bc},$$\n\n    with $g'$ the reduced gravity. The potential energy of deforming\n    that interface is the standard $\\tfrac12g'\\langle\\eta_I^2\\rangle$\n    (per unit area, relative to flat), which after substituting and\n    using $F=f_0^2/(g'H)$ works out \u2014 up to the nondimensionalization\n    used in this notebook's energetics \u2014 to exactly\n\n    $$APE=\\tfrac12F\\,\\langle(\\psi_1-\\psi_2)^2\\rangle\n         =2F\\,\\langle\\psi_{bc}^2\\rangle.$$\n\n    So the \"APE\" curve plotted below is literally the energy stored in\n    the tilted interface, and it lives **entirely in the baroclinic\n    mode**: a flow with $\\psi_{bc}\\equiv0$ has a flat interface and\n    exactly zero APE, no matter how energetic its barotropic\n    circulation. There is also a conservation law worth knowing: for\n    the unforced, inviscid system, the total\n\n    $$E=\\underbrace{\\tfrac12\\langle|\\nabla\\psi_1|^2\n      +|\\nabla\\psi_2|^2\\rangle}_{KE_1+KE_2}\n      +\\underbrace{\\tfrac12F\\langle(\\psi_1-\\psi_2)^2\\rangle}_{APE}$$\n\n    is exactly conserved (multiply each PV equation by $-\\psi_i$,\n    integrate by parts over the periodic domain, add). The three curves\n    in this notebook's energetics panel are the three pieces of this\n    one conserved quantity \u2014 energy can only *move between them*, and\n    watching where it moves is the entire experiment.\n\n    ### Where the split BREAKS\n\n    The *linear* operators decouple exactly. The Jacobian nonlinearity\n    in the full 2-layer equations does not:\n    $J(\\psi_1,q_1)$ and $J(\\psi_2,q_2)$, rewritten in mode variables,\n    produce **cross terms** coupling $bt$ and $bc$ \u2014 an eddy's advection\n    of its own PV mixes the two modes even when nothing else does. This\n    chapter's numerical experiment is built entirely to expose that one\n    fact: seed a disturbance purely in the baroclinic mode and watch a\n    barotropic mode appear from nothing but nonlinear advection.\n    \"\"\")\n    return\n\n\n@app.cell\nasync def _(mo):\n    # --- vetted primitives from gfdlib (see CLAUDE.md) -------------------\n    import sys\n\n    if sys.platform == \"emscripten\":\n        import micropip\n        await micropip.install(\n            str(mo.notebook_location() / \"public\" / \"gfdlib-0.1.0-py3-none-any.whl\")\n        )\n    else:\n        sys.path.insert(0, str(mo.notebook_dir().parent))  # repo root\n\n    import numpy as np\n    import matplotlib.pyplot as plt\n    from gfdlib import spectral, timestep, plotting, baroclinic, pv\n\n    return baroclinic, np, plotting, plt, pv, spectral, timestep\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    ## Numerical scheme\n\n    Everything below reuses ch16's exact `gfdlib.baroclinic` machinery\n    (`invert_2layer`, `rhs_2layer`, `gfdlib.spectral.Grid`,\n    `gfdlib.timestep.ifrk4_step`) with **no mean shear**\n    ($U_1=U_2=0$) \u2014 this is an unforced initial-value problem (Ch. 6's\n    adjustment logic, in the 2-layer setting), not an instability\n    calculation. The initial condition is built directly in mode space:\n    `gfdlib.baroclinic.from_modes` converts a chosen $(q_{bt},q_{bc})$\n    pair into the $(q_1,q_2)$ the solver actually steps, using\n    `gfdlib.pv.gaussian_blob` for the baroclinic-mode vortex shape.\n    \"\"\")\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    F_ui = mo.ui.slider(0.3, 3.0, step=0.1, value=1.0, label=\"$F$\", show_value=True)\n    amp_ui = mo.ui.slider(0.3, 2.0, step=0.1, value=1.0, label=\"vortex amplitude\", show_value=True)\n    sigma_ui = mo.ui.slider(0.5, 2.5, step=0.1, value=1.0,\n                            label=\"vortex radius\", show_value=True)\n    beta_ui = mo.ui.slider(0.0, 1.0, step=0.05, value=0.2, label=\"$\\\\beta$\", show_value=True)\n    T_ui = mo.ui.slider(5.0, 60.0, step=5.0, value=30.0, label=\"run time $T$\", show_value=True)\n    n_ui = mo.ui.dropdown(options={\"64\": 64, \"96\": 96, \"128\": 128}, value=\"96\", label=\"resolution $n$\")\n    mo.vstack([\n        mo.hstack([F_ui, amp_ui, sigma_ui], justify=\"start\"),\n        mo.hstack([beta_ui, T_ui, n_ui], justify=\"start\"),\n        mo.md(r\"\u003E The initial condition is PURE baroclinic mode: \"\n              r\"$q_{bt}(t{=}0)\\equiv0$ everywhere, $q_{bc}(t{=}0)=$ a \"\n              r\"single Gaussian blob. Any barotropic energy that appears \"\n              r\"had to come from the nonlinear cross-coupling, not the \"\n              r\"initial condition.\"),\n    ])\n    return F_ui, T_ui, amp_ui, beta_ui, n_ui, sigma_ui\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    get_sim, set_sim = mo.state(None)   # results survive the run button resetting\n    return get_sim, set_sim\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    run_btn = mo.ui.run_button(label=\"\u25b6 Run\")\n    run_btn\n    return (run_btn,)\n\n\n@app.cell\ndef _(\n    F_ui,\n    T_ui,\n    amp_ui,\n    baroclinic,\n    beta_ui,\n    mo,\n    n_ui,\n    np,\n    pv,\n    run_btn,\n    set_sim,\n    sigma_ui,\n    spectral,\n    timestep,\n):\n    mo.stop(not run_btn.value, mo.callout(\n        mo.md(\"Press **\u25b6 Run** above to start.\"), kind=\"info\"\n    ))\n\n    _n, _F, _amp, _sigma, _beta, _T = (\n        n_ui.value, F_ui.value, amp_ui.value, sigma_ui.value, beta_ui.value, T_ui.value\n    )\n    grid = spectral.Grid(_n)\n    _xc = _yc = 0.5 * grid.L\n\n    _q_bc0 = pv.gaussian_blob(grid, _xc, _yc, _amp, _sigma)\n    _q_bt0 = np.zeros_like(_q_bc0)\n    _q1_0, _q2_0 = baroclinic.from_modes(_q_bt0, _q_bc0)\n\n    _nu, _nnu = 5e-4, 2\n    _state_hat = grid.fft(np.stack([_q1_0, _q2_0])) * grid.dealias\n    _L_op = -_nu * grid.k2 ** _nnu\n\n    def _rhs_nl(t, sh):\n        return baroclinic.rhs_2layer(sh, grid, _F, 0.0, 0.0, _beta, r=0.0)\n\n    def _mode_energies(state_hat):\n        q1_hat, q2_hat = state_hat\n        psi1_hat, psi2_hat = baroclinic.invert_2layer(q1_hat, q2_hat, grid, _F)\n        psi_bt_hat, psi_bc_hat = baroclinic.to_modes(psi1_hat, psi2_hat)\n        u_bt = grid.ifft(-grid.ddy(psi_bt_hat)); v_bt = grid.ifft(grid.ddx(psi_bt_hat))\n        u_bc = grid.ifft(-grid.ddy(psi_bc_hat)); v_bc = grid.ifft(grid.ddx(psi_bc_hat))\n        ke_bt = 0.5 * np.mean(u_bt ** 2 + v_bt ** 2)\n        ke_bc = 0.5 * np.mean(u_bc ** 2 + v_bc ** 2)\n        ape = 2.0 * _F * np.mean(grid.ifft(psi_bc_hat) ** 2)\n        return ke_bt, ke_bc, ape\n\n    _dt = 0.01\n    _nsteps = max(50, int(_T / _dt))\n    _nsub = max(1, _nsteps // 80)\n\n    _snaps_bt, _snaps_bc, _t_hist, _KEbt, _KEbc, _APE = [], [], [], [], [], []\n    _t = 0.0\n    for _s in range(_nsteps + 1):\n        if _s % _nsub == 0:\n            _q1h, _q2h = _state_hat\n            _qbt_h, _qbc_h = baroclinic.to_modes(_q1h, _q2h)\n            _snaps_bt.append(grid.ifft(_qbt_h).astype(np.float32))\n            _snaps_bc.append(grid.ifft(_qbc_h).astype(np.float32))\n            _t_hist.append(_t)\n            _ke_bt, _ke_bc, _ape = _mode_energies(_state_hat)\n            _KEbt.append(_ke_bt); _KEbc.append(_ke_bc); _APE.append(_ape)\n        if _s \u003C _nsteps:\n            _state_hat = timestep.ifrk4_step(_state_hat, _rhs_nl, _dt, _L_op) * grid.dealias\n            _t += _dt\n\n    set_sim({\n        \"snaps_bt\": _snaps_bt, \"snaps_bc\": _snaps_bc, \"t\": np.array(_t_hist),\n        \"KEbt\": np.array(_KEbt), \"KEbc\": np.array(_KEbc), \"APE\": np.array(_APE),\n        \"grid\": grid,\n    })\n\n    mo.callout(mo.md(\n        f\"**Done.** {_nsteps} steps on a {_n}\u00d7{_n} grid \u00b7 {len(_snaps_bt)} frames.\"\n    ), kind=\"success\")\n    return\n\n\n@app.cell\ndef _(get_sim, mo):\n    sim = get_sim()\n    mo.stop(sim is None, mo.callout(\n        mo.md(\"Results will appear here once the run has completed.\"), kind=\"warn\"\n    ))\n    return (sim,)\n\n\n@app.cell(hide_code=True)\ndef _(mo, sim):\n    frame_ui = mo.ui.slider(0, len(sim[\"t\"]) - 1, step=1, value=len(sim[\"t\"]) - 1,\n                            label=\"frame\", show_value=True)\n    return (frame_ui,)\n\n\n@app.cell(hide_code=True)\ndef _(frame_ui, mo, plotting, plt, sim):\n    _i = frame_ui.value\n    fig1, axs1 = plt.subplots(1, 2, figsize=(9.5, 4.5), constrained_layout=True)\n    plotting.field(axs1[0], sim[\"snaps_bt\"][_i], grid=sim[\"grid\"], signed=True,\n                   title=f\"$q_{{bt}}$, $t={sim['t'][_i]:.1f}$\")\n    plotting.field(axs1[1], sim[\"snaps_bc\"][_i], grid=sim[\"grid\"], signed=True,\n                   title=f\"$q_{{bc}}$, $t={sim['t'][_i]:.1f}$\")\n    mo.vstack([frame_ui, fig1])\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    **Left panel, frame 0:** should be exactly zero everywhere (flat\n    color) \u2014 that's the point. Any nonzero $q_{bt}$ in later frames was\n    *generated*, not initialized.\n    \"\"\")\n    return\n\n\n@app.cell(hide_code=True)\ndef _(plt, sim):\n    fig2, ax2 = plt.subplots(figsize=(7, 4.3), constrained_layout=True)\n    ax2.plot(sim[\"t\"], sim[\"KEbc\"], lw=2, color=\"crimson\", label=\"baroclinic KE\")\n    ax2.plot(sim[\"t\"], sim[\"APE\"], lw=2, color=\"#d97706\", label=\"APE\")\n    ax2.plot(sim[\"t\"], sim[\"KEbt\"], lw=2, color=\"#2563eb\", label=\"barotropic KE\")\n    ax2.set_xlabel(\"$t$\"); ax2.set_ylabel(\"energy\")\n    ax2.set_title(\"mode energetics\"); ax2.legend(fontsize=9); ax2.grid(alpha=0.3)\n    fig2\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    ### Try this\n\n    - **Confirm the leak.** The barotropic KE curve should start\n      essentially at zero (floating-point noise) and grow measurably\n      once the vortex begins to distort \u2014 that growth has no source\n      except the nonlinear cross-terms `to_modes`'s docstring predicts.\n      Compare its final magnitude to the baroclinic mode's: does it stay\n      a small correction, or become comparable?\n    - **Push $\\beta$.** Increase $\\beta$: the baroclinic vortex should\n      develop a beta-gyre wake exactly like Ch. 8's single-layer vortex\n      (it obeys the same equation, with deformation parameter $2F$) \u2014\n      confirm the westward drift.\n    - **Vary $F$.** Larger $F$ means a *smaller* effective deformation\n      radius for the baroclinic mode ($L_R^2\\propto1/(2F)$): does the\n      vortex's Rossby-wave wake wavelength shrink as you increase $F$,\n      matching Ch. 8's own $F$-dependence?\n    - **Zero the vortex, keep $\\beta$.** Set the vortex amplitude to its\n      minimum: with no baroclinic disturbance to begin with, does any\n      barotropic energy appear at all? (It shouldn't \u2014 there is nothing\n      for the Jacobian to couple.)\n\n    ### What you should have seen\n\n    A disturbance placed purely in the baroclinic mode does not stay\n    purely baroclinic: nonlinear self-advection leaks a small but\n    measurable barotropic circulation into existence, even with zero\n    mean shear and zero instability. This is the *elementary* version\n    of a process central to real ocean and atmosphere dynamics \u2014\n    baroclinic eddies (generated by Ch. 16's instability) are the\n    primary source that feeds Ch. 18's barotropic-dominated inverse\n    cascade, and this leak, run for long enough at large scale, is a\n    large part of *why* that upscale transfer happens. Two-layer QG\n    is the crudest possible discretization of Ch. 11's continuous\n    vertical-mode theory \u2014 one interior mode, one deformation radius\n    \u2014 but it already contains the essential coupling that theory's\n    higher modes only refine.\n    \"\"\")\n    return\n\n\n@app.cell\ndef _():\n    import marimo as mo\n\n    return (mo,)\n\n\nif __name__ == \"__main__\":\n    app.run()\n",
+        }),
+        writable: false,
+        configurable: false,
+    });
+</script>
+<marimo-code hidden="">import%20marimo%0A%0A__generated_with%20%3D%20%220.23.9%22%0Aapp%20%3D%20marimo.App(width%3D%22medium%22)%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%20Chapter%2010%20%E2%80%94%20Two-Layer%20QG%20%26%20Available%20Potential%20Energy%0A%0A%20%20%20%20**Physical%20question.**%20Ch.%203%20split%20a%20flow%20into%20%22columnar%22%20and%0A%20%20%20%20%22sheared%22%20parts%20to%20talk%20about%20Taylor-Proudman.%20A%20two-layer%20ocean%20or%0A%20%20%20%20atmosphere%20lets%20you%20make%20that%20split%20*exact*%3A%20every%20flow%20decomposes%0A%20%20%20%20uniquely%20into%20a%20**barotropic%20mode**%20(the%20depth-mean%2C%20which%20behaves%0A%20%20%20%20like%20Ch.%2018's%20ordinary%202D%20turbulence)%20and%20a%20**baroclinic%20mode**%20(the%0A%20%20%20%20inter-layer%20difference%2C%20which%20carries%20all%20the%20available%20potential%0A%20%20%20%20energy%20and%20behaves%20like%20Ch.%208's%20single-layer%20QG).%20After%20this%20chapter%0A%20%20%20%20you%20should%20be%20able%20to%20derive%20that%20decoupling%2C%20and%20watch%20what%0A%20%20%20%20happens%20when%20a%20nonlinear%20disturbance%20starts%20purely%20in%20one%20mode%3A%20it%0A%20%20%20%20does%20not%20stay%20there.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%23%20Governing%20equations%0A%0A%20%20%20%20%23%23%23%20The%20exact%20mode%20split%0A%0A%20%20%20%20Ch.%2016%20wrote%20the%202-layer%20QGPV%20as%20(equal-thickness%20layers%2C%20symbols%20as%0A%20%20%20%20in%20%5BNOTATION%5D(..%2Fnotation))%3A%0A%0A%20%20%20%20%24%24q_1%3D%5Cnabla%5E2%5Cpsi_1%2BF(%5Cpsi_2-%5Cpsi_1)%2C%5Cqquad%0A%20%20%20%20%20%20q_2%3D%5Cnabla%5E2%5Cpsi_2%2BF(%5Cpsi_1-%5Cpsi_2)%24%24%0A%0A%20%20%20%20(perturbation%20PV%3B%20the%20mean%20%24%5Cbeta%20y%24%20is%20carried%20separately).%20Define%0A%20%20%20%20the%20**barotropic**%20and%20**baroclinic**%20modes%0A%0A%20%20%20%20%24%24%5Cpsi_%7Bbt%7D%3D%5Cfrac%7B%5Cpsi_1%2B%5Cpsi_2%7D%7B2%7D%5C%20%5Ctext%7B(depth%20mean)%7D%2C%5Cqquad%0A%20%20%20%20%20%20%5Cpsi_%7Bbc%7D%3D%5Cfrac%7B%5Cpsi_1-%5Cpsi_2%7D%7B2%7D%5C%20%5Ctext%7B(half%20the%20shear)%7D.%24%24%0A%0A%20%20%20%20Add%20and%20subtract%20the%20two%20PV%20equations.%20The%20%24F%24%20terms%20are%0A%20%20%20%20antisymmetric%20(%24F(%5Cpsi_2-%5Cpsi_1)%24%20vs.%20%24F(%5Cpsi_1-%5Cpsi_2)%24%2C%20exactly%0A%20%20%20%20opposite)%2C%20so%20they%20**cancel**%20in%20the%20sum%20and%20**double**%20in%20the%0A%20%20%20%20difference%3A%0A%0A%20%20%20%20%24%24q_%7Bbt%7D%3D%5Cfrac%7Bq_1%2Bq_2%7D%7B2%7D%3D%5Cnabla%5E2%5Cpsi_%7Bbt%7D%2C%0A%20%20%20%20%20%20%5Cqquad%0A%20%20%20%20%20%20q_%7Bbc%7D%3D%5Cfrac%7Bq_1-q_2%7D%7B2%7D%3D%5Cnabla%5E2%5Cpsi_%7Bbc%7D-2F%5Cpsi_%7Bbc%7D.%24%24%0A%0A%20%20%20%20Read%20these%20literally%3A%20%24q_%7Bbt%7D%24%20is%20**exactly**%20Ch.%207%2F18's%20barotropic%0A%20%20%20%20PV%20%E2%80%94%20no%20%24F%24%2C%20no%20memory%20of%20layering%20at%20all%20%E2%80%94%20and%20%24q_%7Bbc%7D%24%20is%0A%20%20%20%20**exactly**%20Ch.%208's%20single-layer%20QGPV%2C%20with%20deformation-radius%0A%20%20%20%20parameter%20%242F%24%20in%20place%20of%20%241%24.%20The%20two-layer%20ocean%2C%20split%20this%20way%2C%0A%20%20%20%20is%20*literally%20two%20decoupled%20copies%20of%20chapters%20you%20have%20already%0A%20%20%20%20built*%20%E2%80%94%20verified%20directly%20in%20%60gfdlib.baroclinic.to_modes%60%0A%20%20%20%20(not%20just%20asserted%3B%20see%20%60tests%2Ftest_gfdlib.py%60).%0A%0A%20%20%20%20%23%23%23%20Available%20potential%20energy%3A%20derived%2C%20not%20defined%0A%0A%20%20%20%20Why%20should%20%24%5Ctfrac12F%5Clangle(%5Cpsi_1-%5Cpsi_2)%5E2%5Crangle%24%20deserve%20the%0A%20%20%20%20name%20%22potential%20energy%22%20at%20all%3F%20Trace%20it%20to%20the%20interface.%20In%20a%0A%20%20%20%20two-layer%20fluid%2C%20each%20layer's%20pressure%20is%20geostrophically%20tied%20to%0A%20%20%20%20its%20streamfunction%20(%24%5Cphi_i%3Df_0%5Cpsi_i%24%2C%20Ch.%205)%2C%20and%20the%20interface%0A%20%20%20%20displacement%20%24%5Ceta_I%24%20is%20what%20supports%20the%20pressure%20*difference*%0A%20%20%20%20between%20the%20layers%20%E2%80%94%20hydrostatically%2C%0A%0A%20%20%20%20%24%24%5Ceta_I%3D%5Cfrac%7Bf_0%7D%7Bg'%7D%5C%2C(%5Cpsi_2-%5Cpsi_1)%3D-%5Cfrac%7B2f_0%7D%7Bg'%7D%5C%2C%5Cpsi_%7Bbc%7D%2C%24%24%0A%0A%20%20%20%20with%20%24g'%24%20the%20reduced%20gravity.%20The%20potential%20energy%20of%20deforming%0A%20%20%20%20that%20interface%20is%20the%20standard%20%24%5Ctfrac12g'%5Clangle%5Ceta_I%5E2%5Crangle%24%0A%20%20%20%20(per%20unit%20area%2C%20relative%20to%20flat)%2C%20which%20after%20substituting%20and%0A%20%20%20%20using%20%24F%3Df_0%5E2%2F(g'H)%24%20works%20out%20%E2%80%94%20up%20to%20the%20nondimensionalization%0A%20%20%20%20used%20in%20this%20notebook's%20energetics%20%E2%80%94%20to%20exactly%0A%0A%20%20%20%20%24%24APE%3D%5Ctfrac12F%5C%2C%5Clangle(%5Cpsi_1-%5Cpsi_2)%5E2%5Crangle%0A%20%20%20%20%20%20%20%20%20%3D2F%5C%2C%5Clangle%5Cpsi_%7Bbc%7D%5E2%5Crangle.%24%24%0A%0A%20%20%20%20So%20the%20%22APE%22%20curve%20plotted%20below%20is%20literally%20the%20energy%20stored%20in%0A%20%20%20%20the%20tilted%20interface%2C%20and%20it%20lives%20**entirely%20in%20the%20baroclinic%0A%20%20%20%20mode**%3A%20a%20flow%20with%20%24%5Cpsi_%7Bbc%7D%5Cequiv0%24%20has%20a%20flat%20interface%20and%0A%20%20%20%20exactly%20zero%20APE%2C%20no%20matter%20how%20energetic%20its%20barotropic%0A%20%20%20%20circulation.%20There%20is%20also%20a%20conservation%20law%20worth%20knowing%3A%20for%0A%20%20%20%20the%20unforced%2C%20inviscid%20system%2C%20the%20total%0A%0A%20%20%20%20%24%24E%3D%5Cunderbrace%7B%5Ctfrac12%5Clangle%7C%5Cnabla%5Cpsi_1%7C%5E2%0A%20%20%20%20%20%20%2B%7C%5Cnabla%5Cpsi_2%7C%5E2%5Crangle%7D_%7BKE_1%2BKE_2%7D%0A%20%20%20%20%20%20%2B%5Cunderbrace%7B%5Ctfrac12F%5Clangle(%5Cpsi_1-%5Cpsi_2)%5E2%5Crangle%7D_%7BAPE%7D%24%24%0A%0A%20%20%20%20is%20exactly%20conserved%20(multiply%20each%20PV%20equation%20by%20%24-%5Cpsi_i%24%2C%0A%20%20%20%20integrate%20by%20parts%20over%20the%20periodic%20domain%2C%20add).%20The%20three%20curves%0A%20%20%20%20in%20this%20notebook's%20energetics%20panel%20are%20the%20three%20pieces%20of%20this%0A%20%20%20%20one%20conserved%20quantity%20%E2%80%94%20energy%20can%20only%20*move%20between%20them*%2C%20and%0A%20%20%20%20watching%20where%20it%20moves%20is%20the%20entire%20experiment.%0A%0A%20%20%20%20%23%23%23%20Where%20the%20split%20BREAKS%0A%0A%20%20%20%20The%20*linear*%20operators%20decouple%20exactly.%20The%20Jacobian%20nonlinearity%0A%20%20%20%20in%20the%20full%202-layer%20equations%20does%20not%3A%0A%20%20%20%20%24J(%5Cpsi_1%2Cq_1)%24%20and%20%24J(%5Cpsi_2%2Cq_2)%24%2C%20rewritten%20in%20mode%20variables%2C%0A%20%20%20%20produce%20**cross%20terms**%20coupling%20%24bt%24%20and%20%24bc%24%20%E2%80%94%20an%20eddy's%20advection%0A%20%20%20%20of%20its%20own%20PV%20mixes%20the%20two%20modes%20even%20when%20nothing%20else%20does.%20This%0A%20%20%20%20chapter's%20numerical%20experiment%20is%20built%20entirely%20to%20expose%20that%20one%0A%20%20%20%20fact%3A%20seed%20a%20disturbance%20purely%20in%20the%20baroclinic%20mode%20and%20watch%20a%0A%20%20%20%20barotropic%20mode%20appear%20from%20nothing%20but%20nonlinear%20advection.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Aasync%20def%20_(mo)%3A%0A%20%20%20%20%23%20---%20vetted%20primitives%20from%20gfdlib%20(see%20CLAUDE.md)%20-------------------%0A%20%20%20%20import%20sys%0A%0A%20%20%20%20if%20sys.platform%20%3D%3D%20%22emscripten%22%3A%0A%20%20%20%20%20%20%20%20import%20micropip%0A%20%20%20%20%20%20%20%20await%20micropip.install(%0A%20%20%20%20%20%20%20%20%20%20%20%20str(mo.notebook_location()%20%2F%20%22public%22%20%2F%20%22gfdlib-0.1.0-py3-none-any.whl%22)%0A%20%20%20%20%20%20%20%20)%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20sys.path.insert(0%2C%20str(mo.notebook_dir().parent))%20%20%23%20repo%20root%0A%0A%20%20%20%20import%20numpy%20as%20np%0A%20%20%20%20import%20matplotlib.pyplot%20as%20plt%0A%20%20%20%20from%20gfdlib%20import%20spectral%2C%20timestep%2C%20plotting%2C%20baroclinic%2C%20pv%0A%0A%20%20%20%20return%20baroclinic%2C%20np%2C%20plotting%2C%20plt%2C%20pv%2C%20spectral%2C%20timestep%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%23%20Numerical%20scheme%0A%0A%20%20%20%20Everything%20below%20reuses%20ch16's%20exact%20%60gfdlib.baroclinic%60%20machinery%0A%20%20%20%20(%60invert_2layer%60%2C%20%60rhs_2layer%60%2C%20%60gfdlib.spectral.Grid%60%2C%0A%20%20%20%20%60gfdlib.timestep.ifrk4_step%60)%20with%20**no%20mean%20shear**%0A%20%20%20%20(%24U_1%3DU_2%3D0%24)%20%E2%80%94%20this%20is%20an%20unforced%20initial-value%20problem%20(Ch.%206's%0A%20%20%20%20adjustment%20logic%2C%20in%20the%202-layer%20setting)%2C%20not%20an%20instability%0A%20%20%20%20calculation.%20The%20initial%20condition%20is%20built%20directly%20in%20mode%20space%3A%0A%20%20%20%20%60gfdlib.baroclinic.from_modes%60%20converts%20a%20chosen%20%24(q_%7Bbt%7D%2Cq_%7Bbc%7D)%24%0A%20%20%20%20pair%20into%20the%20%24(q_1%2Cq_2)%24%20the%20solver%20actually%20steps%2C%20using%0A%20%20%20%20%60gfdlib.pv.gaussian_blob%60%20for%20the%20baroclinic-mode%20vortex%20shape.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20F_ui%20%3D%20mo.ui.slider(0.3%2C%203.0%2C%20step%3D0.1%2C%20value%3D1.0%2C%20label%3D%22%24F%24%22%2C%20show_value%3DTrue)%0A%20%20%20%20amp_ui%20%3D%20mo.ui.slider(0.3%2C%202.0%2C%20step%3D0.1%2C%20value%3D1.0%2C%20label%3D%22vortex%20amplitude%22%2C%20show_value%3DTrue)%0A%20%20%20%20sigma_ui%20%3D%20mo.ui.slider(0.5%2C%202.5%2C%20step%3D0.1%2C%20value%3D1.0%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3D%22vortex%20radius%22%2C%20show_value%3DTrue)%0A%20%20%20%20beta_ui%20%3D%20mo.ui.slider(0.0%2C%201.0%2C%20step%3D0.05%2C%20value%3D0.2%2C%20label%3D%22%24%5C%5Cbeta%24%22%2C%20show_value%3DTrue)%0A%20%20%20%20T_ui%20%3D%20mo.ui.slider(5.0%2C%2060.0%2C%20step%3D5.0%2C%20value%3D30.0%2C%20label%3D%22run%20time%20%24T%24%22%2C%20show_value%3DTrue)%0A%20%20%20%20n_ui%20%3D%20mo.ui.dropdown(options%3D%7B%2264%22%3A%2064%2C%20%2296%22%3A%2096%2C%20%22128%22%3A%20128%7D%2C%20value%3D%2296%22%2C%20label%3D%22resolution%20%24n%24%22)%0A%20%20%20%20mo.vstack(%5B%0A%20%20%20%20%20%20%20%20mo.hstack(%5BF_ui%2C%20amp_ui%2C%20sigma_ui%5D%2C%20justify%3D%22start%22)%2C%0A%20%20%20%20%20%20%20%20mo.hstack(%5Bbeta_ui%2C%20T_ui%2C%20n_ui%5D%2C%20justify%3D%22start%22)%2C%0A%20%20%20%20%20%20%20%20mo.md(r%22%3E%20The%20initial%20condition%20is%20PURE%20baroclinic%20mode%3A%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20r%22%24q_%7Bbt%7D(t%7B%3D%7D0)%5Cequiv0%24%20everywhere%2C%20%24q_%7Bbc%7D(t%7B%3D%7D0)%3D%24%20a%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20r%22single%20Gaussian%20blob.%20Any%20barotropic%20energy%20that%20appears%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20r%22had%20to%20come%20from%20the%20nonlinear%20cross-coupling%2C%20not%20the%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20r%22initial%20condition.%22)%2C%0A%20%20%20%20%5D)%0A%20%20%20%20return%20F_ui%2C%20T_ui%2C%20amp_ui%2C%20beta_ui%2C%20n_ui%2C%20sigma_ui%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20get_sim%2C%20set_sim%20%3D%20mo.state(None)%20%20%20%23%20results%20survive%20the%20run%20button%20resetting%0A%20%20%20%20return%20get_sim%2C%20set_sim%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20run_btn%20%3D%20mo.ui.run_button(label%3D%22%E2%96%B6%20Run%22)%0A%20%20%20%20run_btn%0A%20%20%20%20return%20(run_btn%2C)%0A%0A%0A%40app.cell%0Adef%20_(%0A%20%20%20%20F_ui%2C%0A%20%20%20%20T_ui%2C%0A%20%20%20%20amp_ui%2C%0A%20%20%20%20baroclinic%2C%0A%20%20%20%20beta_ui%2C%0A%20%20%20%20mo%2C%0A%20%20%20%20n_ui%2C%0A%20%20%20%20np%2C%0A%20%20%20%20pv%2C%0A%20%20%20%20run_btn%2C%0A%20%20%20%20set_sim%2C%0A%20%20%20%20sigma_ui%2C%0A%20%20%20%20spectral%2C%0A%20%20%20%20timestep%2C%0A)%3A%0A%20%20%20%20mo.stop(not%20run_btn.value%2C%20mo.callout(%0A%20%20%20%20%20%20%20%20mo.md(%22Press%20**%E2%96%B6%20Run**%20above%20to%20start.%22)%2C%20kind%3D%22info%22%0A%20%20%20%20))%0A%0A%20%20%20%20_n%2C%20_F%2C%20_amp%2C%20_sigma%2C%20_beta%2C%20_T%20%3D%20(%0A%20%20%20%20%20%20%20%20n_ui.value%2C%20F_ui.value%2C%20amp_ui.value%2C%20sigma_ui.value%2C%20beta_ui.value%2C%20T_ui.value%0A%20%20%20%20)%0A%20%20%20%20grid%20%3D%20spectral.Grid(_n)%0A%20%20%20%20_xc%20%3D%20_yc%20%3D%200.5%20*%20grid.L%0A%0A%20%20%20%20_q_bc0%20%3D%20pv.gaussian_blob(grid%2C%20_xc%2C%20_yc%2C%20_amp%2C%20_sigma)%0A%20%20%20%20_q_bt0%20%3D%20np.zeros_like(_q_bc0)%0A%20%20%20%20_q1_0%2C%20_q2_0%20%3D%20baroclinic.from_modes(_q_bt0%2C%20_q_bc0)%0A%0A%20%20%20%20_nu%2C%20_nnu%20%3D%205e-4%2C%202%0A%20%20%20%20_state_hat%20%3D%20grid.fft(np.stack(%5B_q1_0%2C%20_q2_0%5D))%20*%20grid.dealias%0A%20%20%20%20_L_op%20%3D%20-_nu%20*%20grid.k2%20**%20_nnu%0A%0A%20%20%20%20def%20_rhs_nl(t%2C%20sh)%3A%0A%20%20%20%20%20%20%20%20return%20baroclinic.rhs_2layer(sh%2C%20grid%2C%20_F%2C%200.0%2C%200.0%2C%20_beta%2C%20r%3D0.0)%0A%0A%20%20%20%20def%20_mode_energies(state_hat)%3A%0A%20%20%20%20%20%20%20%20q1_hat%2C%20q2_hat%20%3D%20state_hat%0A%20%20%20%20%20%20%20%20psi1_hat%2C%20psi2_hat%20%3D%20baroclinic.invert_2layer(q1_hat%2C%20q2_hat%2C%20grid%2C%20_F)%0A%20%20%20%20%20%20%20%20psi_bt_hat%2C%20psi_bc_hat%20%3D%20baroclinic.to_modes(psi1_hat%2C%20psi2_hat)%0A%20%20%20%20%20%20%20%20u_bt%20%3D%20grid.ifft(-grid.ddy(psi_bt_hat))%3B%20v_bt%20%3D%20grid.ifft(grid.ddx(psi_bt_hat))%0A%20%20%20%20%20%20%20%20u_bc%20%3D%20grid.ifft(-grid.ddy(psi_bc_hat))%3B%20v_bc%20%3D%20grid.ifft(grid.ddx(psi_bc_hat))%0A%20%20%20%20%20%20%20%20ke_bt%20%3D%200.5%20*%20np.mean(u_bt%20**%202%20%2B%20v_bt%20**%202)%0A%20%20%20%20%20%20%20%20ke_bc%20%3D%200.5%20*%20np.mean(u_bc%20**%202%20%2B%20v_bc%20**%202)%0A%20%20%20%20%20%20%20%20ape%20%3D%202.0%20*%20_F%20*%20np.mean(grid.ifft(psi_bc_hat)%20**%202)%0A%20%20%20%20%20%20%20%20return%20ke_bt%2C%20ke_bc%2C%20ape%0A%0A%20%20%20%20_dt%20%3D%200.01%0A%20%20%20%20_nsteps%20%3D%20max(50%2C%20int(_T%20%2F%20_dt))%0A%20%20%20%20_nsub%20%3D%20max(1%2C%20_nsteps%20%2F%2F%2080)%0A%0A%20%20%20%20_snaps_bt%2C%20_snaps_bc%2C%20_t_hist%2C%20_KEbt%2C%20_KEbc%2C%20_APE%20%3D%20%5B%5D%2C%20%5B%5D%2C%20%5B%5D%2C%20%5B%5D%2C%20%5B%5D%2C%20%5B%5D%0A%20%20%20%20_t%20%3D%200.0%0A%20%20%20%20for%20_s%20in%20range(_nsteps%20%2B%201)%3A%0A%20%20%20%20%20%20%20%20if%20_s%20%25%20_nsub%20%3D%3D%200%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20_q1h%2C%20_q2h%20%3D%20_state_hat%0A%20%20%20%20%20%20%20%20%20%20%20%20_qbt_h%2C%20_qbc_h%20%3D%20baroclinic.to_modes(_q1h%2C%20_q2h)%0A%20%20%20%20%20%20%20%20%20%20%20%20_snaps_bt.append(grid.ifft(_qbt_h).astype(np.float32))%0A%20%20%20%20%20%20%20%20%20%20%20%20_snaps_bc.append(grid.ifft(_qbc_h).astype(np.float32))%0A%20%20%20%20%20%20%20%20%20%20%20%20_t_hist.append(_t)%0A%20%20%20%20%20%20%20%20%20%20%20%20_ke_bt%2C%20_ke_bc%2C%20_ape%20%3D%20_mode_energies(_state_hat)%0A%20%20%20%20%20%20%20%20%20%20%20%20_KEbt.append(_ke_bt)%3B%20_KEbc.append(_ke_bc)%3B%20_APE.append(_ape)%0A%20%20%20%20%20%20%20%20if%20_s%20%3C%20_nsteps%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20_state_hat%20%3D%20timestep.ifrk4_step(_state_hat%2C%20_rhs_nl%2C%20_dt%2C%20_L_op)%20*%20grid.dealias%0A%20%20%20%20%20%20%20%20%20%20%20%20_t%20%2B%3D%20_dt%0A%0A%20%20%20%20set_sim(%7B%0A%20%20%20%20%20%20%20%20%22snaps_bt%22%3A%20_snaps_bt%2C%20%22snaps_bc%22%3A%20_snaps_bc%2C%20%22t%22%3A%20np.array(_t_hist)%2C%0A%20%20%20%20%20%20%20%20%22KEbt%22%3A%20np.array(_KEbt)%2C%20%22KEbc%22%3A%20np.array(_KEbc)%2C%20%22APE%22%3A%20np.array(_APE)%2C%0A%20%20%20%20%20%20%20%20%22grid%22%3A%20grid%2C%0A%20%20%20%20%7D)%0A%0A%20%20%20%20mo.callout(mo.md(%0A%20%20%20%20%20%20%20%20f%22**Done.**%20%7B_nsteps%7D%20steps%20on%20a%20%7B_n%7D%C3%97%7B_n%7D%20grid%20%C2%B7%20%7Blen(_snaps_bt)%7D%20frames.%22%0A%20%20%20%20)%2C%20kind%3D%22success%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(get_sim%2C%20mo)%3A%0A%20%20%20%20sim%20%3D%20get_sim()%0A%20%20%20%20mo.stop(sim%20is%20None%2C%20mo.callout(%0A%20%20%20%20%20%20%20%20mo.md(%22Results%20will%20appear%20here%20once%20the%20run%20has%20completed.%22)%2C%20kind%3D%22warn%22%0A%20%20%20%20))%0A%20%20%20%20return%20(sim%2C)%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo%2C%20sim)%3A%0A%20%20%20%20frame_ui%20%3D%20mo.ui.slider(0%2C%20len(sim%5B%22t%22%5D)%20-%201%2C%20step%3D1%2C%20value%3Dlen(sim%5B%22t%22%5D)%20-%201%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3D%22frame%22%2C%20show_value%3DTrue)%0A%20%20%20%20return%20(frame_ui%2C)%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(frame_ui%2C%20mo%2C%20plotting%2C%20plt%2C%20sim)%3A%0A%20%20%20%20_i%20%3D%20frame_ui.value%0A%20%20%20%20fig1%2C%20axs1%20%3D%20plt.subplots(1%2C%202%2C%20figsize%3D(9.5%2C%204.5)%2C%20constrained_layout%3DTrue)%0A%20%20%20%20plotting.field(axs1%5B0%5D%2C%20sim%5B%22snaps_bt%22%5D%5B_i%5D%2C%20grid%3Dsim%5B%22grid%22%5D%2C%20signed%3DTrue%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20title%3Df%22%24q_%7B%7Bbt%7D%7D%24%2C%20%24t%3D%7Bsim%5B't'%5D%5B_i%5D%3A.1f%7D%24%22)%0A%20%20%20%20plotting.field(axs1%5B1%5D%2C%20sim%5B%22snaps_bc%22%5D%5B_i%5D%2C%20grid%3Dsim%5B%22grid%22%5D%2C%20signed%3DTrue%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20title%3Df%22%24q_%7B%7Bbc%7D%7D%24%2C%20%24t%3D%7Bsim%5B't'%5D%5B_i%5D%3A.1f%7D%24%22)%0A%20%20%20%20mo.vstack(%5Bframe_ui%2C%20fig1%5D)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20**Left%20panel%2C%20frame%200%3A**%20should%20be%20exactly%20zero%20everywhere%20(flat%0A%20%20%20%20color)%20%E2%80%94%20that's%20the%20point.%20Any%20nonzero%20%24q_%7Bbt%7D%24%20in%20later%20frames%20was%0A%20%20%20%20*generated*%2C%20not%20initialized.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(plt%2C%20sim)%3A%0A%20%20%20%20fig2%2C%20ax2%20%3D%20plt.subplots(figsize%3D(7%2C%204.3)%2C%20constrained_layout%3DTrue)%0A%20%20%20%20ax2.plot(sim%5B%22t%22%5D%2C%20sim%5B%22KEbc%22%5D%2C%20lw%3D2%2C%20color%3D%22crimson%22%2C%20label%3D%22baroclinic%20KE%22)%0A%20%20%20%20ax2.plot(sim%5B%22t%22%5D%2C%20sim%5B%22APE%22%5D%2C%20lw%3D2%2C%20color%3D%22%23d97706%22%2C%20label%3D%22APE%22)%0A%20%20%20%20ax2.plot(sim%5B%22t%22%5D%2C%20sim%5B%22KEbt%22%5D%2C%20lw%3D2%2C%20color%3D%22%232563eb%22%2C%20label%3D%22barotropic%20KE%22)%0A%20%20%20%20ax2.set_xlabel(%22%24t%24%22)%3B%20ax2.set_ylabel(%22energy%22)%0A%20%20%20%20ax2.set_title(%22mode%20energetics%22)%3B%20ax2.legend(fontsize%3D9)%3B%20ax2.grid(alpha%3D0.3)%0A%20%20%20%20fig2%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%23%23%20Try%20this%0A%0A%20%20%20%20-%20**Confirm%20the%20leak.**%20The%20barotropic%20KE%20curve%20should%20start%0A%20%20%20%20%20%20essentially%20at%20zero%20(floating-point%20noise)%20and%20grow%20measurably%0A%20%20%20%20%20%20once%20the%20vortex%20begins%20to%20distort%20%E2%80%94%20that%20growth%20has%20no%20source%0A%20%20%20%20%20%20except%20the%20nonlinear%20cross-terms%20%60to_modes%60's%20docstring%20predicts.%0A%20%20%20%20%20%20Compare%20its%20final%20magnitude%20to%20the%20baroclinic%20mode's%3A%20does%20it%20stay%0A%20%20%20%20%20%20a%20small%20correction%2C%20or%20become%20comparable%3F%0A%20%20%20%20-%20**Push%20%24%5Cbeta%24.**%20Increase%20%24%5Cbeta%24%3A%20the%20baroclinic%20vortex%20should%0A%20%20%20%20%20%20develop%20a%20beta-gyre%20wake%20exactly%20like%20Ch.%208's%20single-layer%20vortex%0A%20%20%20%20%20%20(it%20obeys%20the%20same%20equation%2C%20with%20deformation%20parameter%20%242F%24)%20%E2%80%94%0A%20%20%20%20%20%20confirm%20the%20westward%20drift.%0A%20%20%20%20-%20**Vary%20%24F%24.**%20Larger%20%24F%24%20means%20a%20*smaller*%20effective%20deformation%0A%20%20%20%20%20%20radius%20for%20the%20baroclinic%20mode%20(%24L_R%5E2%5Cpropto1%2F(2F)%24)%3A%20does%20the%0A%20%20%20%20%20%20vortex's%20Rossby-wave%20wake%20wavelength%20shrink%20as%20you%20increase%20%24F%24%2C%0A%20%20%20%20%20%20matching%20Ch.%208's%20own%20%24F%24-dependence%3F%0A%20%20%20%20-%20**Zero%20the%20vortex%2C%20keep%20%24%5Cbeta%24.**%20Set%20the%20vortex%20amplitude%20to%20its%0A%20%20%20%20%20%20minimum%3A%20with%20no%20baroclinic%20disturbance%20to%20begin%20with%2C%20does%20any%0A%20%20%20%20%20%20barotropic%20energy%20appear%20at%20all%3F%20(It%20shouldn't%20%E2%80%94%20there%20is%20nothing%0A%20%20%20%20%20%20for%20the%20Jacobian%20to%20couple.)%0A%0A%20%20%20%20%23%23%23%20What%20you%20should%20have%20seen%0A%0A%20%20%20%20A%20disturbance%20placed%20purely%20in%20the%20baroclinic%20mode%20does%20not%20stay%0A%20%20%20%20purely%20baroclinic%3A%20nonlinear%20self-advection%20leaks%20a%20small%20but%0A%20%20%20%20measurable%20barotropic%20circulation%20into%20existence%2C%20even%20with%20zero%0A%20%20%20%20mean%20shear%20and%20zero%20instability.%20This%20is%20the%20*elementary*%20version%0A%20%20%20%20of%20a%20process%20central%20to%20real%20ocean%20and%20atmosphere%20dynamics%20%E2%80%94%0A%20%20%20%20baroclinic%20eddies%20(generated%20by%20Ch.%2016's%20instability)%20are%20the%0A%20%20%20%20primary%20source%20that%20feeds%20Ch.%2018's%20barotropic-dominated%20inverse%0A%20%20%20%20cascade%2C%20and%20this%20leak%2C%20run%20for%20long%20enough%20at%20large%20scale%2C%20is%20a%0A%20%20%20%20large%20part%20of%20*why*%20that%20upscale%20transfer%20happens.%20Two-layer%20QG%0A%20%20%20%20is%20the%20crudest%20possible%20discretization%20of%20Ch.%2011's%20continuous%0A%20%20%20%20vertical-mode%20theory%20%E2%80%94%20one%20interior%20mode%2C%20one%20deformation%20radius%0A%20%20%20%20%E2%80%94%20but%20it%20already%20contains%20the%20essential%20coupling%20that%20theory's%0A%20%20%20%20higher%20modes%20only%20refine.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_()%3A%0A%20%20%20%20import%20marimo%20as%20mo%0A%0A%20%20%20%20return%20(mo%2C)%0A%0A%0Aif%20__name__%20%3D%3D%20%22__main__%22%3A%0A%20%20%20%20app.run()%0A</marimo-code></head>
+  <body>
+    <div id="root"></div>
+    <!-- This is a portal for the data editor to render in -->
+    <div id="portal" data-testid="glide-portal" style="position: fixed; left: 0; top: 0; z-index: 9999"></div>
+    <script data-marimo="true">
+      Object.defineProperty(window, "__MARIMO_MOUNT_CONFIG__", {
+        value: Object.freeze({
+            "filename": "notebook.py",
+            "cwd": "",
+            "lspWorkspace": null,
+            "mode": "read",
+            "version": "0.23.9",
+            "serverToken": "unused",
+            "config": {"ai": {"custom_providers": {}, "enabled": true, "models": {"custom_models": [], "displayed_models": []}}, "completion": {"activate_on_typing": true, "auto_close_pairs": true, "copilot": false, "signature_hint_on_typing": false}, "diagnostics": {"sql_linter": true}, "display": {"cell_output": "below", "code_editor_font_size": 14, "dataframes": "rich", "default_table_max_columns": 50, "default_table_page_size": 10, "default_width": "medium", "reference_highlighting": true, "theme": "light"}, "formatting": {"line_length": 79}, "keymap": {"overrides": {}, "preset": "default"}, "language_servers": {"pylsp": {"enable_flake8": false, "enable_mypy": true, "enable_pydocstyle": false, "enable_pyflakes": false, "enable_pylint": false, "enable_ruff": true, "enabled": false}}, "mcp": {"mcpServers": {}, "presets": []}, "package_management": {"manager": "pip"}, "runtime": {"auto_instantiate": false, "auto_reload": "off", "default_csv_encoding": "utf-8", "default_sql_output": "auto", "on_cell_change": "autorun", "output_max_bytes": 8000000, "reactive_tests": true, "show_tracebacks": false, "std_stream_max_bytes": 1000000, "watcher_on_save": "lazy"}, "save": {"autosave": "off", "autosave_delay": 1000, "format_on_save": false}, "server": {"browser": "default", "follow_symlink": false}, "snippets": {"custom_paths": [], "include_default_snippets": true}},
+            "configOverrides": {},
+            "appConfig": {"sql_output": "auto", "width": "medium"},
+            "view": {"showAppCode": false},
+            "notebook": null,
+            "session": null,
+            "runtimeConfig": null,
+        }),
+        writable: false,
+        configurable: false,
+      });
+    </script>
+  </body>
+</html>

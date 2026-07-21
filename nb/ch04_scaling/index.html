@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <!-- Preload is necessary because we show these images when we disconnect from the server,
+    but at that point we cannot load these images from the server -->
+    <link rel="preload" href="./assets/gradient-yHQUC_QB.png" as="image" />
+    <link rel="preload" href="./assets/noise-60BoTA8O.png" as="image" />
+    <!-- Preload the fonts -->
+    <link rel="preload" href="./assets/Lora-VariableFont_wght-CZceb_kH.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Regular-Bam3NpBI.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Bold-C_DwAp7Z.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Regular-CEsLFVD9.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Medium-D5MAsWEG.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Bold-C6PDArdf.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="a marimo app" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.json" />
+
+    <script data-marimo="true">
+      function __resizeIframe(obj) {
+        const scrollbarHeight = 20; // Max between windows, mac, and linux
+
+        function setHeight() {
+          // Guard against race condition where iframe isn't ready
+          if (!obj.contentWindow?.document?.documentElement) {
+            return;
+          }
+          const element = obj.contentWindow.document.documentElement;
+          // If there is no vertical scrollbar, we don't need to resize the iframe
+          if (element.scrollHeight === element.clientHeight) {
+            return;
+          }
+
+          // Create a new height that includes the scrollbar height if it's visible
+          const hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
+          const newHeight = element.scrollHeight + (hasHorizontalScrollbar ? scrollbarHeight : 0);
+
+          // Only update the height if it's different from the current height
+          if (obj.style.height !== `${newHeight}px`) {
+            obj.style.height = `${newHeight}px`;
+          }
+        }
+
+        // Resize the iframe to the height of the content and bottom scrollbar height
+        setHeight();
+
+        // Resize the iframe when the content changes
+        const resizeObserver = new ResizeObserver((_entries) => {
+          setHeight();
+        });
+        // Only observe if iframe content is ready
+        if (obj.contentWindow?.document?.body) {
+          resizeObserver.observe(obj.contentWindow.document.body);
+        }
+      }
+    </script>
+    <marimo-filename hidden>notebook.py</marimo-filename>
+    <!-- TODO(Trevor): Legacy, required by VS Code plugin. Remove when plugin is updated (see marimo/server/_templates/template.py) -->
+    <marimo-version data-version="{{ version }}" hidden></marimo-version>
+    <marimo-user-config data-config="{{ user_config }}" hidden></marimo-user-config>
+    <marimo-server-token data-token="{{ server_token }}" hidden></marimo-server-token>
+    <!-- /TODO -->
+    <title>ch04 scaling</title>
+    <script type="module" crossorigin src="./assets/index-awsLWRjZ.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/preload-helper-BPPi7vOr.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-LvLJmgfZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-Bj1aDYRI.js">
+    <link rel="modulepreload" crossorigin href="./assets/compiler-runtime-B3qBwwSJ.js">
+    <link rel="modulepreload" crossorigin href="./assets/jsx-runtime-BqBOg78p.js">
+    <link rel="modulepreload" crossorigin href="./assets/useEventListener-DvoEXWke.js">
+    <link rel="modulepreload" crossorigin href="./assets/defaultLocale-BLUna9fQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/precisionRound-Cl9k9ZmS.js">
+    <link rel="modulepreload" crossorigin href="./assets/defaultLocale-DzliDDTm.js">
+    <link rel="modulepreload" crossorigin href="./assets/vega-loader.browser-C8wT63Va.js">
+    <link rel="modulepreload" crossorigin href="./assets/utils-DCL4n9wx.js">
+    <link rel="modulepreload" crossorigin href="./assets/clsx-Dz_KRrWq.js">
+    <link rel="modulepreload" crossorigin href="./assets/cn-DCUzRj2J.js">
+    <link rel="modulepreload" crossorigin href="./assets/badge-j3NGjqhR.js">
+    <link rel="modulepreload" crossorigin href="./assets/button-BbCh-29a.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-dom-CSu739Rf.js">
+    <link rel="modulepreload" crossorigin href="./assets/fullscreen-eipL3i3Y.js">
+    <link rel="modulepreload" crossorigin href="./assets/menu-items-DcP01QzW.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-BdyjRhEt.js">
+    <link rel="modulepreload" crossorigin href="./assets/createLucideIcon-D5guW7EU.js">
+    <link rel="modulepreload" crossorigin href="./assets/check-BH35Ndha.js">
+    <link rel="modulepreload" crossorigin href="./assets/x-C-6liIBr.js">
+    <link rel="modulepreload" crossorigin href="./assets/select-DZcFyKFQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/tooltip-DTV9tlSr.js">
+    <link rel="modulepreload" crossorigin href="./assets/use-toast-IPAtJGea.js">
+    <link rel="modulepreload" crossorigin href="./assets/useEvent-D91BmmQi.js">
+    <link rel="modulepreload" crossorigin href="./assets/invariant-BUdrueMv.js">
+    <link rel="modulepreload" crossorigin href="./assets/isObject-DvLSfCY5.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseFor-DKD1r8uL.js">
+    <link rel="modulepreload" crossorigin href="./assets/merge-_9WLTEyt.js">
+    <link rel="modulepreload" crossorigin href="./assets/zod-H_cgTO0M.js">
+    <link rel="modulepreload" crossorigin href="./assets/utils-CvI-39U6.js">
+    <link rel="modulepreload" crossorigin href="./assets/Deferred-CP7vq682.js">
+    <link rel="modulepreload" crossorigin href="./assets/uuid-e9lSomwA.js">
+    <link rel="modulepreload" crossorigin href="./assets/DeferredRequestRegistry-CNldVcrP.js">
+    <link rel="modulepreload" crossorigin href="./assets/constants-DMpttj8Q.js">
+    <link rel="modulepreload" crossorigin href="./assets/session-0B5NBztP.js">
+    <link rel="modulepreload" crossorigin href="./assets/config-ClMcu_sV.js">
+    <link rel="modulepreload" crossorigin href="./assets/requests-DIwGYs0l.js">
+    <link rel="modulepreload" crossorigin href="./assets/useLifecycle-DieWOfXE.js">
+    <link rel="modulepreload" crossorigin href="./assets/useNonce-DfoVjkkH.js">
+    <link rel="modulepreload" crossorigin href="./assets/useTheme-CI2eq4XN.js">
+    <link rel="modulepreload" crossorigin href="./assets/arrays-DYDL-3-i.js">
+    <link rel="modulepreload" crossorigin href="./assets/strings-wdPMRf6Z.js">
+    <link rel="modulepreload" crossorigin href="./assets/once-DRroIaBz.js">
+    <link rel="modulepreload" crossorigin href="./assets/capabilities-A_KhFcGV.js">
+    <link rel="modulepreload" crossorigin href="./assets/createReducer-CI9qeK_X.js">
+    <link rel="modulepreload" crossorigin href="./assets/paths-D5zczhUD.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-BrR4M-k3.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-HlsDto3K.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CHcznzB-.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-B1U1kGCR.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-ChF5Ln9c.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CpTFpfm_.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CBSMxaO_.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CPczQFlJ.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-C9ZB41s2.js">
+    <link rel="modulepreload" crossorigin href="./assets/stex-BGrE-q7N.js">
+    <link rel="modulepreload" crossorigin href="./assets/toDate-B5A0DFEz.js">
+    <link rel="modulepreload" crossorigin href="./assets/purify.es-B9KxLTTS.js">
+    <link rel="modulepreload" crossorigin href="./assets/cjs-BRGiG41H.js">
+    <link rel="modulepreload" crossorigin href="./assets/isSymbol-BT6B8Bon.js">
+    <link rel="modulepreload" crossorigin href="./assets/now-CsYTPAhW.js">
+    <link rel="modulepreload" crossorigin href="./assets/debounce-DhnxH9Rh.js">
+    <link rel="modulepreload" crossorigin href="./assets/database-zap-kIkTfzTX.js">
+    <link rel="modulepreload" crossorigin href="./assets/main-B0OX4z33.js">
+    <link rel="modulepreload" crossorigin href="./assets/cells-BsaJrRWi.js">
+    <link rel="modulepreload" crossorigin href="./assets/ErrorBoundary-DyYDV0HI.js">
+    <link rel="modulepreload" crossorigin href="./assets/kbd-CTUAEnEx.js">
+    <link rel="modulepreload" crossorigin href="./assets/useInstallPackage-DUF4IRRI.js">
+    <link rel="modulepreload" crossorigin href="./assets/alert-dialog-BqFLkbUc.js">
+    <link rel="modulepreload" crossorigin href="./assets/dialog-DzC_QCtT.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDebounce-7xZwVnnu.js">
+    <link rel="modulepreload" crossorigin href="./assets/numbers-C3BAdHZE.js">
+    <link rel="modulepreload" crossorigin href="./assets/SSRProvider-CkFAAHXw.js">
+    <link rel="modulepreload" crossorigin href="./assets/context-QkTujrKn.js">
+    <link rel="modulepreload" crossorigin href="./assets/useNumberFormatter-ByUv-u9o.js">
+    <link rel="modulepreload" crossorigin href="./assets/usePress-DQ_tAz5W.js">
+    <link rel="modulepreload" crossorigin href="./assets/input-C3Hrdlqq.js">
+    <link rel="modulepreload" crossorigin href="./assets/ImperativeModal-B3Th7k4R.js">
+    <link rel="modulepreload" crossorigin href="./assets/cell-link-B1pHtGWp.js">
+    <link rel="modulepreload" crossorigin href="./assets/multi-map-CUuNtzHt.js">
+    <link rel="modulepreload" crossorigin href="./assets/alert-yTS3WpF4.js">
+    <link rel="modulepreload" crossorigin href="./assets/chevron-right-CG5QYXYk.js">
+    <link rel="modulepreload" crossorigin href="./assets/dropdown-menu-CR7cnzLX.js">
+    <link rel="modulepreload" crossorigin href="./assets/links-D1JoyKTt.js">
+    <link rel="modulepreload" crossorigin href="./assets/useRunCells-BiCBGyeW.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-LK56fFow.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-BwrPA9zQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-icon-OjtDb4gO.js">
+    <link rel="modulepreload" crossorigin href="./assets/RenderHTML-ChwPJgPd.js">
+    <link rel="modulepreload" crossorigin href="./assets/datasource-DjDpJnbt.js">
+    <link rel="modulepreload" crossorigin href="./assets/state-D-2KaAHK.js">
+    <link rel="modulepreload" crossorigin href="./assets/package-Tv6ztuzw.js">
+    <link rel="modulepreload" crossorigin href="./assets/sparkles-lWUAsPhp.js">
+    <link rel="modulepreload" crossorigin href="./assets/MarimoErrorOutput-B0h5OVW9.js">
+    <link rel="modulepreload" crossorigin href="./assets/spinner-Bhir8k53.js">
+    <link rel="modulepreload" crossorigin href="./assets/html-to-image-BWL3Ct4n.js">
+    <link rel="modulepreload" crossorigin href="./assets/focus-q38vUCl-.js">
+    <link rel="modulepreload" crossorigin href="./assets/useAsyncData-bgszE9F0.js">
+    <link rel="modulepreload" crossorigin href="./assets/LazyAnyLanguageCodeMirror-BEvXb3VX.js">
+    <link rel="modulepreload" crossorigin href="./assets/micromark-factory-space-BygYYKhs.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-5FQGJX7Z-D9iBG0F7.js">
+    <link rel="modulepreload" crossorigin href="./assets/markdown-renderer-CU5Lbyax.js">
+    <link rel="modulepreload" crossorigin href="./assets/command-KARR7KMq.js">
+    <link rel="modulepreload" crossorigin href="./assets/field-zLmMOSA4.js">
+    <link rel="modulepreload" crossorigin href="./assets/popover-Bz_0Vkyf.js">
+    <link rel="modulepreload" crossorigin href="./assets/errors-vr57w7Ul.js">
+    <link rel="modulepreload" crossorigin href="./assets/download-DT8gf0PL.js">
+    <link rel="modulepreload" crossorigin href="./assets/table-BGPSHfig.js">
+    <link rel="modulepreload" crossorigin href="./assets/useIframeCapabilities-CcI1zSdn.js">
+    <link rel="modulepreload" crossorigin href="./assets/error-banner-LdWZDbqd.js">
+    <link rel="modulepreload" crossorigin href="./assets/formats-b7Sf6DAK.js">
+    <link rel="modulepreload" crossorigin href="./assets/en-US-Cb8rIK52.js">
+    <link rel="modulepreload" crossorigin href="./assets/isValid-CklTTytn.js">
+    <link rel="modulepreload" crossorigin href="./assets/dates-CTxr0EqQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/maps-n3GaPJwv.js">
+    <link rel="modulepreload" crossorigin href="./assets/extends-BiFDv3jB.js">
+    <link rel="modulepreload" crossorigin href="./assets/emotion-is-prop-valid.esm-C59xfSYt.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDateFormatter-ICIDGgHf.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-icons.esm-BNzu6e7h.js">
+    <link rel="modulepreload" crossorigin href="./assets/RSPContexts-CdN1NyAt.js">
+    <link rel="modulepreload" crossorigin href="./assets/table-6NxtGaCm.js">
+    <link rel="modulepreload" crossorigin href="./assets/ellipsis-KAhMaCIV.js">
+    <link rel="modulepreload" crossorigin href="./assets/external-link-BTNxSavU.js">
+    <link rel="modulepreload" crossorigin href="./assets/message-circle-CWm2KnSx.js">
+    <link rel="modulepreload" crossorigin href="./assets/plus-BgB18UzY.js">
+    <link rel="modulepreload" crossorigin href="./assets/trash-2-rVklqqFF.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-resizable-panels.browser.esm-CV8-hvjx.js">
+    <link rel="modulepreload" crossorigin href="./assets/JsonOutput-BJaeXQim.js">
+    <link rel="modulepreload" crossorigin href="./assets/chart-no-axes-column-nqk474t8.js">
+    <link rel="modulepreload" crossorigin href="./assets/square-function-uY_yJr5g.js">
+    <link rel="modulepreload" crossorigin href="./assets/spec-CPQR_o92.js">
+    <link rel="modulepreload" crossorigin href="./assets/ellipsis-vertical-CkwWkOQL.js">
+    <link rel="modulepreload" crossorigin href="./assets/refresh-cw-DHwG4Mac.js">
+    <link rel="modulepreload" crossorigin href="./assets/tree-actions-BM_EJr3E.js">
+    <link rel="modulepreload" crossorigin href="./assets/components-BzBUxUz0.js">
+    <link rel="modulepreload" crossorigin href="./assets/column-preview-BPismotx.js">
+    <link rel="modulepreload" crossorigin href="./assets/icons-Ol38nIbL.js">
+    <link rel="modulepreload" crossorigin href="./assets/radio-group-DlVSuZ_1.js">
+    <link rel="modulepreload" crossorigin href="./assets/floating-outline-BN9sAcQ0.js">
+    <link rel="modulepreload" crossorigin href="./assets/objectWithoutPropertiesLoose-DfWeGRFv.js">
+    <link rel="modulepreload" crossorigin href="./assets/esm-CqWdmSnV.js">
+    <link rel="modulepreload" crossorigin href="./assets/readonly-python-code-D3_kHsDx.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-headphone-BrQspHac.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-BrdxGLRX.js">
+    <link rel="modulepreload" crossorigin href="./assets/image-DQHXdEQn.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-icons-BiMOJy0r.js">
+    <link rel="modulepreload" crossorigin href="./assets/switch-BiU_sAcn.js">
+    <link rel="modulepreload" crossorigin href="./assets/events-CPoJAfgx.js">
+    <link rel="modulepreload" crossorigin href="./assets/globals-7JnRMGd4.js">
+    <link rel="modulepreload" crossorigin href="./assets/share-DMwTZOTH.js">
+    <link rel="modulepreload" crossorigin href="./assets/blob-Bgnx1kuY.js">
+    <link rel="modulepreload" crossorigin href="./assets/memoize-Tp7rARFe.js">
+    <link rel="modulepreload" crossorigin href="./assets/get-C-qh_et5.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseSet-CxV9N1bc.js">
+    <link rel="modulepreload" crossorigin href="./assets/state-BTTshiKq.js">
+    <link rel="modulepreload" crossorigin href="./assets/label-xHqFtfdz.js">
+    <link rel="modulepreload" crossorigin href="./assets/textarea-DwltG8V6.js">
+    <link rel="modulepreload" crossorigin href="./assets/refresh-ccw-C-n2VFP5.js">
+    <link rel="modulepreload" crossorigin href="./assets/form-BtBTvVVd.js">
+    <link rel="modulepreload" crossorigin href="./assets/renderShortcut-CcFk3m01.js">
+    <link rel="modulepreload" crossorigin href="./assets/useBoolean-Bp18o6XG.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDeepCompareMemoize-zUHU--0D.js">
+    <link rel="modulepreload" crossorigin href="./assets/types-W8WWuumF.js">
+    <link rel="modulepreload" crossorigin href="./assets/semaphore-FlZezxaf.js">
+    <link rel="modulepreload" crossorigin href="./assets/fileToBase64-DZfwJMrG.js">
+    <link rel="modulepreload" crossorigin href="./assets/pathUtils-CJjndqMI.js">
+    <link rel="modulepreload" crossorigin href="./assets/prop-types-DaaA-ptl.js">
+    <link rel="modulepreload" crossorigin href="./assets/es-DGgq-Wes.js">
+    <link rel="modulepreload" crossorigin href="./assets/hasIn-DiS_ryrS.js">
+    <link rel="modulepreload" crossorigin href="./assets/flatten-Dl4V1ub3.js">
+    <link rel="modulepreload" crossorigin href="./assets/pick-DqWUNly1.js">
+    <link rel="modulepreload" crossorigin href="./assets/code-xml-CZN6vNxu.js">
+    <link rel="modulepreload" crossorigin href="./assets/house-mGK3v0Mm.js">
+    <link rel="modulepreload" crossorigin href="./assets/square-B5xWCt0a.js">
+    <link rel="modulepreload" crossorigin href="./assets/triangle-alert-D2p96PEF.js">
+    <link rel="modulepreload" crossorigin href="./assets/bundle.esm-DjhGJy4I.js">
+    <link rel="stylesheet" crossorigin href="./assets/cells-jmgGt1lS.css">
+    <link rel="stylesheet" crossorigin href="./assets/markdown-renderer-DdDKmWlR.css">
+    <link rel="stylesheet" crossorigin href="./assets/JsonOutput-B7vuddcd.css">
+    <link rel="stylesheet" crossorigin href="./assets/index-BIw7BKLH.css">
+  <marimo-wasm hidden=""></marimo-wasm>
+    <script>
+        if (window.location.protocol === 'file:') {
+            alert('Warning: This file must be served by an HTTP server to function correctly.');
+        }
+    </script>
+    
+    <style>
+        #save-button {
+            display: none !important;
+        }
+        #filename-input {
+            display: none !important;
+        }
+    </style>
+    
+<script data-marimo="true">
+    Object.defineProperty(window, "__MARIMO_EXPORT_CONTEXT__", {
+        value: Object.freeze({
+            trusted: true,
+            notebookCode: "import marimo\n\n__generated_with = \"0.23.9\"\napp = marimo.App(width=\"medium\")\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    # Chapter 4 \u2014 Scaling \u0026 the Dimensionless Numbers\n\n    **Physical question.** Ch. 2 computed five numbers from raw physical\n    inputs. Two of them \u2014 $Ro$ and $Bu$ \u2014 turn out to do almost all the\n    work of predicting which of this book's reduced models applies at a\n    given scale. After this chapter you should be able to place ANY\n    flow on the $(Ro,Bu)$ plane and read off, without further\n    calculation, whether it's unbalanced, baroclinically active, or\n    columnar/barotropic \u2014 and see exactly where every earlier chapter's\n    example flow actually sits.\n    \"\"\")\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    ## Governing equations\n\n    Ch. 2 nondimensionalized the full equations and found that a\n    handful of coefficients decide which terms survive. Two of those\n    coefficients are special: $Ro$ tells you whether a *time-mean\n    balance* exists at all, and $Bu=(L_R/L)^2$ tells you, given that it\n    does, whether the balance is controlled by *stratification* or by\n    *rotation*. Together they define three broad regimes (symbols as in\n    [NOTATION](../notation)):\n\n    $$Ro=\\frac{U}{f_0L}\\ \\gtrless\\ 1,\n      \\qquad\n      Bu=\\left(\\frac{L_R}{L}\\right)^2\\ \\gtrless\\ 1,\n      \\qquad L_R=\\frac{NH}{f_0}.$$\n\n    ### Two derivations of $Bu$, one number\n\n    First, pure algebra: $Bu$ is not independent of Ch. 2's other\n    numbers. Directly from the definitions,\n\n    $$\\left(\\frac{Fr}{Ro}\\right)^2\n      =\\left(\\frac{U/(NH)}{U/(f_0L)}\\right)^2\n      =\\left(\\frac{f_0L}{NH}\\right)^2\n      =\\left(\\frac{L}{L_R}\\right)^2=\\frac{1}{Bu},$$\n\n    so $Bu=(Ro/Fr)^2$: the Burger number measures whether *rotation*\n    ($Ro$ small first) or *stratification* ($Fr$ small first) is the\n    stronger constraint at your scale. $Bu\\gg1$ means stratification\n    dominates the balance; $Bu\\ll1$ means rotation does.\n\n    Second, dynamically \u2014 where $Bu$ actually shows up in an equation.\n    Ch. 8's QGPV is $q=\\nabla^2\\psi-\\psi/L_R^2+\\beta y$; estimate the\n    sizes of its two flow-dependent terms for a disturbance of scale\n    $L$ and streamfunction magnitude $\\Psi$:\n\n    $$\\frac{|\\text{relative vorticity}|}{|\\text{stretching}|}\n      =\\frac{\\Psi/L^2}{\\Psi/L_R^2}\n      =\\frac{L_R^2}{L^2}=Bu.$$\n\n    $Bu\\gg1$: relative vorticity dominates and the free surface (or\n    interface) is effectively rigid \u2014 the disturbance behaves like\n    Ch. 7's pure 2D vorticity dynamics *locally*, but its energy is\n    stored increasingly in potential form. $Bu\\ll1$: stretching\n    dominates \u2014 the disturbance is mostly interface displacement, its\n    induced velocities are screened (Ch. 8's Bessel-$K_0$ Green's\n    function), and Rossby waves at that scale approach their\n    non-dispersive long-wave limit. $Bu\\sim1$ is where the two terms\n    trade places \u2014 and, not coincidentally, where baroclinic\n    instability (Ch. 16) extracts energy fastest.\n\n    - **$Ro\u003E1$ \u2014 unbalanced.** Acceleration is as large as Coriolis; no\n      steady balance exists to expand around. Inertia-gravity waves\n      (Ch. 6) dominate; concepts like PV invertibility (Ch. 7) still\n      apply in principle but aren't the efficient description.\n    - **$Ro\u003C1,\\ Bu\u003E1$ ($L\u003CL_R$) \u2014 QG, baroclinic.** The flow is smaller\n      than the deformation radius: stratification actively resists\n      vertical motion, and baroclinic structure (vertical shear, sloping\n      density surfaces) is dynamically central. This is Ch. 16's\n      territory, and it is where baroclinic instability operates most\n      efficiently \u2014 not coincidentally, since $L\\sim L_R$ (the $Bu\\sim1$\n      boundary) is exactly the Eady problem's most-unstable scale.\n    - **$Ro\u003C1,\\ Bu\u003C1$ ($L\u003EL_R$) \u2014 QG, barotropic.** The flow is larger\n      than the deformation radius: the stretching term in QGPV\n      (Ch. 8) becomes negligible relative to the barotropic vorticity\n      term, and the flow tends toward vertically rigid, columnar\n      structure \u2014 Ch. 3's Taylor-Proudman limit, realized dynamically\n      rather than by literally setting buoyancy to zero.\n\n    This is a coarse, three-region caricature of a genuinely continuous\n    transition (Vallis, *AOFD* 2nd ed., the Ro-Bu/Ro-Fr regime diagrams\n    in ch. 5) \u2014 real flows cross these boundaries smoothly, and $Bu\\sim1$\n    is a region of enhanced activity, not a wall.\n    \"\"\")\n    return\n\n\n@app.cell\nasync def _(mo):\n    # --- vetted primitives from gfdlib (see CLAUDE.md) -------------------\n    import sys\n\n    if sys.platform == \"emscripten\":\n        import micropip\n        await micropip.install(\n            str(mo.notebook_location() / \"public\" / \"gfdlib-0.1.0-py3-none-any.whl\")\n        )\n    else:\n        sys.path.insert(0, str(mo.notebook_dir().parent))  # repo root\n\n    import numpy as np\n    import matplotlib.pyplot as plt\n    from matplotlib.colors import ListedColormap\n    from gfdlib import scaling\n\n    return ListedColormap, np, plt, scaling\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    ## Numerical scheme\n\n    `gfdlib.scaling.classify_regime` is pure algebra (two comparisons),\n    cheap enough to evaluate on a dense grid and render as a filled\n    region map \u2014 fully reactive, no Run button. The marker sliders set\n    $(\\log_{10}Ro,\\log_{10}Bu)$ directly (a proxy for \"clicking\" a point\n    on the map); the small labeled dots are typical $(Ro,Bu)$ values for\n    five earlier chapters' example flows, placed by hand from each\n    chapter's stated parameters.\n    \"\"\")\n    return\n\n\n@app.cell(hide_code=True)\ndef _(ListedColormap, np, scaling):\n    # --- the region map itself (fixed resolution, always drawn) ------------\n    _logRo = np.linspace(-2.0, 1.3, 400)\n    _logBu = np.linspace(-2.0, 2.0, 400)\n    _LOGRO, _LOGBU = np.meshgrid(_logRo, _logBu, indexing=\"ij\")\n    _labels = scaling.classify_regime(10.0 ** _LOGRO, 10.0 ** _LOGBU)\n    _cmap = ListedColormap([\"#DD8452\", \"#4C72B0\", \"#55A868\"])\n\n    def draw_map(ax):\n        im = ax.pcolormesh(_LOGRO, _LOGBU, _labels, cmap=_cmap, vmin=-0.5, vmax=2.5, shading=\"auto\")\n        ax.axvline(0.0, color=\"k\", lw=1.2)\n        ax.axhline(0.0, color=\"k\", lw=1.2)\n        ax.set_xlabel(\"$\\\\log_{10}Ro$\"); ax.set_ylabel(\"$\\\\log_{10}Bu$\")\n        return im\n\n    return (draw_map,)\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    logRo_ui = mo.ui.slider(-2.0, 1.3, step=0.05, value=-1.0,\n                            label=\"$\\\\log_{10}Ro$\", show_value=True)\n    logBu_ui = mo.ui.slider(-2.0, 2.0, step=0.05, value=0.0,\n                            label=\"$\\\\log_{10}Bu$\", show_value=True)\n    mo.vstack([mo.hstack([logRo_ui, logBu_ui], justify=\"start\")])\n    return logBu_ui, logRo_ui\n\n\n@app.cell(hide_code=True)\ndef _(draw_map, logBu_ui, logRo_ui, mo, plt):\n    # --- the marker point + reference chapter examples ----------------------\n    _refs = [\n        (\"Ch.5 synoptic front\",       -1.0,  0.0),\n        (\"Ch.16 baroclinic eddy\",     -1.3,  0.05),\n        (\"Ch.18 2D turbulence/jets\",  -1.7, -1.3),\n        (\"Ch.6 large-scale surge\",    -1.3, -1.7),\n        (\"Ch.6 small-scale burst\",    -0.5,  1.3),\n    ]\n\n    fig1, ax1 = plt.subplots(figsize=(7.5, 6), constrained_layout=True)\n    im1 = draw_map(ax1)\n    cbar1 = fig1.colorbar(im1, ax=ax1, ticks=[0, 1, 2])\n    cbar1.ax.set_yticklabels([\"unbalanced\", \"QG, baroclinic\", \"QG, barotropic\"])\n\n    for _name, _lr, _lb in _refs:\n        ax1.plot(_lr, _lb, \"o\", color=\"white\", markeredgecolor=\"k\", ms=8, zorder=4)\n        ax1.annotate(_name, (_lr, _lb), textcoords=\"offset points\", xytext=(6, 6),\n                     fontsize=7.5, color=\"k\",\n                     bbox=dict(boxstyle=\"round,pad=0.15\", fc=\"white\", ec=\"none\", alpha=0.75))\n\n    _Ro, _Bu = 10.0 ** logRo_ui.value, 10.0 ** logBu_ui.value\n    ax1.plot(logRo_ui.value, logBu_ui.value, \"*\", color=\"crimson\", ms=20,\n             markeredgecolor=\"k\", zorder=5)\n    ax1.set_title(f\"you are here:  $Ro={_Ro:.2f}$,  $Bu={_Bu:.2f}$\")\n    mo.vstack([fig1])\n    return\n\n\n@app.cell(hide_code=True)\ndef _(logBu_ui, logRo_ui, mo, scaling):\n    # --- text read-out for the marker point ---------------------------------\n    _Ro, _Bu = 10.0 ** logRo_ui.value, 10.0 ** logBu_ui.value\n    _label = int(scaling.classify_regime(_Ro, _Bu))\n    _msgs = {\n        0: (\"**Unbalanced.** No steady balance to lean on \u2014 the natural \"\n            \"description is Ch. 6's inertia-gravity-wave adjustment \"\n            \"problem, not a balanced-flow chapter.\"),\n        1: (\"**QG, baroclinic.** Smaller than the deformation radius \u2014 \"\n            \"stratification and vertical structure are central. This is \"\n            \"the Ch. 16 baroclinic-instability regime, and the natural \"\n            \"scale for developing storms and ocean mesoscale eddies.\"),\n        2: (\"**QG, barotropic.** Larger than the deformation radius \u2014 \"\n            \"rotation dominates, the flow tends columnar and vertically \"\n            \"rigid (Ch. 3's Taylor-Proudman limit), and Ch. 18's \"\n            \"barotropic-turbulence machinery is the right tool.\"),\n    }\n    mo.md(_msgs[_label])\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    ### Try this\n\n    - **Walk the boundary.** Hold $\\log_{10}Bu=0$ (exactly $L=L_R$) and\n      sweep $\\log_{10}Ro$ across 0: confirm the region flips from\n      \"QG, baroclinic\" to \"unbalanced\" exactly at $Ro=1$, with no\n      dependence at all on $Bu$ at that moment \u2014 the $Ro=1$ boundary\n      is a vertical line for a reason (the classifier checks $Ro$\n      first).\n    - **Find yourself among the reference dots.** The two Ch. 6 points\n      (small-scale burst vs. large-scale surge) sit on opposite sides\n      of $Bu=1$ despite being *the same notebook* \u2014 only $\\sigma/L_R$\n      differs between the two presets. Does that match what you saw\n      there: the small-scale burst mostly radiating away as gravity\n      waves (unbalanced-leaning, high $Bu$), the large-scale surge\n      surviving as a balanced remnant (Ch. 8-style dynamics, low-to-\n      moderate $Bu$)?\n    - **Locate Ch. 20's gyres.** The wind-driven circulation's basin\n      interior is deeply in the $Ro\\ll1$ regime, but its western\n      boundary current is not \u2014 friction, not $Ro$, sets that layer's\n      width. Where would you guess the boundary-current sliver sits on\n      this map, and why might a map built purely from $Ro,Bu$ (which\n      says nothing about friction) be the wrong tool for it specifically?\n\n    ### What you should have seen\n\n    Every notebook you've run so far, however different they looked,\n    occupies a definite, predictable position on this one plane \u2014 and\n    that position alone tells you which chapter's machinery is the\n    natural description. The map is a caricature (three flat regions\n    standing in for a smooth transition), but the caricature is honest:\n    $Ro$ really does gate whether balance exists at all, and $Bu$ really\n    does gate whether stratification or rotation controls the balance\n    once it does. This is the last chapter of Part I; every remaining\n    chapter in the book is, in this map's language, an exploration of\n    one specific point (or one specific boundary) on it.\n    \"\"\")\n    return\n\n\n@app.cell\ndef _():\n    import marimo as mo\n\n    return (mo,)\n\n\nif __name__ == \"__main__\":\n    app.run()\n",
+        }),
+        writable: false,
+        configurable: false,
+    });
+</script>
+<marimo-code hidden="">import%20marimo%0A%0A__generated_with%20%3D%20%220.23.9%22%0Aapp%20%3D%20marimo.App(width%3D%22medium%22)%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%20Chapter%204%20%E2%80%94%20Scaling%20%26%20the%20Dimensionless%20Numbers%0A%0A%20%20%20%20**Physical%20question.**%20Ch.%202%20computed%20five%20numbers%20from%20raw%20physical%0A%20%20%20%20inputs.%20Two%20of%20them%20%E2%80%94%20%24Ro%24%20and%20%24Bu%24%20%E2%80%94%20turn%20out%20to%20do%20almost%20all%20the%0A%20%20%20%20work%20of%20predicting%20which%20of%20this%20book's%20reduced%20models%20applies%20at%20a%0A%20%20%20%20given%20scale.%20After%20this%20chapter%20you%20should%20be%20able%20to%20place%20ANY%0A%20%20%20%20flow%20on%20the%20%24(Ro%2CBu)%24%20plane%20and%20read%20off%2C%20without%20further%0A%20%20%20%20calculation%2C%20whether%20it's%20unbalanced%2C%20baroclinically%20active%2C%20or%0A%20%20%20%20columnar%2Fbarotropic%20%E2%80%94%20and%20see%20exactly%20where%20every%20earlier%20chapter's%0A%20%20%20%20example%20flow%20actually%20sits.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%23%20Governing%20equations%0A%0A%20%20%20%20Ch.%202%20nondimensionalized%20the%20full%20equations%20and%20found%20that%20a%0A%20%20%20%20handful%20of%20coefficients%20decide%20which%20terms%20survive.%20Two%20of%20those%0A%20%20%20%20coefficients%20are%20special%3A%20%24Ro%24%20tells%20you%20whether%20a%20*time-mean%0A%20%20%20%20balance*%20exists%20at%20all%2C%20and%20%24Bu%3D(L_R%2FL)%5E2%24%20tells%20you%2C%20given%20that%20it%0A%20%20%20%20does%2C%20whether%20the%20balance%20is%20controlled%20by%20*stratification*%20or%20by%0A%20%20%20%20*rotation*.%20Together%20they%20define%20three%20broad%20regimes%20(symbols%20as%20in%0A%20%20%20%20%5BNOTATION%5D(..%2Fnotation))%3A%0A%0A%20%20%20%20%24%24Ro%3D%5Cfrac%7BU%7D%7Bf_0L%7D%5C%20%5Cgtrless%5C%201%2C%0A%20%20%20%20%20%20%5Cqquad%0A%20%20%20%20%20%20Bu%3D%5Cleft(%5Cfrac%7BL_R%7D%7BL%7D%5Cright)%5E2%5C%20%5Cgtrless%5C%201%2C%0A%20%20%20%20%20%20%5Cqquad%20L_R%3D%5Cfrac%7BNH%7D%7Bf_0%7D.%24%24%0A%0A%20%20%20%20%23%23%23%20Two%20derivations%20of%20%24Bu%24%2C%20one%20number%0A%0A%20%20%20%20First%2C%20pure%20algebra%3A%20%24Bu%24%20is%20not%20independent%20of%20Ch.%202's%20other%0A%20%20%20%20numbers.%20Directly%20from%20the%20definitions%2C%0A%0A%20%20%20%20%24%24%5Cleft(%5Cfrac%7BFr%7D%7BRo%7D%5Cright)%5E2%0A%20%20%20%20%20%20%3D%5Cleft(%5Cfrac%7BU%2F(NH)%7D%7BU%2F(f_0L)%7D%5Cright)%5E2%0A%20%20%20%20%20%20%3D%5Cleft(%5Cfrac%7Bf_0L%7D%7BNH%7D%5Cright)%5E2%0A%20%20%20%20%20%20%3D%5Cleft(%5Cfrac%7BL%7D%7BL_R%7D%5Cright)%5E2%3D%5Cfrac%7B1%7D%7BBu%7D%2C%24%24%0A%0A%20%20%20%20so%20%24Bu%3D(Ro%2FFr)%5E2%24%3A%20the%20Burger%20number%20measures%20whether%20*rotation*%0A%20%20%20%20(%24Ro%24%20small%20first)%20or%20*stratification*%20(%24Fr%24%20small%20first)%20is%20the%0A%20%20%20%20stronger%20constraint%20at%20your%20scale.%20%24Bu%5Cgg1%24%20means%20stratification%0A%20%20%20%20dominates%20the%20balance%3B%20%24Bu%5Cll1%24%20means%20rotation%20does.%0A%0A%20%20%20%20Second%2C%20dynamically%20%E2%80%94%20where%20%24Bu%24%20actually%20shows%20up%20in%20an%20equation.%0A%20%20%20%20Ch.%208's%20QGPV%20is%20%24q%3D%5Cnabla%5E2%5Cpsi-%5Cpsi%2FL_R%5E2%2B%5Cbeta%20y%24%3B%20estimate%20the%0A%20%20%20%20sizes%20of%20its%20two%20flow-dependent%20terms%20for%20a%20disturbance%20of%20scale%0A%20%20%20%20%24L%24%20and%20streamfunction%20magnitude%20%24%5CPsi%24%3A%0A%0A%20%20%20%20%24%24%5Cfrac%7B%7C%5Ctext%7Brelative%20vorticity%7D%7C%7D%7B%7C%5Ctext%7Bstretching%7D%7C%7D%0A%20%20%20%20%20%20%3D%5Cfrac%7B%5CPsi%2FL%5E2%7D%7B%5CPsi%2FL_R%5E2%7D%0A%20%20%20%20%20%20%3D%5Cfrac%7BL_R%5E2%7D%7BL%5E2%7D%3DBu.%24%24%0A%0A%20%20%20%20%24Bu%5Cgg1%24%3A%20relative%20vorticity%20dominates%20and%20the%20free%20surface%20(or%0A%20%20%20%20interface)%20is%20effectively%20rigid%20%E2%80%94%20the%20disturbance%20behaves%20like%0A%20%20%20%20Ch.%207's%20pure%202D%20vorticity%20dynamics%20*locally*%2C%20but%20its%20energy%20is%0A%20%20%20%20stored%20increasingly%20in%20potential%20form.%20%24Bu%5Cll1%24%3A%20stretching%0A%20%20%20%20dominates%20%E2%80%94%20the%20disturbance%20is%20mostly%20interface%20displacement%2C%20its%0A%20%20%20%20induced%20velocities%20are%20screened%20(Ch.%208's%20Bessel-%24K_0%24%20Green's%0A%20%20%20%20function)%2C%20and%20Rossby%20waves%20at%20that%20scale%20approach%20their%0A%20%20%20%20non-dispersive%20long-wave%20limit.%20%24Bu%5Csim1%24%20is%20where%20the%20two%20terms%0A%20%20%20%20trade%20places%20%E2%80%94%20and%2C%20not%20coincidentally%2C%20where%20baroclinic%0A%20%20%20%20instability%20(Ch.%2016)%20extracts%20energy%20fastest.%0A%0A%20%20%20%20-%20**%24Ro%3E1%24%20%E2%80%94%20unbalanced.**%20Acceleration%20is%20as%20large%20as%20Coriolis%3B%20no%0A%20%20%20%20%20%20steady%20balance%20exists%20to%20expand%20around.%20Inertia-gravity%20waves%0A%20%20%20%20%20%20(Ch.%206)%20dominate%3B%20concepts%20like%20PV%20invertibility%20(Ch.%207)%20still%0A%20%20%20%20%20%20apply%20in%20principle%20but%20aren't%20the%20efficient%20description.%0A%20%20%20%20-%20**%24Ro%3C1%2C%5C%20Bu%3E1%24%20(%24L%3CL_R%24)%20%E2%80%94%20QG%2C%20baroclinic.**%20The%20flow%20is%20smaller%0A%20%20%20%20%20%20than%20the%20deformation%20radius%3A%20stratification%20actively%20resists%0A%20%20%20%20%20%20vertical%20motion%2C%20and%20baroclinic%20structure%20(vertical%20shear%2C%20sloping%0A%20%20%20%20%20%20density%20surfaces)%20is%20dynamically%20central.%20This%20is%20Ch.%2016's%0A%20%20%20%20%20%20territory%2C%20and%20it%20is%20where%20baroclinic%20instability%20operates%20most%0A%20%20%20%20%20%20efficiently%20%E2%80%94%20not%20coincidentally%2C%20since%20%24L%5Csim%20L_R%24%20(the%20%24Bu%5Csim1%24%0A%20%20%20%20%20%20boundary)%20is%20exactly%20the%20Eady%20problem's%20most-unstable%20scale.%0A%20%20%20%20-%20**%24Ro%3C1%2C%5C%20Bu%3C1%24%20(%24L%3EL_R%24)%20%E2%80%94%20QG%2C%20barotropic.**%20The%20flow%20is%20larger%0A%20%20%20%20%20%20than%20the%20deformation%20radius%3A%20the%20stretching%20term%20in%20QGPV%0A%20%20%20%20%20%20(Ch.%208)%20becomes%20negligible%20relative%20to%20the%20barotropic%20vorticity%0A%20%20%20%20%20%20term%2C%20and%20the%20flow%20tends%20toward%20vertically%20rigid%2C%20columnar%0A%20%20%20%20%20%20structure%20%E2%80%94%20Ch.%203's%20Taylor-Proudman%20limit%2C%20realized%20dynamically%0A%20%20%20%20%20%20rather%20than%20by%20literally%20setting%20buoyancy%20to%20zero.%0A%0A%20%20%20%20This%20is%20a%20coarse%2C%20three-region%20caricature%20of%20a%20genuinely%20continuous%0A%20%20%20%20transition%20(Vallis%2C%20*AOFD*%202nd%20ed.%2C%20the%20Ro-Bu%2FRo-Fr%20regime%20diagrams%0A%20%20%20%20in%20ch.%205)%20%E2%80%94%20real%20flows%20cross%20these%20boundaries%20smoothly%2C%20and%20%24Bu%5Csim1%24%0A%20%20%20%20is%20a%20region%20of%20enhanced%20activity%2C%20not%20a%20wall.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Aasync%20def%20_(mo)%3A%0A%20%20%20%20%23%20---%20vetted%20primitives%20from%20gfdlib%20(see%20CLAUDE.md)%20-------------------%0A%20%20%20%20import%20sys%0A%0A%20%20%20%20if%20sys.platform%20%3D%3D%20%22emscripten%22%3A%0A%20%20%20%20%20%20%20%20import%20micropip%0A%20%20%20%20%20%20%20%20await%20micropip.install(%0A%20%20%20%20%20%20%20%20%20%20%20%20str(mo.notebook_location()%20%2F%20%22public%22%20%2F%20%22gfdlib-0.1.0-py3-none-any.whl%22)%0A%20%20%20%20%20%20%20%20)%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20sys.path.insert(0%2C%20str(mo.notebook_dir().parent))%20%20%23%20repo%20root%0A%0A%20%20%20%20import%20numpy%20as%20np%0A%20%20%20%20import%20matplotlib.pyplot%20as%20plt%0A%20%20%20%20from%20matplotlib.colors%20import%20ListedColormap%0A%20%20%20%20from%20gfdlib%20import%20scaling%0A%0A%20%20%20%20return%20ListedColormap%2C%20np%2C%20plt%2C%20scaling%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%23%20Numerical%20scheme%0A%0A%20%20%20%20%60gfdlib.scaling.classify_regime%60%20is%20pure%20algebra%20(two%20comparisons)%2C%0A%20%20%20%20cheap%20enough%20to%20evaluate%20on%20a%20dense%20grid%20and%20render%20as%20a%20filled%0A%20%20%20%20region%20map%20%E2%80%94%20fully%20reactive%2C%20no%20Run%20button.%20The%20marker%20sliders%20set%0A%20%20%20%20%24(%5Clog_%7B10%7DRo%2C%5Clog_%7B10%7DBu)%24%20directly%20(a%20proxy%20for%20%22clicking%22%20a%20point%0A%20%20%20%20on%20the%20map)%3B%20the%20small%20labeled%20dots%20are%20typical%20%24(Ro%2CBu)%24%20values%20for%0A%20%20%20%20five%20earlier%20chapters'%20example%20flows%2C%20placed%20by%20hand%20from%20each%0A%20%20%20%20chapter's%20stated%20parameters.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(ListedColormap%2C%20np%2C%20scaling)%3A%0A%20%20%20%20%23%20---%20the%20region%20map%20itself%20(fixed%20resolution%2C%20always%20drawn)%20------------%0A%20%20%20%20_logRo%20%3D%20np.linspace(-2.0%2C%201.3%2C%20400)%0A%20%20%20%20_logBu%20%3D%20np.linspace(-2.0%2C%202.0%2C%20400)%0A%20%20%20%20_LOGRO%2C%20_LOGBU%20%3D%20np.meshgrid(_logRo%2C%20_logBu%2C%20indexing%3D%22ij%22)%0A%20%20%20%20_labels%20%3D%20scaling.classify_regime(10.0%20**%20_LOGRO%2C%2010.0%20**%20_LOGBU)%0A%20%20%20%20_cmap%20%3D%20ListedColormap(%5B%22%23DD8452%22%2C%20%22%234C72B0%22%2C%20%22%2355A868%22%5D)%0A%0A%20%20%20%20def%20draw_map(ax)%3A%0A%20%20%20%20%20%20%20%20im%20%3D%20ax.pcolormesh(_LOGRO%2C%20_LOGBU%2C%20_labels%2C%20cmap%3D_cmap%2C%20vmin%3D-0.5%2C%20vmax%3D2.5%2C%20shading%3D%22auto%22)%0A%20%20%20%20%20%20%20%20ax.axvline(0.0%2C%20color%3D%22k%22%2C%20lw%3D1.2)%0A%20%20%20%20%20%20%20%20ax.axhline(0.0%2C%20color%3D%22k%22%2C%20lw%3D1.2)%0A%20%20%20%20%20%20%20%20ax.set_xlabel(%22%24%5C%5Clog_%7B10%7DRo%24%22)%3B%20ax.set_ylabel(%22%24%5C%5Clog_%7B10%7DBu%24%22)%0A%20%20%20%20%20%20%20%20return%20im%0A%0A%20%20%20%20return%20(draw_map%2C)%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20logRo_ui%20%3D%20mo.ui.slider(-2.0%2C%201.3%2C%20step%3D0.05%2C%20value%3D-1.0%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3D%22%24%5C%5Clog_%7B10%7DRo%24%22%2C%20show_value%3DTrue)%0A%20%20%20%20logBu_ui%20%3D%20mo.ui.slider(-2.0%2C%202.0%2C%20step%3D0.05%2C%20value%3D0.0%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3D%22%24%5C%5Clog_%7B10%7DBu%24%22%2C%20show_value%3DTrue)%0A%20%20%20%20mo.vstack(%5Bmo.hstack(%5BlogRo_ui%2C%20logBu_ui%5D%2C%20justify%3D%22start%22)%5D)%0A%20%20%20%20return%20logBu_ui%2C%20logRo_ui%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(draw_map%2C%20logBu_ui%2C%20logRo_ui%2C%20mo%2C%20plt)%3A%0A%20%20%20%20%23%20---%20the%20marker%20point%20%2B%20reference%20chapter%20examples%20----------------------%0A%20%20%20%20_refs%20%3D%20%5B%0A%20%20%20%20%20%20%20%20(%22Ch.5%20synoptic%20front%22%2C%20%20%20%20%20%20%20-1.0%2C%20%200.0)%2C%0A%20%20%20%20%20%20%20%20(%22Ch.16%20baroclinic%20eddy%22%2C%20%20%20%20%20-1.3%2C%20%200.05)%2C%0A%20%20%20%20%20%20%20%20(%22Ch.18%202D%20turbulence%2Fjets%22%2C%20%20-1.7%2C%20-1.3)%2C%0A%20%20%20%20%20%20%20%20(%22Ch.6%20large-scale%20surge%22%2C%20%20%20%20-1.3%2C%20-1.7)%2C%0A%20%20%20%20%20%20%20%20(%22Ch.6%20small-scale%20burst%22%2C%20%20%20%20-0.5%2C%20%201.3)%2C%0A%20%20%20%20%5D%0A%0A%20%20%20%20fig1%2C%20ax1%20%3D%20plt.subplots(figsize%3D(7.5%2C%206)%2C%20constrained_layout%3DTrue)%0A%20%20%20%20im1%20%3D%20draw_map(ax1)%0A%20%20%20%20cbar1%20%3D%20fig1.colorbar(im1%2C%20ax%3Dax1%2C%20ticks%3D%5B0%2C%201%2C%202%5D)%0A%20%20%20%20cbar1.ax.set_yticklabels(%5B%22unbalanced%22%2C%20%22QG%2C%20baroclinic%22%2C%20%22QG%2C%20barotropic%22%5D)%0A%0A%20%20%20%20for%20_name%2C%20_lr%2C%20_lb%20in%20_refs%3A%0A%20%20%20%20%20%20%20%20ax1.plot(_lr%2C%20_lb%2C%20%22o%22%2C%20color%3D%22white%22%2C%20markeredgecolor%3D%22k%22%2C%20ms%3D8%2C%20zorder%3D4)%0A%20%20%20%20%20%20%20%20ax1.annotate(_name%2C%20(_lr%2C%20_lb)%2C%20textcoords%3D%22offset%20points%22%2C%20xytext%3D(6%2C%206)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20fontsize%3D7.5%2C%20color%3D%22k%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20bbox%3Ddict(boxstyle%3D%22round%2Cpad%3D0.15%22%2C%20fc%3D%22white%22%2C%20ec%3D%22none%22%2C%20alpha%3D0.75))%0A%0A%20%20%20%20_Ro%2C%20_Bu%20%3D%2010.0%20**%20logRo_ui.value%2C%2010.0%20**%20logBu_ui.value%0A%20%20%20%20ax1.plot(logRo_ui.value%2C%20logBu_ui.value%2C%20%22*%22%2C%20color%3D%22crimson%22%2C%20ms%3D20%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20markeredgecolor%3D%22k%22%2C%20zorder%3D5)%0A%20%20%20%20ax1.set_title(f%22you%20are%20here%3A%20%20%24Ro%3D%7B_Ro%3A.2f%7D%24%2C%20%20%24Bu%3D%7B_Bu%3A.2f%7D%24%22)%0A%20%20%20%20mo.vstack(%5Bfig1%5D)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(logBu_ui%2C%20logRo_ui%2C%20mo%2C%20scaling)%3A%0A%20%20%20%20%23%20---%20text%20read-out%20for%20the%20marker%20point%20---------------------------------%0A%20%20%20%20_Ro%2C%20_Bu%20%3D%2010.0%20**%20logRo_ui.value%2C%2010.0%20**%20logBu_ui.value%0A%20%20%20%20_label%20%3D%20int(scaling.classify_regime(_Ro%2C%20_Bu))%0A%20%20%20%20_msgs%20%3D%20%7B%0A%20%20%20%20%20%20%20%200%3A%20(%22**Unbalanced.**%20No%20steady%20balance%20to%20lean%20on%20%E2%80%94%20the%20natural%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%22description%20is%20Ch.%206's%20inertia-gravity-wave%20adjustment%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%22problem%2C%20not%20a%20balanced-flow%20chapter.%22)%2C%0A%20%20%20%20%20%20%20%201%3A%20(%22**QG%2C%20baroclinic.**%20Smaller%20than%20the%20deformation%20radius%20%E2%80%94%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%22stratification%20and%20vertical%20structure%20are%20central.%20This%20is%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%22the%20Ch.%2016%20baroclinic-instability%20regime%2C%20and%20the%20natural%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%22scale%20for%20developing%20storms%20and%20ocean%20mesoscale%20eddies.%22)%2C%0A%20%20%20%20%20%20%20%202%3A%20(%22**QG%2C%20barotropic.**%20Larger%20than%20the%20deformation%20radius%20%E2%80%94%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%22rotation%20dominates%2C%20the%20flow%20tends%20columnar%20and%20vertically%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%22rigid%20(Ch.%203's%20Taylor-Proudman%20limit)%2C%20and%20Ch.%2018's%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%22barotropic-turbulence%20machinery%20is%20the%20right%20tool.%22)%2C%0A%20%20%20%20%7D%0A%20%20%20%20mo.md(_msgs%5B_label%5D)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%23%23%20Try%20this%0A%0A%20%20%20%20-%20**Walk%20the%20boundary.**%20Hold%20%24%5Clog_%7B10%7DBu%3D0%24%20(exactly%20%24L%3DL_R%24)%20and%0A%20%20%20%20%20%20sweep%20%24%5Clog_%7B10%7DRo%24%20across%200%3A%20confirm%20the%20region%20flips%20from%0A%20%20%20%20%20%20%22QG%2C%20baroclinic%22%20to%20%22unbalanced%22%20exactly%20at%20%24Ro%3D1%24%2C%20with%20no%0A%20%20%20%20%20%20dependence%20at%20all%20on%20%24Bu%24%20at%20that%20moment%20%E2%80%94%20the%20%24Ro%3D1%24%20boundary%0A%20%20%20%20%20%20is%20a%20vertical%20line%20for%20a%20reason%20(the%20classifier%20checks%20%24Ro%24%0A%20%20%20%20%20%20first).%0A%20%20%20%20-%20**Find%20yourself%20among%20the%20reference%20dots.**%20The%20two%20Ch.%206%20points%0A%20%20%20%20%20%20(small-scale%20burst%20vs.%20large-scale%20surge)%20sit%20on%20opposite%20sides%0A%20%20%20%20%20%20of%20%24Bu%3D1%24%20despite%20being%20*the%20same%20notebook*%20%E2%80%94%20only%20%24%5Csigma%2FL_R%24%0A%20%20%20%20%20%20differs%20between%20the%20two%20presets.%20Does%20that%20match%20what%20you%20saw%0A%20%20%20%20%20%20there%3A%20the%20small-scale%20burst%20mostly%20radiating%20away%20as%20gravity%0A%20%20%20%20%20%20waves%20(unbalanced-leaning%2C%20high%20%24Bu%24)%2C%20the%20large-scale%20surge%0A%20%20%20%20%20%20surviving%20as%20a%20balanced%20remnant%20(Ch.%208-style%20dynamics%2C%20low-to-%0A%20%20%20%20%20%20moderate%20%24Bu%24)%3F%0A%20%20%20%20-%20**Locate%20Ch.%2020's%20gyres.**%20The%20wind-driven%20circulation's%20basin%0A%20%20%20%20%20%20interior%20is%20deeply%20in%20the%20%24Ro%5Cll1%24%20regime%2C%20but%20its%20western%0A%20%20%20%20%20%20boundary%20current%20is%20not%20%E2%80%94%20friction%2C%20not%20%24Ro%24%2C%20sets%20that%20layer's%0A%20%20%20%20%20%20width.%20Where%20would%20you%20guess%20the%20boundary-current%20sliver%20sits%20on%0A%20%20%20%20%20%20this%20map%2C%20and%20why%20might%20a%20map%20built%20purely%20from%20%24Ro%2CBu%24%20(which%0A%20%20%20%20%20%20says%20nothing%20about%20friction)%20be%20the%20wrong%20tool%20for%20it%20specifically%3F%0A%0A%20%20%20%20%23%23%23%20What%20you%20should%20have%20seen%0A%0A%20%20%20%20Every%20notebook%20you've%20run%20so%20far%2C%20however%20different%20they%20looked%2C%0A%20%20%20%20occupies%20a%20definite%2C%20predictable%20position%20on%20this%20one%20plane%20%E2%80%94%20and%0A%20%20%20%20that%20position%20alone%20tells%20you%20which%20chapter's%20machinery%20is%20the%0A%20%20%20%20natural%20description.%20The%20map%20is%20a%20caricature%20(three%20flat%20regions%0A%20%20%20%20standing%20in%20for%20a%20smooth%20transition)%2C%20but%20the%20caricature%20is%20honest%3A%0A%20%20%20%20%24Ro%24%20really%20does%20gate%20whether%20balance%20exists%20at%20all%2C%20and%20%24Bu%24%20really%0A%20%20%20%20does%20gate%20whether%20stratification%20or%20rotation%20controls%20the%20balance%0A%20%20%20%20once%20it%20does.%20This%20is%20the%20last%20chapter%20of%20Part%20I%3B%20every%20remaining%0A%20%20%20%20chapter%20in%20the%20book%20is%2C%20in%20this%20map's%20language%2C%20an%20exploration%20of%0A%20%20%20%20one%20specific%20point%20(or%20one%20specific%20boundary)%20on%20it.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_()%3A%0A%20%20%20%20import%20marimo%20as%20mo%0A%0A%20%20%20%20return%20(mo%2C)%0A%0A%0Aif%20__name__%20%3D%3D%20%22__main__%22%3A%0A%20%20%20%20app.run()%0A</marimo-code></head>
+  <body>
+    <div id="root"></div>
+    <!-- This is a portal for the data editor to render in -->
+    <div id="portal" data-testid="glide-portal" style="position: fixed; left: 0; top: 0; z-index: 9999"></div>
+    <script data-marimo="true">
+      Object.defineProperty(window, "__MARIMO_MOUNT_CONFIG__", {
+        value: Object.freeze({
+            "filename": "notebook.py",
+            "cwd": "",
+            "lspWorkspace": null,
+            "mode": "read",
+            "version": "0.23.9",
+            "serverToken": "unused",
+            "config": {"ai": {"custom_providers": {}, "enabled": true, "models": {"custom_models": [], "displayed_models": []}}, "completion": {"activate_on_typing": true, "auto_close_pairs": true, "copilot": false, "signature_hint_on_typing": false}, "diagnostics": {"sql_linter": true}, "display": {"cell_output": "below", "code_editor_font_size": 14, "dataframes": "rich", "default_table_max_columns": 50, "default_table_page_size": 10, "default_width": "medium", "reference_highlighting": true, "theme": "light"}, "formatting": {"line_length": 79}, "keymap": {"overrides": {}, "preset": "default"}, "language_servers": {"pylsp": {"enable_flake8": false, "enable_mypy": true, "enable_pydocstyle": false, "enable_pyflakes": false, "enable_pylint": false, "enable_ruff": true, "enabled": false}}, "mcp": {"mcpServers": {}, "presets": []}, "package_management": {"manager": "pip"}, "runtime": {"auto_instantiate": false, "auto_reload": "off", "default_csv_encoding": "utf-8", "default_sql_output": "auto", "on_cell_change": "autorun", "output_max_bytes": 8000000, "reactive_tests": true, "show_tracebacks": false, "std_stream_max_bytes": 1000000, "watcher_on_save": "lazy"}, "save": {"autosave": "off", "autosave_delay": 1000, "format_on_save": false}, "server": {"browser": "default", "follow_symlink": false}, "snippets": {"custom_paths": [], "include_default_snippets": true}},
+            "configOverrides": {},
+            "appConfig": {"sql_output": "auto", "width": "medium"},
+            "view": {"showAppCode": false},
+            "notebook": null,
+            "session": null,
+            "runtimeConfig": null,
+        }),
+        writable: false,
+        configurable: false,
+      });
+    </script>
+  </body>
+</html>
