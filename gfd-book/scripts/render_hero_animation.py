@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 DATA = "notebooks/data/ch16_baroclinic-instability.npz"
 OUT = "site/static/media/hero-baroclinic.gif"
 START_FRAME = 38  # skip the near-zero-amplitude lead-in (tuned by eye)
-FPS = 10
+FPS = 2  # 5x slower than the original 10fps, so the instability reads as a slow evolution
 N_TILES = 4  # doubly-periodic field -> seamless horizontal tiling into a wide banner
 HEIGHT_PIXELS = 200  # native raster height
 WIDTH_PIXELS = HEIGHT_PIXELS * N_TILES  # must stay an exact N_TILES multiple of the height
