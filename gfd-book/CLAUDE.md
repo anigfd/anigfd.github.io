@@ -1,4 +1,4 @@
-# CLAUDE.md — Interactive Lecture Notes on Geophysical Fluid Dynamics
+# CLAUDE.md — An interactive Geophysical Fluid Dynamics Textbook
 
 You are helping build an **interactive GFD textbook**: long-form text on a Hugo
 site + runnable **marimo** notebooks exported to **WebAssembly** (Pyodide) so

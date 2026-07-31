@@ -1,4 +1,4 @@
-# Interactive Lecture Notes on Geophysical Fluid Dynamics
+# An interactive Geophysical Fluid Dynamics Textbook
 
 Graduate-level lecture notes on geophysical fluid dynamics: long-form text
 on a Hugo site plus runnable **[marimo](https://marimo.io)** notebooks
