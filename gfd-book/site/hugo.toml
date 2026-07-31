@@ -1,5 +1,5 @@
 baseURL = "https://www.aneeshcs.com/gfd/"
-title = "Interactive Lecture Notes on Geophysical Fluid Dynamics"
+title = "An interactive Geophysical Fluid Dynamics Textbook"
 disableKinds = ["taxonomy", "term", "rss", "sitemap"]
 
 # LaTeX rendered server-side (transform.ToMath via the passthrough render hook)

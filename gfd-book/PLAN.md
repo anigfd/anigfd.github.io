@@ -1,4 +1,4 @@
-# Building *Interactive Lecture Notes on Geophysical Fluid Dynamics*
+# Building *An interactive Geophysical Fluid Dynamics Textbook*
 ### A plan for a browser-runnable GFD textbook (marimo + WebAssembly)
 
 **Author target site:** `aneeshcs.com/gfd/` — Hugo Blox, notebooks exported to HTML, run in-browser via Pyodide/WASM.
