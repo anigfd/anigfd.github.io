@@ -19,7 +19,9 @@ DATA = "notebooks/data/ch16_baroclinic-instability.npz"
 OUT = "site/static/media/hero-baroclinic.gif"
 START_FRAME = 38  # skip the near-zero-amplitude lead-in (tuned by eye)
 FPS = 10
-PIXELS = 180  # square output
+N_TILES = 4  # doubly-periodic field -> seamless horizontal tiling into a wide banner
+HEIGHT_PIXELS = 200  # native raster height
+WIDTH_PIXELS = HEIGHT_PIXELS * N_TILES  # must stay an exact N_TILES multiple of the height
 
 
 def render():
@@ -28,12 +30,15 @@ def render():
     vmax = np.abs(q1).max()  # one global scale -- the growth itself is the story
 
     dpi = 100
-    size_in = PIXELS / dpi
+    size_in = (WIDTH_PIXELS / dpi, HEIGHT_PIXELS / dpi)
     frames = []
     for field in q1:
-        fig = plt.figure(figsize=(size_in, size_in), dpi=dpi)
+        # tile axis 0: field.T (below) swaps axes for imshow, so tiling axis 0
+        # here becomes the horizontal direction of the displayed banner
+        tiled = np.tile(field, (N_TILES, 1))
+        fig = plt.figure(figsize=size_in, dpi=dpi)
         ax = fig.add_axes((0, 0, 1, 1))
-        ax.imshow(field.T, origin="lower", cmap="RdBu_r", vmin=-vmax, vmax=vmax, aspect="equal")
+        ax.imshow(tiled.T, origin="lower", cmap="RdBu_r", vmin=-vmax, vmax=vmax, aspect="equal")
         ax.axis("off")
         buf = io.BytesIO()
         fig.savefig(buf, format="png", dpi=dpi)
