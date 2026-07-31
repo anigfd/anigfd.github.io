@@ -54,8 +54,10 @@
 
   /* -- front page -- */
   .hero { padding: 1rem 0 2.5rem; }
-  .hero-motif { width: 100%; height: 130px; overflow: hidden; margin-bottom: 0.5rem; }
-  .hero-motif svg { display: block; width: 100%; height: 100%; }
+  .hero-motif { width: 230px; height: 230px; overflow: hidden; margin: 0 auto; border-radius: 12px; }
+  .hero-motif img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .hero-motif-caption { text-align: center; font: 0.78rem system-ui, sans-serif; color: var(--muted);
+    margin: 0.5rem 0 0; }
   .hero-text h1 { font-size: 2.1rem; margin: 0 0 0.6rem; }
   .hero-text > p { font-size: 1.1rem; color: var(--muted); max-width: 42rem; }
   .cta-row { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.3rem; }
@@ -81,7 +83,7 @@
 
   @media (max-width: 640px) {
     .hero-text h1 { font-size: 1.6rem; }
-    .hero-motif { height: 80px; }
+    .hero-motif { width: 170px; height: 170px; }
     .part-grid { grid-template-columns: 1fr; }
   }
 </style>
