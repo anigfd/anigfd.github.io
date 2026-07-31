@@ -22,7 +22,7 @@
   }
   :root[data-theme="dark"] { --ink: #e8e8e8; --muted: #999; --accent: #6cb2e8; --rule: #333; --paper: #16181a; --card: #1e2124; }
   :root[data-theme="dark"] code { background: #22252a; }
-  body { margin: 0; color: var(--ink); background: var(--paper); font: 17px/1.6 Georgia, 'Times New Roman', serif; }
+  body { margin: 0; color: var(--ink); background: var(--paper); font: 17px/1.6 Georgia, 'Times New Roman', serif; overflow-x: hidden; }
   header.site { border-bottom: 1px solid var(--rule); font-family: system-ui, sans-serif; }
   header.site .inner, main, footer.site .inner { max-width: 46rem; margin: 0 auto; padding: 0.7rem 1.2rem; }
   header.site .inner { display: flex; align-items: center; }
@@ -55,7 +55,8 @@
 
    
   .hero { padding: 1rem 0 2.5rem; }
-  .hero-motif { width: 230px; height: 230px; overflow: hidden; margin: 0 auto; border-radius: 12px; }
+  .hero-motif { width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
+    height: 260px; overflow: hidden; }
   .hero-motif img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .hero-motif-caption { text-align: center; font: 0.78rem system-ui, sans-serif; color: var(--muted);
     margin: 0.5rem 0 0; }
@@ -84,7 +85,7 @@
 
   @media (max-width: 640px) {
     .hero-text h1 { font-size: 1.6rem; }
-    .hero-motif { width: 170px; height: 170px; }
+    .hero-motif { height: 190px; }
     .part-grid { grid-template-columns: 1fr; }
   }
 </style>
@@ -127,7 +128,7 @@
 <section class="hero">
   <div class="hero-motif">
     <img src="/media/hero-baroclinic.gif"
-         alt="Animated upper-layer potential-vorticity field from a baroclinic instability life cycle, growing from a smooth wave into a tilted, breaking pattern">
+         alt="Animated upper-layer potential-vorticity field from a baroclinic instability life cycle, tiled across a wide banner, growing from a smooth wave into a tilted, breaking pattern">
   </div>
   <p class="hero-motif-caption">Baroclinic instability life cycle — Ch. 16</p>
   <div class="hero-text">
