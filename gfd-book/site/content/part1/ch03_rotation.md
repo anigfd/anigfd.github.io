@@ -19,7 +19,7 @@ wind — it is that relation's zero-buoyancy limit.
 
 ## The model
 
-Notebook: `notebooks/ch03_rotation.py` → exported to `/nb/ch03_rotation/`.
+Notebook: `notebooks/ch03_rotation.py` → exported to `/nb/ch03_rotation.html`.
 Governing equations use the symbols in [notation]({{< relref "notation.md" >}}).
 
 $$\frac{du}{dt}=fv,\qquad\frac{dv}{dt}=-fu
@@ -32,7 +32,7 @@ of the first equation, cross-checked against an independent
 thermal-wind machinery from Ch. 5 unchanged, sweeping the buoyancy contrast
 toward zero.
 
-{{< marimo src="/nb/ch03_rotation/" >}}
+{{< marimo src="/nb/ch03_rotation.html" >}}
 
 ## Both fluids
 

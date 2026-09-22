@@ -19,7 +19,7 @@ chain of Kelvin-Helmholtz vortices.
 
 ## The model
 
-Notebook: `notebooks/ch15_barotropic-instability.py` → exported to `/nb/ch15_barotropic-instability/`.
+Notebook: `notebooks/ch15_barotropic-instability.py` → exported to `/nb/ch15_barotropic-instability.html`.
 Governing equations use the symbols in [notation]({{< relref "notation.md" >}}):
 
 $$(U-c)(\phi''-k^2\phi)+(\beta-U'')\phi=0.$$
@@ -61,7 +61,7 @@ value (Michalke 1964, $k\delta\approx0.4446$).
    pairing/merger (Ch. 7's physics taking over). Linear theory predicts
    only the beginning — but it *chooses* which beginning.
 
-{{< marimo src="/nb/ch15_barotropic-instability/" >}}
+{{< marimo src="/nb/ch15_barotropic-instability.html" >}}
 
 ## Both fluids
 

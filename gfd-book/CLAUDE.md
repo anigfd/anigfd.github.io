@@ -4,7 +4,7 @@ You are helping build an **interactive GFD textbook**: long-form text on a Hugo
 site + runnable **marimo** notebooks exported to **WebAssembly** (Pyodide) so
 readers execute every model in the browser, no install.
 
-- Live site: https://www.aneeshcs.com/gfd/
+- Live site: https://anigfd.github.io/
 - Audience: first-year AOS / applied-math / physics PhD students.
 - Pedagogy: **Vallis-style** (systematic scaling, balance, instability;
   physically grounded). Applications **balanced & fluid-first** — teach each
@@ -35,13 +35,36 @@ docs/              # contributor docs: architecture.md, gfdlib.md (API tour), au
 ## Build / preview / test commands
 - Export all notebooks to WASM:  `make notebooks`
   (first builds the gfdlib wheel into `notebooks/public/`; marimo copies that
-  folder into every export, and notebooks micropip-install the wheel when
+  folder into the export, and notebooks micropip-install the wheel when
   running under Pyodide — see the import cell in `notebooks/_template.py`)
-- Export one:  `marimo export html-wasm notebooks/ch06_geostrophic_adjustment.py -o site/static/nb/ch06 --mode run`
+- Export one:  `make nb-one NB=ch06_geostrophic-adjustment`
   (use `--mode edit` for chapters where the reader should edit code live)
 - Preview site:  `make serve`  (runs `hugo server -D` from `site/`)
 - Run numeric tests:  `make test`  (pytest on `tests/` — MUST pass before commit)
-- Deploy: build the Hugo site and publish `site/public/` (do not touch the live site without explicit approval).
+- Deploy: automatic. Merging to `main` runs `.github/workflows/deploy.yml`,
+  which re-exports every notebook, builds the site and publishes to GitHub
+  Pages. Nothing built is ever committed.
+
+## Build facts that are easy to break
+- Chapters export as `-o site/static/nb/chNN_slug.html` — a **file**, not a
+  directory. That form makes the parent the output directory, which is what
+  gives one shared `assets/` and one shared `public/`. Switching to
+  `-o .../chNN_slug/` silently multiplies the built site by ~27 MB per
+  chapter (33 MB → ~650 MB) and makes readers re-download Pyodide on every
+  chapter instead of hitting a warm cache.
+- `make clean` must run before a full export: marimo *merges* into an
+  existing `assets/` rather than replacing it, so stale chunks accumulate.
+- With one shared `assets/`, every export rehashes every chapter's chunk
+  filenames, so a stale browser cache breaks the page.
+  `scripts/patch_chunk_reload.py` injects a reload-once handler; the Makefile
+  runs it. Do not drop it.
+- `marimo export` drops a stray `CLAUDE.md` into the output directory; the
+  Makefile removes it. It must not reach the published site.
+- Precomputed chapter data goes in `notebooks/public/<name>.npz`, fetched
+  with `mo.notebook_location() / "public" / ...`. There is one shared
+  `public/`, but nothing in it is preloaded — only the chapter that asks for
+  a file downloads it.
+- The Hugo shortcode takes the file: `{{< marimo src="/nb/chNN_slug.html" >}}`.
 
 ## Performance budget (Pyodide is single-threaded, ~3-10x slower than native)
 - Spectral grids 64^2-256^2. The included solver does 128^2 x 400 steps in <1s native.

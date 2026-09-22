@@ -18,7 +18,7 @@ tropopause.
 
 ## The model
 
-Notebook: `notebooks/ch05_geostrophic-balance.py` → exported to `/nb/ch05_geostrophic-balance/`.
+Notebook: `notebooks/ch05_geostrophic-balance.py` → exported to `/nb/ch05_geostrophic-balance.html`.
 Governing equations use the symbols in [notation]({{< relref "notation.md" >}}):
 
 $$u_g=-\frac{\phi_y}{f},\qquad v_g=\frac{\phi_x}{f},\qquad \phi_z=b
@@ -56,7 +56,7 @@ live.
    around, which is why real jet cores hug the tropopause on every
    observed cross-section.
 
-{{< marimo src="/nb/ch05_geostrophic-balance/" >}}
+{{< marimo src="/nb/ch05_geostrophic-balance.html" >}}
 
 ## Both fluids
 

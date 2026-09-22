@@ -22,7 +22,7 @@ linear **potential vorticity** $q=\zeta-\hat\eta$.
 
 ## The model
 
-Notebook: `notebooks/ch06_geostrophic-adjustment.py` → exported to `/nb/ch06_geostrophic-adjustment/`.
+Notebook: `notebooks/ch06_geostrophic-adjustment.py` → exported to `/nb/ch06_geostrophic-adjustment.html`.
 Governing equations use the symbols in [notation]({{< relref "notation.md" >}}):
 
 $$\hat\eta_t+\hat u_x+\hat v_y=0,\qquad
@@ -63,7 +63,7 @@ drift westward as a Rossby wave.
    remnant itself drifts westward — adjustment hands the disturbance off
    to Rossby-wave dynamics (Ch. 8–9), which is where its story continues.
 
-{{< marimo src="/nb/ch06_geostrophic-adjustment/" >}}
+{{< marimo src="/nb/ch06_geostrophic-adjustment.html" >}}
 
 ## Both fluids
 

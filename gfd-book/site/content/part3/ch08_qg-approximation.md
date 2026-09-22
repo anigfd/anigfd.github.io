@@ -20,7 +20,7 @@ an isolated eddy drifting westward while it sheds a trailing wake — the
 
 ## The model
 
-Notebook: `notebooks/ch08_qg-approximation.py` → exported to `/nb/ch08_qg-approximation/`.
+Notebook: `notebooks/ch08_qg-approximation.py` → exported to `/nb/ch08_qg-approximation.html`.
 Governing equations use the symbols in [notation]({{< relref "notation.md" >}}):
 
 $$q_t+J(\psi,q)=0,\qquad q=\nabla^2\psi-\frac{\psi}{L_R^2}+\beta y.$$
@@ -56,7 +56,7 @@ Rossby-wave dispersion relation.
    long waves all bunch at that speed — why oceanic eddies of many sizes
    drift westward at nearly the same rate.
 
-{{< marimo src="/nb/ch08_qg-approximation/" >}}
+{{< marimo src="/nb/ch08_qg-approximation.html" >}}
 
 ## Both fluids
 

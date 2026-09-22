@@ -20,7 +20,7 @@ instability in geophysical fluid dynamics.
 ## The model
 
 Notebook: `notebooks/ch16_baroclinic-instability.py` → exported to
-`/nb/ch16_baroclinic-instability/`. Governing equations use the symbols in
+`/nb/ch16_baroclinic-instability.html`. Governing equations use the symbols in
 [notation]({{< relref "notation.md" >}}):
 
 $$\sigma=\mu c_i,\qquad \mu=\frac{kNH}{f_0},\qquad
@@ -75,7 +75,7 @@ lets you test parameter changes yourself over the growth phase.
    changes dramatically — and at $r=0$ it doesn't equilibrate at all,
    the failure mode "The model" section describes.
 
-{{< marimo src="/nb/ch16_baroclinic-instability/" >}}
+{{< marimo src="/nb/ch16_baroclinic-instability.html" >}}
 
 ## Both fluids
 

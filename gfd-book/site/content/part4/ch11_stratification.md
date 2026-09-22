@@ -18,7 +18,7 @@ mode 1 only.
 ## The model
 
 Notebook: `notebooks/ch11_stratification.py` → exported to
-`/nb/ch11_stratification/`. Governing equations use the symbols in
+`/nb/ch11_stratification.html`. Governing equations use the symbols in
 [notation]({{< relref "notation.md" >}}).
 
 $$\frac{d}{dz}\!\left[\frac{1}{N^2(z)}\frac{d\Phi_n}{dz}\right]
@@ -54,7 +54,7 @@ constant-$N$ solution $\Phi_n=\cos(n\pi z/H)$, $c_n=N_0H/(n\pi)$.
    $\sim$200 km in the subtropics to $\sim$10 km in the subpolar oceans
    (Chelton et al. 1998, in the further reading).
 
-{{< marimo src="/nb/ch11_stratification/" >}}
+{{< marimo src="/nb/ch11_stratification.html" >}}
 
 ## Both fluids
 

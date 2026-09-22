@@ -20,7 +20,7 @@ pointwise against the full nonlinear barotropic model.
 ## The model
 
 Notebook: `notebooks/ch23_wave-activity.py` → exported to
-`/nb/ch23_wave-activity/`. Governing equations use the symbols in
+`/nb/ch23_wave-activity.html`. Governing equations use the symbols in
 [notation]({{< relref "notation.md" >}}).
 
 $$A=\frac{\overline{q'^2}}{2\bar q_y},\qquad
@@ -36,7 +36,7 @@ $\bar q_y(y)$ from every snapshot. The residual $\Delta(\bar u+A)$ comes
 out below 1% of either term (also enforced in the test suite), and a
 hyperviscosity slider provides the theorem's off switch.
 
-{{< marimo src="/nb/ch23_wave-activity/" >}}
+{{< marimo src="/nb/ch23_wave-activity.html" >}}
 
 ## Both fluids
 

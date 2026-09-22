@@ -17,7 +17,7 @@ and particle trajectories.
 
 ## The model
 
-Notebook: `notebooks/ch01_kinematics.py` → exported to `/nb/ch01_kinematics/`.
+Notebook: `notebooks/ch01_kinematics.py` → exported to `/nb/ch01_kinematics.html`.
 Governing equations use the symbols in [notation]({{< relref "notation.md" >}}).
 
 $$\frac{d\mathbf x}{dt}=\mathbf u(\mathbf x,t),\qquad
@@ -33,7 +33,7 @@ strain-dominated, filament-producing regions ($W>0$). A ring of tracer
 particles is released around the vortex and advected with
 `gfdlib.timestep.rk4`.
 
-{{< marimo src="/nb/ch01_kinematics/" >}}
+{{< marimo src="/nb/ch01_kinematics.html" >}}
 
 ## Both fluids
 

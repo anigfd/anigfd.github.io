@@ -19,7 +19,7 @@ theorem (Miles-Howard) governing the third.
 ## The model
 
 Notebook: `notebooks/ch17_other-instabilities.py` → exported to
-`/nb/ch17_other-instabilities/`. Governing equations use the symbols in
+`/nb/ch17_other-instabilities.html`. Governing equations use the symbols in
 [notation]({{< relref "notation.md" >}}):
 
 $$q=(f-\partial U/\partial y)N^2-f(\partial U/\partial z)^2,\qquad
@@ -71,7 +71,7 @@ notebook flags this honestly rather than hiding it.
    $k\delta\approx0.445$. Stratification is a continuous deformation of
    the barotropic problem, not a different subject.
 
-{{< marimo src="/nb/ch17_other-instabilities/" >}}
+{{< marimo src="/nb/ch17_other-instabilities.html" >}}
 
 ## Both fluids
 

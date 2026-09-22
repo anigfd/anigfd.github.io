@@ -19,7 +19,7 @@ directly from a fluid-dynamics problem, not an abstract map.
 
 ## The model
 
-Notebook: `notebooks/ch14_convection-lorenz.py` → exported to `/nb/ch14_convection-lorenz/`.
+Notebook: `notebooks/ch14_convection-lorenz.py` → exported to `/nb/ch14_convection-lorenz.html`.
 Governing equations use the symbols in [notation]({{< relref "notation.md" >}}):
 
 $$\zeta_t+J(\psi,\zeta)=Pr\nabla^2\zeta+Pr\,Ra\,\theta_x,\qquad
@@ -62,7 +62,7 @@ $r_H\approx24.74$ visible in one figure.
    windows, the fine structure exercise 3 sends you hunting for with a
    narrower sweep and more $r$ values.
 
-{{< marimo src="/nb/ch14_convection-lorenz/" >}}
+{{< marimo src="/nb/ch14_convection-lorenz.html" >}}
 
 ## Both fluids
 

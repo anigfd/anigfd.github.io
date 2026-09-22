@@ -21,7 +21,7 @@ proportion to the projection *off* the manifold.
 ## The model
 
 Notebook: `notebooks/ch24_balanced-models.py` → exported to
-`/nb/ch24_balanced-models/`. Governing equations use the symbols in
+`/nb/ch24_balanced-models.html`. Governing equations use the symbols in
 [notation]({{< relref "notation.md" >}}).
 
 $$(u,v)_{t=0}=\alpha\,(-\eta_{0y},\ \eta_{0x}),\qquad
@@ -33,7 +33,7 @@ diagnostic (`gfdlib.shallowwater.divergence`): the slow mode has
 $\delta=0$ identically while inertia-gravity waves are made of it, so RMS
 divergence directly meters the distance from the slow manifold.
 
-{{< marimo src="/nb/ch24_balanced-models/" >}}
+{{< marimo src="/nb/ch24_balanced-models.html" >}}
 
 ## Both fluids
 

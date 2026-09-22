@@ -19,7 +19,7 @@ a free parameter.
 ## The model
 
 Notebook: `notebooks/ch19_eddy-transport.py` → exported to
-`/nb/ch19_eddy-transport/`. Governing equations use the symbols in
+`/nb/ch19_eddy-transport.html`. Governing equations use the symbols in
 [notation]({{< relref "notation.md" >}}):
 
 $$\frac{\partial c'}{\partial t}+J(\psi,c')=-\Gamma v+\kappa\nabla^2c',
@@ -65,7 +65,7 @@ possible eddy flux without a flow).
    lands within a factor of two — exercise 2 turns this comparison into a
    habit.
 
-{{< marimo src="/nb/ch19_eddy-transport/" >}}
+{{< marimo src="/nb/ch19_eddy-transport.html" >}}
 
 ## Both fluids
 
