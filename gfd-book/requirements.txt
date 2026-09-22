@@ -1,0 +1,8 @@
+# Pinned for the first edition (PLAN.md §4.5). marimo's own version fully
+# determines the Pyodide runtime every `marimo export html-wasm` bundles
+# (see PYODIDE_VERSION in marimo/_pyodide/pyodide_constraints.py) -- pinning
+# marimo here is what pins Pyodide for every reader's browser too.
+marimo==0.23.9        # -> bundles Pyodide 0.27.7
+numpy==2.4.4
+matplotlib==3.10.8
+pytest==9.0.3

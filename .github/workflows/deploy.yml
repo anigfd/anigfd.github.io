@@ -1,0 +1,107 @@
+name: Test, export notebooks, deploy to Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race; queue instead of cancelling, so a merged PR always
+# reaches the live site.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+defaults:
+  run:
+    working-directory: gfd-book
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: gfd-book/requirements.txt
+
+      # requirements.txt pins marimo exactly, which is what pins the Pyodide
+      # build every reader's browser gets.
+      - name: Install pinned dependencies
+        run: pip install -r requirements.txt
+
+      # HARD GATE: gfdlib correctness. Nothing ships if the numerics are wrong.
+      - name: Run gfdlib tests
+        run: make test
+
+      # `make notebooks` cleans first, exports every chapter into ONE shared
+      # directory, strips marimo's stray CLAUDE.md, and injects the
+      # chunk-load-error auto-reload handler. It fails the build on any export
+      # error, so it doubles as an integration test of every notebook.
+      - name: Export notebooks to WASM
+        run: make notebooks
+
+      # Guards the shared-bundle layout. The per-chapter export form
+      # (-o .../chNN_slug/) also "succeeds", but costs ~27 MB per chapter and
+      # makes readers re-download Pyodide on every chapter, so assert the
+      # shape rather than just the exit code.
+      - name: Check the export produced one shared bundle
+        run: |
+          test -d site/static/nb/assets || { echo "shared assets/ missing"; exit 1; }
+          test -f site/static/nb/public/gfdlib-0.1.0-py3-none-any.whl \
+            || { echo "gfdlib wheel did not reach the export"; exit 1; }
+          test -f site/static/nb/public/ch16_baroclinic-instability.npz \
+            || { echo "ch16 precomputed life-cycle did not reach the export"; exit 1; }
+          test ! -e site/static/nb/CLAUDE.md \
+            || { echo "marimo's stray CLAUDE.md would be published"; exit 1; }
+          for nb in notebooks/ch*.py; do
+            name=$(basename "$nb" .py)
+            test -f "site/static/nb/$name.html" \
+              || { echo "missing export for $name"; exit 1; }
+            grep -q marimo-chunk-reload "site/static/nb/$name.html" \
+              || { echo "$name is missing the chunk-reload handler"; exit 1; }
+          done
+          if [ "$(find site/static/nb -type d -name assets | wc -l)" -ne 1 ]; then
+            echo "expected exactly one assets/ tree — the export form regressed"
+            exit 1
+          fi
+          echo "exports present: $(ls site/static/nb/ch*.html | wc -l) chapters, \
+            $(ls site/static/nb/assets | wc -l) shared asset files, \
+            $(du -sh site/static/nb | cut -f1) total"
+
+      - uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.165.0"
+          extended: true
+
+      - uses: actions/configure-pages@v5
+        id: pages
+
+      # baseURL lives in hugo.toml and needs no override: this repo is
+      # <org>.github.io, so Pages serves it at the domain root.
+      - name: Build the site
+        run: hugo --minify --source site
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: gfd-book/site/public
+
+  deploy:
+    # Only publish from main; a PR gets the tests and the export check, not a deploy.
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
