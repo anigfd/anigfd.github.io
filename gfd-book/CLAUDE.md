@@ -27,6 +27,8 @@ notebooks/         # one marimo .py per chapter: chNN_slug.py  (plain Python —
 tests/             # pytest: numeric correctness of gfdlib (run before every commit)
 site/content/      # Hugo pages: part/chapter tree, long-form text
 site/static/nb/    # exported WASM bundles land here (git-ignored; produced by `make`)
+site/static/ipynb/ # downloadable Jupyter conversions (git-ignored; one per chapter)
+scripts/           # patch_chunk_reload.py, export_ipynb.py, render_hero_animation.py
 Makefile           # `make notebooks` exports every changed .py -> site/static/nb/
 NOTATION.md        # symbol table + sign conventions (linked from every chapter)
 docs/              # contributor docs: architecture.md, gfdlib.md (API tour), authoring.md
@@ -38,7 +40,7 @@ docs/              # contributor docs: architecture.md, gfdlib.md (API tour), au
   folder into the export, and notebooks micropip-install the wheel when
   running under Pyodide — see the import cell in `notebooks/_template.py`)
 - Export one:  `make nb-one NB=ch06_geostrophic-adjustment`
-  (use `--mode edit` for chapters where the reader should edit code live)
+  (also does the editable export and the .ipynb for that chapter)
 - Preview site:  `make serve`  (runs `hugo server -D` from `site/`)
 - Run numeric tests:  `make test`  (pytest on `tests/` — MUST pass before commit)
 - Deploy: automatic. Merging to `main` runs `.github/workflows/deploy.yml`,
@@ -65,6 +67,19 @@ docs/              # contributor docs: architecture.md, gfdlib.md (API tour), au
   `public/`, but nothing in it is preloaded — only the chapter that asks for
   a file downloads it.
 - The Hugo shortcode takes the file: `{{< marimo src="/nb/chNN_slug.html" >}}`.
+  It derives the `.ipynb` download path from that same argument, so a chapter
+  cannot link someone else's notebook.
+- `SHOWCASE` in the Makefile lists the chapters that also get an editable
+  export (`chNN_slug_edit.html`), for the cards on aneeshcs.com/gfd/. Keep it
+  short: `--mode edit` re-executes the notebook, so every name added costs
+  every deploy.
+- `scripts/export_ipynb.py` makes each chapter downloadable, and must undo four
+  things that only work inside marimo or inside the served bundle: the
+  micropip/`sys.path` bootstrap, `public/` asset paths, `mo.stop(...)` Run
+  gates, and `import marimo as mo` sitting in the *last* cell (marimo orders by
+  dependency; Jupyter runs top to bottom). Drop any one and the download fails
+  on its first cell, while still looking correct in a diff. CI greps the output
+  for `emscripten`, `micropip` and `mo.stop` to catch exactly that.
 
 ## Performance budget (Pyodide is single-threaded, ~3-10x slower than native)
 - Spectral grids 64^2-256^2. The included solver does 128^2 x 400 steps in <1s native.

@@ -11,11 +11,14 @@ how chapters are written.
 gfdlib/*.py ──(pip wheel)──▶ notebooks/public/gfdlib-0.1.0-py3-none-any.whl
                                         │
 notebooks/chNN_slug.py ──(marimo export html-wasm)──▶ site/static/nb/chNN_slug.html
-                                        │                  (+ ONE shared assets/ and public/)
-                                        │       Hugo shortcode {{< marimo src="/nb/chNN_slug.html" >}}
-                                        ▼                       ▼
-                              reader's browser boots Pyodide, micropip-installs
-                              the shared wheel, and runs the notebook locally
+                       │                │                  (+ ONE shared assets/ and public/)
+                       │                │       Hugo shortcode {{< marimo src="/nb/chNN_slug.html" >}}
+                       │                ▼                       ▼
+                       │      reader's browser boots Pyodide, micropip-installs
+                       │      the shared wheel, and runs the notebook locally
+                       │
+                       ├──(--mode edit, SHOWCASE only)──▶ site/static/nb/chNN_slug_edit.html
+                       └──(scripts/export_ipynb.py)─────▶ site/static/ipynb/chNN_slug.ipynb
 ```
 
 There is no server-side compute anywhere. The exported bundle is static
@@ -97,9 +100,35 @@ marimo also drops a stray copy of `CLAUDE.md` into the output directory; the
 Makefile deletes it, so the authoring instructions are not published.
 
 `--mode run` gives the reader a read-and-interact app (sliders work, code is
-visible but not editable). Use `--mode edit` for chapters where the reader
-should modify code live. `site/static/nb/` is git-ignored — bundles are
+visible but not editable). `site/static/nb/` is git-ignored — bundles are
 build products, rebuilt from source.
+
+### 3a. Two extra outputs for the chapters we showcase
+
+The `SHOWCASE` list in the Makefile names the chapters that are also exported
+with `--mode edit`, to `chNN_slug_edit.html`, so the cards on
+<https://www.aneeshcs.com/gfd/> can offer *Edit & Run* beside *View*. It is a
+named list rather than every chapter because `--mode edit` re-executes the
+notebook; doing all 24 roughly doubles the deploy for a feature two pages use.
+Adding a chapter to the list is the whole change.
+
+Separately, **every** chapter is converted to a downloadable Jupyter notebook in
+`site/static/ipynb/`, linked from its own chapter page by the `marimo` shortcode.
+That is `marimo export ipynb` plus the edits a file leaving the site needs —
+see `scripts/export_ipynb.py`, which is cheap because it never executes anything.
+Four of those edits are load-bearing, and each corresponds to something that
+works *only* inside marimo or *only* inside the served bundle:
+
+| in the chapter | in the download |
+|---|---|
+| `micropip`-installs the wheel, else `sys.path` | `%pip install` of `gfdlib` from this public repo |
+| reads `mo.notebook_location() / "public" / x` | downloads `x` from `…github.io/nb/public/` |
+| `mo.stop(not run_btn.value, …)` gates the work | gate removed, so the cell computes when run |
+| `import marimo as mo` sits in the last cell | hoisted first, since Jupyter runs top to bottom |
+
+The last two are easy to miss because the file still *looks* right: marimo orders
+cells by dependency rather than position, and `mo.stop` raises outside marimo's
+runtime, so leaving either alone yields a download that fails on its first cell.
 
 ### 4. Hugo embeds the bundle
 
