@@ -73,7 +73,26 @@ jobs:
             echo "expected exactly one assets/ tree — the export form regressed"
             exit 1
           fi
-          echo "exports present: $(ls site/static/nb/ch*.html | wc -l) chapters, \
+          # The showcase chapters are linked from aneeshcs.com/gfd/ with an
+          # "Edit & Run" button, which needs the editable export to exist.
+          for name in $(sed -n 's/^SHOWCASE *:= *//p' Makefile); do
+            test -f "site/static/nb/${name}_edit.html" \
+              || { echo "missing editable export for $name"; exit 1; }
+          done
+          # One .ipynb per chapter, each linked from its own chapter page.
+          if [ "$(ls site/static/ipynb/ch*.ipynb | wc -l)" \
+             -ne "$(ls notebooks/ch*.py | wc -l)" ]; then
+            echo "expected one .ipynb per chapter"
+            exit 1
+          fi
+          # A download that still carries these never runs outside marimo.
+          if grep -l 'emscripten\|micropip\|mo\.stop' site/static/ipynb/*.ipynb; then
+            echo "the files above kept marimo-only code the download cannot run"
+            exit 1
+          fi
+          echo "exports present: $(ls site/static/nb/ch*.html | grep -vc _edit) chapters, \
+            $(ls site/static/nb/*_edit.html | wc -l) editable, \
+            $(ls site/static/ipynb/*.ipynb | wc -l) notebooks, \
             $(ls site/static/nb/assets | wc -l) shared asset files, \
             $(du -sh site/static/nb | cut -f1) total"
 
