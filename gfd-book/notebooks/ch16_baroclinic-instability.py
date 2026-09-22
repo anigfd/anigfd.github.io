@@ -241,7 +241,7 @@ async def _(mo, np):
         )
         lifecycle = np.load(io.BytesIO(await _resp.bytes()))
     else:
-        lifecycle = np.load(mo.notebook_dir() / "data" / "ch16_baroclinic-instability.npz")
+        lifecycle = np.load(mo.notebook_dir() / "public" / "ch16_baroclinic-instability.npz")
     return (lifecycle,)
 
 

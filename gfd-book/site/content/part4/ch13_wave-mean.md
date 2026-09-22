@@ -19,7 +19,7 @@ momentum into the mean flow there.
 
 ## The model
 
-Notebook: `notebooks/ch13_wave-mean.py` → exported to `/nb/ch13_wave-mean/`.
+Notebook: `notebooks/ch13_wave-mean.py` → exported to `/nb/ch13_wave-mean.html`.
 Governing equations use the symbols in [notation]({{< relref "notation.md" >}}).
 
 $$u_S=\frac{A^2k}{2\omega},\qquad
@@ -59,7 +59,7 @@ along the ray.
    deposited *there* and nowhere else. That one-way delivery is the QBO
    mechanism in the "Both fluids" section below.
 
-{{< marimo src="/nb/ch13_wave-mean/" >}}
+{{< marimo src="/nb/ch13_wave-mean.html" >}}
 
 ## Both fluids
 

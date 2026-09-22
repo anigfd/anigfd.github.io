@@ -6,7 +6,7 @@ exported to **WebAssembly** (Pyodide), so readers execute every model
 directly in the browser — no install, no server. A runnable companion to
 Vallis, Salmon, and Pedlosky.
 
-- **Live site:** https://www.aneeshcs.com/gfd/
+- **Live site:** https://anigfd.github.io/
 - **Audience:** first-year PhD students in atmospheric & oceanic sciences,
   applied math, or physics. Assumed background: multivariable calculus,
   linear algebra, a first fluids course, comfort with Python/NumPy —

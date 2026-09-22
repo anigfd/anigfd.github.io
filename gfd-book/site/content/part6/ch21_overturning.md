@@ -19,7 +19,7 @@ its observed stratification.
 ## The model
 
 Notebook: `notebooks/ch21_overturning.py` → exported to
-`/nb/ch21_overturning/`. Governing equations use the symbols in
+`/nb/ch21_overturning.html`. Governing equations use the symbols in
 [notation]({{< relref "notation.md" >}}):
 
 $$w\frac{\partial T}{\partial z}=\kappa\frac{\partial^2T}{\partial z^2},
@@ -68,7 +68,7 @@ the cooled one, in every configuration tested.
    localized deep-water-formation sites versus basin-wide diffuse
    upwelling.
 
-{{< marimo src="/nb/ch21_overturning/" >}}
+{{< marimo src="/nb/ch21_overturning.html" >}}
 
 ## Both fluids
 

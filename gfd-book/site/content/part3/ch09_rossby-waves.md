@@ -20,7 +20,7 @@ by El Niño) arc across the globe.
 
 ## The model
 
-Notebook: `notebooks/ch09_rossby-waves.py` → exported to `/nb/ch09_rossby-waves/`.
+Notebook: `notebooks/ch09_rossby-waves.py` → exported to `/nb/ch09_rossby-waves.html`.
 Governing equations use the symbols in [notation]({{< relref "notation.md" >}}):
 
 $$\frac{d\mathbf x}{dt}=\frac{\partial\omega}{\partial\mathbf k},\qquad
@@ -61,7 +61,7 @@ enough that the whole notebook is reactive, with no Run button.
    centers of action sit at preferred latitudes rather than smearing along
    the whole path.
 
-{{< marimo src="/nb/ch09_rossby-waves/" >}}
+{{< marimo src="/nb/ch09_rossby-waves.html" >}}
 
 ## Both fluids
 

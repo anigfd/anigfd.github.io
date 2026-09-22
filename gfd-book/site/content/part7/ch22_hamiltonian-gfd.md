@@ -18,7 +18,7 @@ charge of the fluid's own peculiar symmetry, **particle relabeling**.
 ## The model
 
 Notebook: `notebooks/ch22_hamiltonian-gfd.py` → exported to
-`/nb/ch22_hamiltonian-gfd/`. Governing equations use the symbols in
+`/nb/ch22_hamiltonian-gfd.html`. Governing equations use the symbols in
 [notation]({{< relref "notation.md" >}}).
 
 $$\Gamma_i\frac{dx_i}{dt}=\frac{\partial H}{\partial y_i},\qquad
@@ -32,7 +32,7 @@ themselves are the conjugate pair — with its four Noether invariants
 non-symplectic control (Heun). Known solutions (co-rotating pair period,
 dipole translation speed) are verified in the test suite.
 
-{{< marimo src="/nb/ch22_hamiltonian-gfd/" >}}
+{{< marimo src="/nb/ch22_hamiltonian-gfd.html" >}}
 
 ## Both fluids
 

@@ -21,7 +21,7 @@ buoyancy frequency.
 
 ## The model
 
-Notebook: `notebooks/ch12_internal-gravity-waves.py` → exported to `/nb/ch12_internal-gravity-waves/`.
+Notebook: `notebooks/ch12_internal-gravity-waves.py` → exported to `/nb/ch12_internal-gravity-waves.html`.
 Governing equations use the symbols in [notation]({{< relref "notation.md" >}}):
 
 $$\frac{\partial^2 q}{\partial t^2} = -\Big(N^2(z)\,\psi_{xx}+f^2\,\psi_{zz}\Big)+S,
@@ -62,7 +62,7 @@ the solver produces on its own.
    Waves exist only inside it; both presets live or die by where
    $\hat\omega$ sits in that window.
 
-{{< marimo src="/nb/ch12_internal-gravity-waves/" >}}
+{{< marimo src="/nb/ch12_internal-gravity-waves.html" >}}
 
 ## Both fluids
 

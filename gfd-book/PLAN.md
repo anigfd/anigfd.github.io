@@ -1,7 +1,7 @@
 # Building *An interactive Geophysical Fluid Dynamics Textbook*
 ### A plan for a browser-runnable GFD textbook (marimo + WebAssembly)
 
-**Author target site:** `aneeshcs.com/gfd/` — Hugo Blox, notebooks exported to HTML, run in-browser via Pyodide/WASM.
+**Author target site:** `anigfd.github.io` — Hugo, notebooks exported to HTML, run in-browser via Pyodide/WASM.
 **Audience:** first-year Ph.D. students in atmospheric & oceanic sciences, or applied-math / physics students focused on ocean–atmosphere physics.
 **Assumed background:** multivariable calculus & linear algebra; a first course in fluid mechanics or classical mechanics; comfort with Python/NumPy; no prior GFD required.
 **Pedagogical spine:** Vallis-style — systematic scaling, balance, and instability arguments, physically grounded, connected to runnable models. Applications *balanced and fluid-first*: teach each mechanism generically, then instantiate it in **both** an atmospheric and an oceanic example. A later "Structure" part carries the Salmon-flavored variational/Hamiltonian material as an elegant capstone rather than a prerequisite.

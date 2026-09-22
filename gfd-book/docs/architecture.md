@@ -10,12 +10,12 @@ how chapters are written.
 ```
 gfdlib/*.py ──(pip wheel)──▶ notebooks/public/gfdlib-0.1.0-py3-none-any.whl
                                         │
-notebooks/chNN_slug.py ──(marimo export html-wasm)──▶ site/static/nb/chNN_slug/
-                                        │                       │
-                                        │       Hugo shortcode {{< marimo src="/nb/chNN_slug/" >}}
+notebooks/chNN_slug.py ──(marimo export html-wasm)──▶ site/static/nb/chNN_slug.html
+                                        │                  (+ ONE shared assets/ and public/)
+                                        │       Hugo shortcode {{< marimo src="/nb/chNN_slug.html" >}}
                                         ▼                       ▼
                               reader's browser boots Pyodide, micropip-installs
-                              the bundled wheel, and runs the notebook locally
+                              the shared wheel, and runs the notebook locally
 ```
 
 There is no server-side compute anywhere. The exported bundle is static
@@ -32,16 +32,19 @@ compiled to WebAssembly).
 marimo copies a notebook's `public/` folder into every WASM export — that is
 how the shared library travels with each chapter bundle.
 
-**Only put things in `notebooks/public/` that every chapter should carry.**
-Because all notebooks are siblings in one flat `notebooks/` directory, they
-all share this one `public/` folder — marimo has no way to scope it to a
-single chapter, so anything placed there (the 40 KB wheel; fine) gets
-duplicated into all 24 exports. A chapter-specific precomputed dataset (see
-the performance-budget note below) belongs in `notebooks/data/<name>.npz`
-instead: `make notebooks` copies `notebooks/data/chNN_slug.npz` into only
-that chapter's own `site/static/nb/chNN_slug/public/` after export, so it
-isn't paid for by the other 23 chapters. (Discovered when a single 5 MB file
-in the shared folder was quietly adding ~125 MB to the built site.)
+`notebooks/public/` also carries chapter-specific precomputed datasets
+(currently `ch16_baroclinic-instability.npz`, 5 MB). Because every chapter
+exports into one directory (step 3), marimo emits a single shared `public/`,
+so each file there is stored exactly once for the whole book. Nothing in it
+is preloaded: an exported page references `public/` only from the notebook
+source it embeds, so a file is fetched over HTTP when — and only when — the
+chapter that wants it asks for it. A dataset used by one chapter therefore
+costs the other 23 nothing.
+
+This was not true under the older per-chapter export form, where `public/`
+was copied into all 24 self-contained bundles and a single 5 MB file quietly
+added ~125 MB to the built site. That is why a `notebooks/data/` directory
+used to exist; the shared export form removed the need for it.
 
 ### 2. Every notebook has a dual-mode import cell
 
@@ -68,8 +71,30 @@ student reads never branches.
 `make notebooks` runs, for every `notebooks/ch*.py`:
 
 ```bash
-marimo export html-wasm notebooks/chNN_slug.py -o site/static/nb/chNN_slug --mode run
+marimo export html-wasm notebooks/chNN_slug.py -o site/static/nb/chNN_slug.html --mode run
 ```
+
+**The `-o` form is load-bearing.** Naming a *file* makes its parent the output
+directory, so all 24 chapters share one `assets/` tree (~687 files, 27 MB —
+the marimo frontend and the Pyodide runtime) and one `public/`. The whole
+built book is then ~35 MB. Naming a *directory* instead
+(`-o site/static/nb/chNN_slug/`) gives each chapter a self-contained ~27 MB
+copy of that identical tree: ~650 MB across the book, and the reader
+re-downloads the runtime on every chapter instead of hitting a warm cache.
+
+Two consequences the Makefile handles, and that must survive any edit to it:
+
+- `make clean` runs before a full export. marimo *merges* into an existing
+  `assets/` (`shutil.copytree(..., dirs_exist_ok=True)`), so chunks from an
+  older marimo version would otherwise accumulate forever.
+- With one shared `assets/`, every export rehashes every chapter's chunk
+  filenames, so a reader holding a stale cache gets "Failed to fetch
+  dynamically imported module". `scripts/patch_chunk_reload.py` injects a
+  handler that reloads once, guarded by a `sessionStorage` flag against
+  reload loops.
+
+marimo also drops a stray copy of `CLAUDE.md` into the output directory; the
+Makefile deletes it, so the authoring instructions are not published.
 
 `--mode run` gives the reader a read-and-interact app (sliders work, code is
 visible but not editable). Use `--mode edit` for chapters where the reader
@@ -82,12 +107,14 @@ Each chapter page in `site/content/partN/chNN_slug.md` embeds its notebook
 with the `marimo` shortcode:
 
 ```
-{{< marimo src="/nb/chNN_slug/" >}}
+{{< marimo src="/nb/chNN_slug.html" >}}
 ```
 
 `make serve` previews the whole site (`hugo server -D` from `site/`).
-Deploying means building the Hugo site and publishing `site/public/` — never
-touch the live site without explicit approval.
+Deployment is automatic: merging to `main` runs `.github/workflows/deploy.yml`,
+which re-exports every notebook, builds the Hugo site and publishes
+`site/public/` to GitHub Pages at https://anigfd.github.io/. Nothing built is
+ever committed.
 
 ## The performance budget (the real constraint)
 
@@ -105,8 +132,8 @@ notebook design decision traces back to this:
   a steps-per-frame slider are standard controls.
 - **Precompute genuinely heavy runs offline** and ship the fields as data
   the widget scrubs through (e.g. a full baroclinic life cycle), rather than
-  integrating live — put the file in `notebooks/data/<name>.npz`, not
-  `notebooks/public/` (see above).
+  integrating live — put the file in `notebooks/public/<name>.npz` and fetch
+  it with `mo.notebook_location() / "public" / ...` (see above).
 - **Lazy-load**: Pyodide does not boot until the reader clicks Run.
 
 ## Testing and CI

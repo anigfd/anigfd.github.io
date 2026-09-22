@@ -21,7 +21,7 @@ cascade, and its arrest.
 
 ## The model
 
-Notebook: `notebooks/ch18_geostrophic-turbulence.py` → exported to `/nb/ch18_geostrophic-turbulence/`.
+Notebook: `notebooks/ch18_geostrophic-turbulence.py` → exported to `/nb/ch18_geostrophic-turbulence.html`.
 Governing equations use the symbols in [notation]({{< relref "notation.md" >}}):
 
 $$\frac{\partial \zeta}{\partial t} + J(\psi,\zeta) + \beta v
@@ -58,7 +58,7 @@ turbulence, a hyperviscous variant, and a $\beta$-plane jet run.
    quantitative). Zero knobs were labeled "make jets"; $\beta$ plus an
    arrested cascade is sufficient.
 
-{{< marimo src="/nb/ch18_geostrophic-turbulence/" >}}
+{{< marimo src="/nb/ch18_geostrophic-turbulence.html" >}}
 
 ## Both fluids
 

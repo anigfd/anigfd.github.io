@@ -20,7 +20,7 @@ Stream exist and eastern ones don't.
 ## The model
 
 Notebook: `notebooks/ch20_wind-driven-circulation.py` → exported to
-`/nb/ch20_wind-driven-circulation/`. Governing equations use the symbols in
+`/nb/ch20_wind-driven-circulation.html`. Governing equations use the symbols in
 [notation]({{< relref "notation.md" >}}):
 
 $$\text{Stommel: } \varepsilon\nabla^2\psi+\psi_x=-\sin(\pi y),\qquad
@@ -70,7 +70,7 @@ textbook simplification) restored clean convergence.
    habit every chapter's test suite applies — and "The model" section's
    story of the all-walls-no-slip bug shows what it catches.
 
-{{< marimo src="/nb/ch20_wind-driven-circulation/" >}}
+{{< marimo src="/nb/ch20_wind-driven-circulation.html" >}}
 
 ## Both fluids
 

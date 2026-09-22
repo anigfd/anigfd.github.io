@@ -15,7 +15,7 @@ from PIL import Image
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-DATA = "notebooks/data/ch16_baroclinic-instability.npz"
+DATA = "notebooks/public/ch16_baroclinic-instability.npz"
 OUT = "site/static/media/hero-baroclinic.gif"
 START_FRAME = 38  # skip the near-zero-amplitude lead-in (tuned by eye)
 FPS = 2  # 5x slower than the original 10fps, so the instability reads as a slow evolution

@@ -20,7 +20,7 @@ at the risers between bands — not within the quiet plateaus.
 
 ## The model
 
-Notebook: `notebooks/ch07_vorticity-pv.py` → exported to `/nb/ch07_vorticity-pv/`.
+Notebook: `notebooks/ch07_vorticity-pv.py` → exported to `/nb/ch07_vorticity-pv.html`.
 Governing equations use the symbols in [notation]({{< relref "notation.md" >}}):
 
 $$q_t+J(\psi,q)=0,\qquad \zeta=\nabla^2\psi=q-\beta y.$$
@@ -56,7 +56,7 @@ field forward to show the resulting dynamics.
    panel (no Run needed) to vary the number of bands and watch exercise 3's
    question take shape.
 
-{{< marimo src="/nb/ch07_vorticity-pv/" >}}
+{{< marimo src="/nb/ch07_vorticity-pv.html" >}}
 
 ## Both fluids
 

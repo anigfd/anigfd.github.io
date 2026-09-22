@@ -19,7 +19,7 @@ chapter's particular scale.
 ## The model
 
 Notebook: `notebooks/ch02_governing-equations.py` → exported to
-`/nb/ch02_governing-equations/`. Governing equations use the symbols in
+`/nb/ch02_governing-equations.html`. Governing equations use the symbols in
 [notation]({{< relref "notation.md" >}}).
 
 $$\nabla\cdot\mathbf u=0,\qquad
@@ -30,7 +30,7 @@ $$\nabla\cdot\mathbf u=0,\qquad
 radius $L_R$ directly from physical inputs ($U,L,H,N,\nu$, latitude) — a
 pure calculator, no discretization or time-stepping anywhere.
 
-{{< marimo src="/nb/ch02_governing-equations/" >}}
+{{< marimo src="/nb/ch02_governing-equations.html" >}}
 
 ## Both fluids
 

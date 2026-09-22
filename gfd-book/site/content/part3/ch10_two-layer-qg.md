@@ -18,7 +18,7 @@ none was placed.
 ## The model
 
 Notebook: `notebooks/ch10_two-layer-qg.py` → exported to
-`/nb/ch10_two-layer-qg/`. Governing equations use the symbols in
+`/nb/ch10_two-layer-qg.html`. Governing equations use the symbols in
 [notation]({{< relref "notation.md" >}}).
 
 $$q_{bt}=\frac{q_1+q_2}{2}=\nabla^2\psi_{bt},\qquad
@@ -58,7 +58,7 @@ an instability calculation.
    from two similar-looking layers to two familiar, decoupled equations —
    is the whole point of the chapter.
 
-{{< marimo src="/nb/ch10_two-layer-qg/" >}}
+{{< marimo src="/nb/ch10_two-layer-qg.html" >}}
 
 ## Both fluids
 

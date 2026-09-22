@@ -16,7 +16,7 @@ flow actually lands.
 
 ## The model
 
-Notebook: `notebooks/ch04_scaling.py` → exported to `/nb/ch04_scaling/`.
+Notebook: `notebooks/ch04_scaling.py` → exported to `/nb/ch04_scaling.html`.
 Governing equations use the symbols in [notation]({{< relref "notation.md" >}}).
 
 $$Ro=\frac{U}{f_0L}\ \gtrless\ 1,\qquad
@@ -27,7 +27,7 @@ QG-baroclinic / QG-barotropic; the notebook renders it as a filled region
 map with five reference points from earlier chapters' example flows placed
 directly on it.
 
-{{< marimo src="/nb/ch04_scaling/" >}}
+{{< marimo src="/nb/ch04_scaling.html" >}}
 
 ## Both fluids
 
