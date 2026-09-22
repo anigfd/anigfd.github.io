@@ -1,0 +1,38 @@
+{{ define "main" }}
+{{ $part1 := index site.Sections.ByWeight 0 }}
+{{ $ch1 := index $part1.Pages.ByWeight 0 }}
+<section class="hero">
+  <div class="hero-motif">
+    <img src="{{ "media/hero-baroclinic.gif" | relURL }}"
+         alt="Animated upper-layer potential-vorticity field from a baroclinic instability life cycle, tiled across a wide banner, growing from a smooth wave into a tilted, breaking pattern">
+  </div>
+  <p class="hero-motif-caption">Baroclinic instability life cycle — Ch. 16</p>
+  <div class="hero-text">
+    <h1>{{ site.Title }}</h1>
+    {{ .Content }}
+    <div class="cta-row">
+      {{ with $ch1 }}<a class="btn btn-primary" href="{{ .RelPermalink }}">Start reading — Ch. 1 →</a>{{ end }}
+      <a class="btn btn-secondary" href="{{ "how-to-run" | relURL }}/">How these notebooks work</a>
+    </div>
+  </div>
+</section>
+
+<section class="part-grid">
+  {{ range site.Sections.ByWeight }}
+  <article class="part-card">
+    <h2>
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+      {{ if .Params.optional }}<span class="badge">optional</span>{{ end }}
+    </h2>
+    <p class="part-desc">{{ .Description }}</p>
+    <ol class="chapter-list">
+      {{ range .Pages.ByWeight }}
+      <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+      {{ end }}
+    </ol>
+  </article>
+  {{ end }}
+</section>
+
+<p class="map-link"><a href="{{ "dependencies" | relURL }}/">Not sure where to start? See the full chapter dependency map →</a></p>
+{{ end }}
