@@ -136,14 +136,29 @@ notebook design decision traces back to this:
   it with `mo.notebook_location() / "public" / ...` (see above).
 - **Lazy-load**: Pyodide does not boot until the reader clicks Run.
 
-## Testing and CI
+## Testing, CI and deployment
 
-- `make test` runs `pytest -q tests/` — numeric correctness of every
-  `gfdlib` primitive (analytic solutions, conservation laws, convergence
-  orders). It must pass before every commit.
-- CI (GitHub Actions, on every push/PR) runs the test suite **and exports
-  every notebook to WASM** as a smoke check, so an export-breaking change
-  is caught before it ships.
+`.github/workflows/deploy.yml` runs on every push to `main` and every pull
+request, and does the whole pipeline in order:
+
+1. `make test` — `pytest -q tests/`, numeric correctness of every `gfdlib`
+   primitive (analytic solutions, conservation laws, convergence orders).
+   A hard gate: nothing ships if the numerics are wrong. It must also pass
+   locally before every commit.
+2. `make notebooks` — exports every chapter. A fully-reactive notebook
+   executes end to end during the WASM export, so a clean export is a real
+   integration test, not just a parse check.
+3. A shape check on the result. The per-chapter export form also "succeeds"
+   while costing ~27 MB per chapter, so CI asserts what a correct build looks
+   like: exactly one `assets/` tree, the wheel and ch16's `.npz` in the shared
+   `public/`, an `.html` per chapter each carrying the chunk-reload handler,
+   and no stray `CLAUDE.md`.
+4. `hugo --minify --source site`, then `actions/upload-pages-artifact`.
+
+A separate `deploy` job, gated on `main`, publishes that artifact with
+`actions/deploy-pages`. A pull request therefore gets the tests, the export
+and the shape check, but never a deploy. Nothing generated is committed — the
+published site is rebuilt from source every time.
 
 ## Reproducibility
 
